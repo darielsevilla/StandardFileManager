@@ -496,8 +496,8 @@ class Ui_MainWindow(object):
         self.page_3 = QtWidgets.QWidget()
         self.page_3.setAutoFillBackground(True)
         self.page_3.setObjectName("page_3")
-        self.layoutArchivo_3 = QtWidgets.QWidget(parent=self.page_3)
-        self.layoutArchivo_3.setGeometry(QtCore.QRect(0, -10, 211, 671))
+        self.layoutRegistro = QtWidgets.QWidget(parent=self.page_3)
+        self.layoutRegistro.setGeometry(QtCore.QRect(0, -10, 211, 671))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
@@ -517,10 +517,10 @@ class Ui_MainWindow(object):
         brush = QtGui.QBrush(QtGui.QColor(43, 45, 48))
         brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
         palette.setBrush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Window, brush)
-        self.layoutArchivo_3.setPalette(palette)
-        self.layoutArchivo_3.setAutoFillBackground(True)
-        self.layoutArchivo_3.setObjectName("layoutArchivo_3")
-        self.wdRegistros4 = QtWidgets.QWidget(parent=self.layoutArchivo_3)
+        self.layoutRegistro.setPalette(palette)
+        self.layoutRegistro.setAutoFillBackground(True)
+        self.layoutRegistro.setObjectName("layoutRegistro")
+        self.wdRegistros4 = QtWidgets.QWidget(parent=self.layoutRegistro)
         self.wdRegistros4.setGeometry(QtCore.QRect(10, 290, 181, 31))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(113, 118, 126))
@@ -543,7 +543,7 @@ class Ui_MainWindow(object):
         self.lb_registros4.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.lb_registros4.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.lb_registros4.setObjectName("lb_registros4")
-        self.wdRegistros1 = QtWidgets.QWidget(parent=self.layoutArchivo_3)
+        self.wdRegistros1 = QtWidgets.QWidget(parent=self.layoutRegistro)
         self.wdRegistros1.setGeometry(QtCore.QRect(10, 50, 181, 31))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(100, 105, 112))
@@ -567,7 +567,7 @@ class Ui_MainWindow(object):
         self.lb_registros1.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.lb_registros1.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.lb_registros1.setObjectName("lb_registros1")
-        self.wdRegistros2 = QtWidgets.QWidget(parent=self.layoutArchivo_3)
+        self.wdRegistros2 = QtWidgets.QWidget(parent=self.layoutRegistro)
         self.wdRegistros2.setGeometry(QtCore.QRect(10, 130, 181, 31))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(100, 105, 112))
@@ -590,7 +590,7 @@ class Ui_MainWindow(object):
         self.lb_registros2.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.lb_registros2.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.lb_registros2.setObjectName("lb_registros2")
-        self.wdRegistros3 = QtWidgets.QWidget(parent=self.layoutArchivo_3)
+        self.wdRegistros3 = QtWidgets.QWidget(parent=self.layoutRegistro)
         self.wdRegistros3.setGeometry(QtCore.QRect(10, 210, 181, 31))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(100, 105, 112))
@@ -613,7 +613,7 @@ class Ui_MainWindow(object):
         self.lb_registros3.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.lb_registros3.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.lb_registros3.setObjectName("lb_registros3")
-        self.wdRegistros5 = QtWidgets.QWidget(parent=self.layoutArchivo_3)
+        self.wdRegistros5 = QtWidgets.QWidget(parent=self.layoutRegistro)
         self.wdRegistros5.setGeometry(QtCore.QRect(10, 370, 181, 31))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(113, 118, 126))
@@ -640,8 +640,8 @@ class Ui_MainWindow(object):
         self.page_5 = QtWidgets.QWidget()
         self.page_5.setAutoFillBackground(True)
         self.page_5.setObjectName("page_5")
-        self.layoutCampos_3 = QtWidgets.QWidget(parent=self.page_5)
-        self.layoutCampos_3.setGeometry(QtCore.QRect(0, 0, 211, 671))
+        self.layoutEstandar = QtWidgets.QWidget(parent=self.page_5)
+        self.layoutEstandar.setGeometry(QtCore.QRect(0, 0, 211, 671))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
@@ -661,10 +661,10 @@ class Ui_MainWindow(object):
         brush = QtGui.QBrush(QtGui.QColor(43, 45, 48))
         brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
         palette.setBrush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Window, brush)
-        self.layoutCampos_3.setPalette(palette)
-        self.layoutCampos_3.setAutoFillBackground(True)
-        self.layoutCampos_3.setObjectName("layoutCampos_3")
-        self.wdEstandar2 = QtWidgets.QWidget(parent=self.layoutCampos_3)
+        self.layoutEstandar.setPalette(palette)
+        self.layoutEstandar.setAutoFillBackground(True)
+        self.layoutEstandar.setObjectName("layoutEstandar")
+        self.wdEstandar2 = QtWidgets.QWidget(parent=self.layoutEstandar)
         self.wdEstandar2.setGeometry(QtCore.QRect(10, 290, 181, 31))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(113, 118, 126))
@@ -687,7 +687,7 @@ class Ui_MainWindow(object):
         self.lb_estandar2.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.lb_estandar2.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.lb_estandar2.setObjectName("lb_estandar2")
-        self.wdEstandar1 = QtWidgets.QWidget(parent=self.layoutCampos_3)
+        self.wdEstandar1 = QtWidgets.QWidget(parent=self.layoutEstandar)
         self.wdEstandar1.setGeometry(QtCore.QRect(10, 130, 181, 31))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(100, 105, 112))
@@ -1120,15 +1120,26 @@ class Ui_MainWindow(object):
         self.myCode(MainWindow)
     def myCode(self, MainWindow):
         MainWindow.setFixedSize(MainWindow.size())
+        #correccion de errores de submenu
+        self.arraySubmenu = []
 
 
-        self.stackedMenus.hide()
-
-        self.stackedMenus.hide()
+        self.stackedPanels.setCurrentIndex(1)
         self.stackedMenus.setCurrentIndex(0)
-        self.page.raise_()
-        self.stackedMenus.activateWindow()
-        self.stackedMenus.setCurrentIndex(0)
+
+        self.stackedMenus.removeWidget(self.page_2)
+        self.stackedMenus.removeWidget(self.page_3)
+        self.stackedMenus.removeWidget(self.page_4)
+        self.stackedMenus.removeWidget(self.page_5)
+
+        self.arraySubmenu.append(self.page)
+        self.arraySubmenu.append(self.page_2)
+        self.arraySubmenu.append(self.page_3)
+        self.arraySubmenu.append(self.page_4)
+        self.arraySubmenu.append(self.page_5)
+
+        #guardar el widget siendo utilizado actualmente
+        self.widgetUsed = self.page
         self.stackedMenus.show()
 
 
@@ -1160,8 +1171,15 @@ class Ui_MainWindow(object):
         self.arrayWidgetButtons.append(self.wdEstandar2)
 
         # añador los events
+        #top button events
+        self.btArchivo.clicked.connect(lambda: self.topBtnAction(0))
+        self.btCampo.clicked.connect(lambda: self.topBtnAction(1))
+        self.btRegistro.clicked.connect(lambda: self.topBtnAction(2))
+        self.btIndices.clicked.connect(lambda: self.topBtnAction(3))
+        self.btEstandarizacion.clicked.connect(lambda: self.topBtnAction(4))
         self.lb_archivo1.mousePressEvent = lambda event: self.buttonAction(event, 0)
         self.lb_estandar1.mousePressEvent = lambda event: self.buttonAction(event, 16)
+        self.stackedMenus.setCurrentIndex(0)
 
     def buttonAction(self, event, i):
         for num in range(len(self.arrayWidgetButtons)):
@@ -1171,6 +1189,15 @@ class Ui_MainWindow(object):
             else:
                 palette.setColor(self.arrayWidgetButtons[num].backgroundRole(), QtGui.QColor(113, 118, 126))
             self.arrayWidgetButtons[num].setPalette(palette)
+            self.stackedPanels.setCurrentIndex(i)
+
+    def topBtnAction(self, i):
+        self.stackedMenus.removeWidget(self.widgetUsed)
+        self.stackedMenus.hide()
+        self.stackedMenus.addWidget(self.arraySubmenu[i])
+        self.stackedMenus.show()
+        self.widgetUsed = self.arraySubmenu[i]
+
 
 if __name__ == "__main__":
     import sys

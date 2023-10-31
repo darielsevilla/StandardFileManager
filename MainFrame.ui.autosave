@@ -1526,6 +1526,9 @@
        <bool>true</bool>
       </property>
       <widget class="QWidget" name="layoutRegistro" native="true">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>0</x>
