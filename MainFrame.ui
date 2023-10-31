@@ -963,56 +963,6 @@
      <property name="autoFillBackground">
       <bool>true</bool>
      </property>
-     <widget class="btnArchivo" name="btArchivo">
-      <property name="geometry">
-       <rect>
-        <x>220</x>
-        <y>20</y>
-        <width>141</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <property name="palette">
-       <palette>
-        <active>
-         <colorrole role="Button">
-          <brush brushstyle="SolidPattern">
-           <color alpha="255">
-            <red>255</red>
-            <green>255</green>
-            <blue>255</blue>
-           </color>
-          </brush>
-         </colorrole>
-        </active>
-        <inactive>
-         <colorrole role="Button">
-          <brush brushstyle="SolidPattern">
-           <color alpha="255">
-            <red>255</red>
-            <green>255</green>
-            <blue>255</blue>
-           </color>
-          </brush>
-         </colorrole>
-        </inactive>
-        <disabled>
-         <colorrole role="Button">
-          <brush brushstyle="SolidPattern">
-           <color alpha="255">
-            <red>255</red>
-            <green>255</green>
-            <blue>255</blue>
-           </color>
-          </brush>
-         </colorrole>
-        </disabled>
-       </palette>
-      </property>
-      <property name="text">
-       <string>Archivo</string>
-      </property>
-     </widget>
      <widget class="QPushButton" name="btCampo">
       <property name="geometry">
        <rect>
@@ -1065,6 +1015,19 @@
        <string>Estandarizacion</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="btArchivo">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>20</y>
+        <width>151</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Archivo</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QStackedWidget" name="stackedMenus">
      <property name="geometry">
@@ -1076,9 +1039,12 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="page">
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
       <widget class="QWidget" name="layoutArchivo" native="true">
        <property name="geometry">
         <rect>
@@ -1223,7 +1189,7 @@
           </rect>
          </property>
          <property name="cursor">
-          <cursorShape>OpenHandCursor</cursorShape>
+          <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="text">
           <string>Cerrar Archivo</string>
@@ -1304,7 +1270,7 @@
           </rect>
          </property>
          <property name="cursor">
-          <cursorShape>OpenHandCursor</cursorShape>
+          <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="text">
           <string>Nuevo Archivo</string>
@@ -1382,7 +1348,7 @@
           </rect>
          </property>
          <property name="cursor">
-          <cursorShape>OpenHandCursor</cursorShape>
+          <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="text">
           <string>Abrir Archivo</string>
@@ -1460,7 +1426,7 @@
           </rect>
          </property>
          <property name="cursor">
-          <cursorShape>OpenHandCursor</cursorShape>
+          <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="text">
           <string>Salvar Archivo</string>
@@ -1538,7 +1504,7 @@
           </rect>
          </property>
          <property name="cursor">
-          <cursorShape>OpenHandCursor</cursorShape>
+          <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="text">
           <string>Salir</string>
@@ -1560,6 +1526,9 @@
       </widget>
      </widget>
      <widget class="QWidget" name="page_3">
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
       <widget class="QWidget" name="layoutArchivo_3" native="true">
        <property name="geometry">
         <rect>
@@ -1704,7 +1673,7 @@
           </rect>
          </property>
          <property name="cursor">
-          <cursorShape>OpenHandCursor</cursorShape>
+          <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="text">
           <string>Borrar Registros</string>
@@ -1785,7 +1754,7 @@
           </rect>
          </property>
          <property name="cursor">
-          <cursorShape>OpenHandCursor</cursorShape>
+          <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="text">
           <string>Introducir Registros</string>
@@ -1795,7 +1764,7 @@
          </property>
         </widget>
        </widget>
-       <widget class="QWidget" name="wdArchivo2_4" native="true">
+       <widget class="QWidget" name="wdRegistros2" native="true">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -1863,7 +1832,7 @@
           </rect>
          </property>
          <property name="cursor">
-          <cursorShape>OpenHandCursor</cursorShape>
+          <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="text">
           <string>Modificar Registros</string>
@@ -1941,7 +1910,7 @@
           </rect>
          </property>
          <property name="cursor">
-          <cursorShape>OpenHandCursor</cursorShape>
+          <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="text">
           <string>Buscar Registros</string>
@@ -2019,7 +1988,7 @@
           </rect>
          </property>
          <property name="cursor">
-          <cursorShape>OpenHandCursor</cursorShape>
+          <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="text">
           <string>Listar Registros</string>
@@ -2032,6 +2001,9 @@
       </widget>
      </widget>
      <widget class="QWidget" name="page_5">
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
       <widget class="QWidget" name="layoutCampos_3" native="true">
        <property name="geometry">
         <rect>
@@ -2108,7 +2080,7 @@
        <property name="autoFillBackground">
         <bool>true</bool>
        </property>
-       <widget class="QWidget" name="wdIndices2_2" native="true">
+       <widget class="QWidget" name="wdEstandar2" native="true">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -2176,7 +2148,7 @@
           </rect>
          </property>
          <property name="cursor">
-          <cursorShape>OpenHandCursor</cursorShape>
+          <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="text">
           <string>Exportar XML con Schema</string>
@@ -2254,7 +2226,7 @@
           </rect>
          </property>
          <property name="cursor">
-          <cursorShape>OpenHandCursor</cursorShape>
+          <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="text">
           <string>Exportar Excel</string>
@@ -2267,6 +2239,9 @@
       </widget>
      </widget>
      <widget class="QWidget" name="page_4">
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
       <widget class="QWidget" name="layoutCampos_2" native="true">
        <property name="geometry">
         <rect>
@@ -2411,7 +2386,7 @@
           </rect>
          </property>
          <property name="cursor">
-          <cursorShape>OpenHandCursor</cursorShape>
+          <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="text">
           <string>Re Indexar Archivos</string>
@@ -2489,7 +2464,7 @@
           </rect>
          </property>
          <property name="cursor">
-          <cursorShape>OpenHandCursor</cursorShape>
+          <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="text">
           <string>Crear Índices</string>
@@ -2502,6 +2477,9 @@
       </widget>
      </widget>
      <widget class="QWidget" name="page_2">
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
       <widget class="QWidget" name="layoutCampos" native="true">
        <property name="geometry">
         <rect>
@@ -2578,7 +2556,7 @@
        <property name="autoFillBackground">
         <bool>true</bool>
        </property>
-       <widget class="QWidget" name="wd_archivo4_2" native="true">
+       <widget class="QWidget" name="wdCampos4" native="true">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -2644,6 +2622,9 @@
            <width>181</width>
            <height>31</height>
           </rect>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="text">
           <string>Borrar Campos</string>
@@ -2723,6 +2704,9 @@
            <height>31</height>
           </rect>
          </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="text">
           <string>Crear Campos</string>
          </property>
@@ -2731,7 +2715,7 @@
          </property>
         </widget>
        </widget>
-       <widget class="QWidget" name="wdArchivo2_3" native="true">
+       <widget class="QWidget" name="wdCampos2" native="true">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -2798,6 +2782,9 @@
            <height>31</height>
           </rect>
          </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="text">
           <string>Listar Campos</string>
          </property>
@@ -2806,7 +2793,7 @@
          </property>
         </widget>
        </widget>
-       <widget class="QWidget" name="wdArchivo3_2" native="true">
+       <widget class="QWidget" name="wdCampos3" native="true">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -2873,6 +2860,9 @@
            <height>31</height>
           </rect>
          </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="text">
           <string>Modificar Campos</string>
          </property>
@@ -2894,6 +2884,9 @@
       </rect>
      </property>
      <widget class="QWidget" name="page1">
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
       <widget class="QWidget" name="widgetCrearArchivo" native="true">
        <property name="geometry">
         <rect>
@@ -3386,20 +3379,13 @@
      <widget class="QWidget" name="page_7"/>
     </widget>
     <zorder>line</zorder>
-    <zorder>stackedMenus</zorder>
     <zorder>stackedPanels</zorder>
+    <zorder>stackedMenus</zorder>
     <zorder>widgetTopMenu_3</zorder>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>btnArchivo</class>
-   <extends>QPushButton</extends>
-   <header>TopButtonsCode.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

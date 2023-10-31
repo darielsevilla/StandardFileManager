@@ -66,6 +66,7 @@ class VentanaPrincipal(QMainWindow):
 
 
 
+
         layout.addWidget(self.sideMenu1Qw)
         self.sideMenu1Qw.setLayout(layoutFiles)
 
