@@ -9,7 +9,6 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtGui import QIcon, QPixmap
 from UtilityFunctions import *
-from PyQt6 import uic
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -328,20 +327,25 @@ class Ui_MainWindow(object):
         self.widgetTopMenu_3.setPalette(palette)
         self.widgetTopMenu_3.setAutoFillBackground(True)
         self.widgetTopMenu_3.setObjectName("widgetTopMenu_3")
-        self.btCampo = QtWidgets.QPushButton(parent=self.widgetTopMenu_3)
+        self.btCampo = QtWidgets.QToolButton(parent=self.widgetTopMenu_3)
         self.btCampo.setGeometry(QtCore.QRect(370, 20, 151, 71))
+        self.btCampo.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
         self.btCampo.setObjectName("btCampo")
-        self.btRegistro = QtWidgets.QPushButton(parent=self.widgetTopMenu_3)
+        self.btRegistro = QtWidgets.QToolButton(parent=self.widgetTopMenu_3)
         self.btRegistro.setGeometry(QtCore.QRect(530, 20, 151, 71))
+        self.btRegistro.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
         self.btRegistro.setObjectName("btRegistro")
-        self.btIndices = QtWidgets.QPushButton(parent=self.widgetTopMenu_3)
+        self.btIndices = QtWidgets.QToolButton(parent=self.widgetTopMenu_3)
         self.btIndices.setGeometry(QtCore.QRect(690, 20, 141, 71))
+        self.btIndices.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
         self.btIndices.setObjectName("btIndices")
-        self.btEstandarizacion = QtWidgets.QPushButton(parent=self.widgetTopMenu_3)
+        self.btEstandarizacion = QtWidgets.QToolButton(parent=self.widgetTopMenu_3)
         self.btEstandarizacion.setGeometry(QtCore.QRect(840, 20, 141, 71))
+        self.btEstandarizacion.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
         self.btEstandarizacion.setObjectName("btEstandarizacion")
-        self.btArchivo = QtWidgets.QPushButton(parent=self.widgetTopMenu_3)
+        self.btArchivo = QtWidgets.QToolButton(parent=self.widgetTopMenu_3)
         self.btArchivo.setGeometry(QtCore.QRect(210, 20, 151, 71))
+        self.btArchivo.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
         self.btArchivo.setObjectName("btArchivo")
         self.stackedMenus = QtWidgets.QStackedWidget(parent=self.mainBgWidget)
         self.stackedMenus.setGeometry(QtCore.QRect(0, 90, 211, 661))
@@ -1339,7 +1343,6 @@ class Ui_MainWindow(object):
         self.stackedPanels.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
@@ -1372,13 +1375,14 @@ class Ui_MainWindow(object):
         self.btn_chooseDirectory.setText(_translate("MainWindow", "..."))
         self.btnAbrir.setText(_translate("MainWindow", "Abrir Archivo"))
         self.lb_AbrirArchivo.setText(_translate("MainWindow", "Elija la direccion del archivo que desea abrir:"))
+
         self.myCode(MainWindow)
         self.btnIconsAndColors(MainWindow)
-    #correr los primeros 2 en retranslate
+
     def myCode(self, MainWindow):
         MainWindow.setFixedSize(MainWindow.size())
         self.btn_createToFields.setAutoFillBackground(True)
-        #non gui variables
+        # non gui variables
         self.file = 0
         # correccion de errores de submenu
         self.arraySubmenu = []
@@ -1428,9 +1432,8 @@ class Ui_MainWindow(object):
         self.arrayWidgetButtons.append(self.wdEstandar1)
         self.arrayWidgetButtons.append(self.wdEstandar2)
 
-        #set up comboBox
+        # set up comboBox
         self.reloadFileChooser()
-        self.lineEdit.setReadOnly(False)
 
         self.cB_fileOptions.currentIndexChanged.connect(lambda: changeTextFieldData(self.cB_fileOptions, self.lineEdit))
         # añadir los events
@@ -1441,18 +1444,15 @@ class Ui_MainWindow(object):
         self.btIndices.clicked.connect(lambda: self.topBtnAction(3))
         self.btEstandarizacion.clicked.connect(lambda: self.topBtnAction(4))
 
-
         self.lb_archivo1.mousePressEvent = lambda event: self.buttonAction(event, 0)
         self.lb_archivo2.mousePressEvent = lambda event: self.buttonAction(event, 1)
         self.lb_estandar1.mousePressEvent = lambda event: self.buttonAction(event, 16)
         self.stackedMenus.setCurrentIndex(0)
 
-        #events del resto de los botones
+        # events del resto de los botones
         self.btnFunctionality(MainWindow)
 
-
     def btnIconsAndColors(self, MainWindow):
-
 
         icono = QIcon(QPixmap("images/greenArrow.png"))
 
@@ -1460,6 +1460,31 @@ class Ui_MainWindow(object):
         self.btn_createToFields.setStyleSheet("background-color: green")
         self.btn_createToFields.setText("ir a campos")
         self.btn_createToFields.setIconSize(QtCore.QSize(50, 50))
+
+        icono = QIcon(QPixmap("images/fileImage.png"))
+        self.btArchivo.setIcon(icono)
+        self.btArchivo.setIconSize(QtCore.QSize(50, 50))
+        self.btArchivo.setStyleSheet("background-color: #c9d2cd")
+
+        icono = QIcon(QPixmap("images/fieldImage.png"))
+        self.btCampo.setIcon(icono)
+        self.btCampo.setIconSize(QtCore.QSize(50, 50))
+        self.btCampo.setStyleSheet("background-color: #c9d2cd")
+
+        icono = QIcon(QPixmap("images/registerImage.png"))
+        self.btRegistro.setIcon(icono)
+        self.btRegistro.setIconSize(QtCore.QSize(50, 50))
+        self.btRegistro.setStyleSheet("background-color: #c9d2cd")
+
+        icono = QIcon(QPixmap("images/indexImage.png"))
+        self.btIndices.setIcon(icono)
+        self.btIndices.setIconSize(QtCore.QSize(50, 50))
+        self.btIndices.setStyleSheet("background-color: #c9d2cd")
+
+        icono = QIcon(QPixmap("images/stdrImage.png"))
+        self.btEstandarizacion.setIcon(icono)
+        self.btEstandarizacion.setIconSize(QtCore.QSize(50, 50))
+        self.btEstandarizacion.setStyleSheet("background-color: #c9d2cd")
 
     def buttonAction(self, event, i):
         for num in range(len(self.arrayWidgetButtons)):
@@ -1481,9 +1506,11 @@ class Ui_MainWindow(object):
     def btnFunctionality(self, MainWindow):
         self.btn_crearArchivo.clicked.connect(self.btn_crearArchivoEvent)
         self.btn_chooseDirectory.clicked.connect(lambda: self.btn_chooseDirectoryEvent(MainWindow))
+
     def btn_crearArchivoEvent(self):
         file = self.txrEdit_fileName.text()
         print(file)
+
     def btn_chooseDirectoryEvent(self, MainWindow):
         fname = QtWidgets.QFileDialog.getOpenFileName(MainWindow, "OpenFile", "./registros", "All files (*);;dja")
         self.lineEdit.setText(fname[0])
@@ -1493,8 +1520,6 @@ class Ui_MainWindow(object):
 
         for i in list:
             self.cB_fileOptions.addItem(i)
-
-
 
 if __name__ == "__main__":
     import sys
