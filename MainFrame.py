@@ -8,6 +8,8 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtGui import QIcon, QPixmap
+from UtilityFunctions import *
+from PyQt6 import uic
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -1279,6 +1281,47 @@ class Ui_MainWindow(object):
         self.lb_createFile.setAutoFillBackground(False)
         self.lb_createFile.setObjectName("lb_createFile")
         self.stackedPanels.addWidget(self.page1)
+        self.page2 = QtWidgets.QWidget()
+        self.page2.setObjectName("page2")
+        self.widgetAbrirArchivo = QtWidgets.QWidget(parent=self.page2)
+        self.widgetAbrirArchivo.setGeometry(QtCore.QRect(0, 0, 861, 491))
+        self.widgetAbrirArchivo.setAutoFillBackground(True)
+        self.widgetAbrirArchivo.setObjectName("widgetAbrirArchivo")
+        self.openOuterBox = QtWidgets.QFrame(parent=self.widgetAbrirArchivo)
+        self.openOuterBox.setGeometry(QtCore.QRect(20, 40, 821, 411))
+        self.openOuterBox.setFrameShape(QtWidgets.QFrame.Shape.Box)
+        self.openOuterBox.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.openOuterBox.setObjectName("openOuterBox")
+        self.openInnerBox = QtWidgets.QFrame(parent=self.openOuterBox)
+        self.openInnerBox.setGeometry(QtCore.QRect(50, 50, 721, 321))
+        self.openInnerBox.setFrameShape(QtWidgets.QFrame.Shape.Box)
+        self.openInnerBox.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.openInnerBox.setObjectName("openInnerBox")
+        self.cB_fileOptions = QtWidgets.QComboBox(parent=self.openInnerBox)
+        self.cB_fileOptions.setGeometry(QtCore.QRect(70, 70, 581, 24))
+        self.cB_fileOptions.setObjectName("cB_fileOptions")
+        self.lineEdit = QtWidgets.QLineEdit(parent=self.openInnerBox)
+        self.lineEdit.setGeometry(QtCore.QRect(80, 140, 521, 24))
+        self.lineEdit.setReadOnly(True)
+        self.lineEdit.setObjectName("lineEdit")
+        self.btn_chooseDirectory = QtWidgets.QToolButton(parent=self.openInnerBox)
+        self.btn_chooseDirectory.setGeometry(QtCore.QRect(610, 140, 22, 23))
+        self.btn_chooseDirectory.setObjectName("btn_chooseDirectory")
+        self.btnAbrir = QtWidgets.QPushButton(parent=self.openInnerBox)
+        self.btnAbrir.setGeometry(QtCore.QRect(240, 210, 241, 71))
+        self.btnAbrir.setObjectName("btnAbrir")
+        self.lb_AbrirArchivo = QtWidgets.QLabel(parent=self.openInnerBox)
+        self.lb_AbrirArchivo.setGeometry(QtCore.QRect(70, 40, 291, 16))
+        palette = QtGui.QPalette()
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.WindowText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.WindowText, brush)
+        self.lb_AbrirArchivo.setPalette(palette)
+        self.lb_AbrirArchivo.setObjectName("lb_AbrirArchivo")
+        self.stackedPanels.addWidget(self.page2)
         self.page_7 = QtWidgets.QWidget()
         self.page_7.setObjectName("page_7")
         self.stackedPanels.addWidget(self.page_7)
@@ -1292,8 +1335,10 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.stackedMenus.setCurrentIndex(1)
+        self.stackedMenus.setCurrentIndex(0)
+        self.stackedPanels.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -1324,8 +1369,12 @@ class Ui_MainWindow(object):
         self.btn_crearArchivo.setText(_translate("MainWindow", "Crear Archivo"))
         self.btn_createToFields.setText(_translate("MainWindow", "Ir a campos"))
         self.lb_createFile.setText(_translate("MainWindow", "Ingrese nombre del archivo nuevo (sin extension):"))
+        self.btn_chooseDirectory.setText(_translate("MainWindow", "..."))
+        self.btnAbrir.setText(_translate("MainWindow", "Abrir Archivo"))
+        self.lb_AbrirArchivo.setText(_translate("MainWindow", "Elija la direccion del archivo que desea abrir:"))
         self.myCode(MainWindow)
         self.btnIconsAndColors(MainWindow)
+    #correr los primeros 2 en retranslate
     def myCode(self, MainWindow):
         MainWindow.setFixedSize(MainWindow.size())
         self.btn_createToFields.setAutoFillBackground(True)
@@ -1379,19 +1428,27 @@ class Ui_MainWindow(object):
         self.arrayWidgetButtons.append(self.wdEstandar1)
         self.arrayWidgetButtons.append(self.wdEstandar2)
 
-        # añador los events
+        #set up comboBox
+        self.reloadFileChooser()
+        self.lineEdit.setReadOnly(False)
+
+        self.cB_fileOptions.currentIndexChanged.connect(lambda: changeTextFieldData(self.cB_fileOptions, self.lineEdit))
+        # añadir los events
         # top button events
         self.btArchivo.clicked.connect(lambda: self.topBtnAction(0))
         self.btCampo.clicked.connect(lambda: self.topBtnAction(1))
         self.btRegistro.clicked.connect(lambda: self.topBtnAction(2))
         self.btIndices.clicked.connect(lambda: self.topBtnAction(3))
         self.btEstandarizacion.clicked.connect(lambda: self.topBtnAction(4))
+
+
         self.lb_archivo1.mousePressEvent = lambda event: self.buttonAction(event, 0)
+        self.lb_archivo2.mousePressEvent = lambda event: self.buttonAction(event, 1)
         self.lb_estandar1.mousePressEvent = lambda event: self.buttonAction(event, 16)
         self.stackedMenus.setCurrentIndex(0)
 
         #events del resto de los botones
-        self.btnFunctionality()
+        self.btnFunctionality(MainWindow)
 
 
     def btnIconsAndColors(self, MainWindow):
@@ -1421,11 +1478,22 @@ class Ui_MainWindow(object):
         self.stackedMenus.show()
         self.widgetUsed = self.arraySubmenu[i]
 
-    def btnFunctionality(self):
+    def btnFunctionality(self, MainWindow):
         self.btn_crearArchivo.clicked.connect(self.btn_crearArchivoEvent)
+        self.btn_chooseDirectory.clicked.connect(lambda: self.btn_chooseDirectoryEvent(MainWindow))
     def btn_crearArchivoEvent(self):
         file = self.txrEdit_fileName.text()
         print(file)
+    def btn_chooseDirectoryEvent(self, MainWindow):
+        fname = QtWidgets.QFileDialog.getOpenFileName(MainWindow, "OpenFile", "./registros", "All files (*);;dja")
+        self.lineEdit.setText(fname[0])
+
+    def reloadFileChooser(self):
+        list = listDirectories("./images")
+
+        for i in list:
+            self.cB_fileOptions.addItem(i)
+
 
 
 if __name__ == "__main__":
