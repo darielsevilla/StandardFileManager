@@ -38,12 +38,13 @@ class Archivo:
             try:
                 print(self.Path)
                 if(contenido == None):
-                    open(self.Path, 'x')
-                with open(self.Path, 'w') as archivo:
+                    open(self.Path, 'a')
+                with open(self.Path, 'a') as archivo:
                     if(contenido != None):
                         archivo.write(contenido)
                 return "Archivo guardado exitosamente."
             except Exception as e: 
                 return f"Error al guardar el archivo: {str(e)}"
+
 
 

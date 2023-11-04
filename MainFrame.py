@@ -2265,13 +2265,168 @@ class Ui_MainWindow(object):
         self.bt_chooseDirectory.setAutoFillBackground(True)
         self.bt_chooseDirectory.setObjectName("bt_chooseDirectory")
         self.stackedPanels.addWidget(self.page3)
-        self.page_7 = QtWidgets.QWidget()
-        self.page_7.setObjectName("page_7")
-        self.widgetDefault = QtWidgets.QWidget(parent=self.page_7)
+        self.defaultWidget = QtWidgets.QWidget()
+        self.defaultWidget.setObjectName("defaultWidget")
+        self.widgetDefault = QtWidgets.QWidget(parent=self.defaultWidget)
         self.widgetDefault.setGeometry(QtCore.QRect(0, 0, 861, 481))
         self.widgetDefault.setAutoFillBackground(True)
         self.widgetDefault.setObjectName("widgetDefault")
-        self.stackedPanels.addWidget(self.page_7)
+        self.frame = QtWidgets.QFrame(parent=self.widgetDefault)
+        self.frame.setGeometry(QtCore.QRect(20, 40, 821, 421))
+        palette = QtGui.QPalette()
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.WindowText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(43, 45, 48))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Button, brush)
+        brush = QtGui.QBrush(QtGui.QColor(64, 67, 72))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Light, brush)
+        brush = QtGui.QBrush(QtGui.QColor(53, 56, 60))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Midlight, brush)
+        brush = QtGui.QBrush(QtGui.QColor(21, 22, 24))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Dark, brush)
+        brush = QtGui.QBrush(QtGui.QColor(29, 30, 32))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Mid, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Text, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.BrightText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.ButtonText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Base, brush)
+        brush = QtGui.QBrush(QtGui.QColor(43, 45, 48))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Window, brush)
+        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Shadow, brush)
+        brush = QtGui.QBrush(QtGui.QColor(21, 22, 24))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.AlternateBase, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 220))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.ToolTipBase, brush)
+        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.ToolTipText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255, 127))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.PlaceholderText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.WindowText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(43, 45, 48))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Button, brush)
+        brush = QtGui.QBrush(QtGui.QColor(64, 67, 72))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Light, brush)
+        brush = QtGui.QBrush(QtGui.QColor(53, 56, 60))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Midlight, brush)
+        brush = QtGui.QBrush(QtGui.QColor(21, 22, 24))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Dark, brush)
+        brush = QtGui.QBrush(QtGui.QColor(29, 30, 32))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Mid, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Text, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.BrightText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.ButtonText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Base, brush)
+        brush = QtGui.QBrush(QtGui.QColor(43, 45, 48))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Window, brush)
+        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Shadow, brush)
+        brush = QtGui.QBrush(QtGui.QColor(21, 22, 24))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.AlternateBase, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 220))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.ToolTipBase, brush)
+        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.ToolTipText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255, 127))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.PlaceholderText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(21, 22, 24))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.WindowText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(43, 45, 48))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Button, brush)
+        brush = QtGui.QBrush(QtGui.QColor(64, 67, 72))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Light, brush)
+        brush = QtGui.QBrush(QtGui.QColor(53, 56, 60))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Midlight, brush)
+        brush = QtGui.QBrush(QtGui.QColor(21, 22, 24))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Dark, brush)
+        brush = QtGui.QBrush(QtGui.QColor(29, 30, 32))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Mid, brush)
+        brush = QtGui.QBrush(QtGui.QColor(21, 22, 24))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Text, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.BrightText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(21, 22, 24))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.ButtonText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(43, 45, 48))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Base, brush)
+        brush = QtGui.QBrush(QtGui.QColor(43, 45, 48))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Window, brush)
+        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Shadow, brush)
+        brush = QtGui.QBrush(QtGui.QColor(43, 45, 48))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.AlternateBase, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 220))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.ToolTipBase, brush)
+        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.ToolTipText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(21, 22, 24, 127))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.PlaceholderText, brush)
+        self.frame.setPalette(palette)
+        self.frame.setFrameShape(QtWidgets.QFrame.Shape.Box)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.frame.setObjectName("frame")
+        self.lb_defaultImage = QtWidgets.QLabel(parent=self.frame)
+        self.lb_defaultImage.setGeometry(QtCore.QRect(160, 30, 501, 331))
+        self.lb_defaultImage.setText("")
+        self.lb_defaultImage.setObjectName("lb_defaultImage")
+        self.stackedPanels.addWidget(self.defaultWidget)
         self.line.raise_()
         self.stackedPanels.raise_()
         self.stackedMenus.raise_()
@@ -2324,6 +2479,7 @@ class Ui_MainWindow(object):
         self.bt_saveChosenDirectory.setText(_translate("MainWindow", "Guardar en directorio elegido"))
         self.lb_saveFile.setText(_translate("MainWindow", "Ingrese directorio o guarde en la carpeta registro:"))
         self.bt_chooseDirectory.setText(_translate("MainWindow", "..."))
+
         self.myCode(MainWindow)
         self.btnIconsAndColors(MainWindow)
 
@@ -2331,6 +2487,8 @@ class Ui_MainWindow(object):
         self.enableButtons(False)
         MainWindow.setFixedSize(MainWindow.size())
         self.btn_createToFields.setAutoFillBackground(True)
+        defaultImage = QPixmap("images/pythonLogoIcon.png")
+        self.lb_defaultImage.setPixmap(defaultImage.scaled(self.lb_defaultImage.width(), self.lb_defaultImage.height()))
         # non gui variables
         self.file = None
         # correccion de errores de submenu
@@ -2396,7 +2554,7 @@ class Ui_MainWindow(object):
         self.lb_archivo1.mousePressEvent = lambda event: self.buttonAction(event, 0)
         self.lb_archivo2.mousePressEvent = lambda event: self.buttonAction(event, 1)
         self.lb_archivo3.mousePressEvent = lambda event: self.buttonAction(event, 2)
-        self.lb_archivo4.mousePressEvent = lambda event: self.lb_archivo4Event(event)
+        self.lb_archivo4.mousePressEvent = lambda event: self.lb_archivo4Event(event, MainWindow)
         self.lb_archivo5.mousePressEvent = lambda event: self.lb_archivo5Event(event, MainWindow)
         self.lb_estandar1.mousePressEvent = lambda event: self.buttonAction(event, 16)
         self.stackedMenus.setCurrentIndex(0)
@@ -2461,9 +2619,9 @@ class Ui_MainWindow(object):
         self.btn_crearArchivo.clicked.connect(self.btn_crearArchivoEvent)
         self.btn_chooseDirectory.clicked.connect(lambda: self.btn_chooseDirectoryEvent(MainWindow))
         self.bt_chooseDirectory.clicked.connect(lambda: self.bt_chooseDirectortEvent(MainWindow))
-        self.bt_saveChosenDirectory.clicked.connect(self.bt_saveChosenDirectoryEvent)
+        self.bt_saveChosenDirectory.clicked.connect(lambda: self.bt_saveChosenDirectoryEvent(MainWindow))
         self.bt_saveDefault.clicked.connect(self.bt_saveDefaultEvent)
-        self.btnAbrir.clicked.connect(self.btnAbrirEvent)
+        self.btnAbrir.clicked.connect(lambda: self.btnAbrirEvent(MainWindow))
     def btn_crearArchivoEvent(self):
         self.file = Archivo(self.txrEdit_fileName.text())
         self.lb_currentFile.setText(self.file.getName())
@@ -2477,9 +2635,19 @@ class Ui_MainWindow(object):
         fname = QtWidgets.QFileDialog.getExistingDirectory(MainWindow, "OpenFile", "./registros")
         self.lineEdit_showSaveDirectory.setText(fname)
 
-    def bt_saveChosenDirectoryEvent(self):
-        self.file.setPath(self.lineEdit_showSaveDirectory.text()+"/"+self.file.getName()+".dja")
+    def bt_saveChosenDirectoryEvent(self, MainWindow):
 
+        if(len(self.lineEdit_showSaveDirectory.text()) != 0):
+            self.file.setPath(self.lineEdit_showSaveDirectory.text()+"/"+self.file.getName()+".dja")
+            print(len(self.lineEdit.text()))
+            self.file.guardarArchivo()
+        else:
+             dialog = QtWidgets.QMessageBox(MainWindow)
+             dialog.setText("No hay una direccion en la que guardar el archivo!!")
+             icono = QIcon(QPixmap("images/exclamationMark.png"))
+             dialog.setWindowIcon(icono)
+             dialog.setWindowTitle("ERROR NOT FOUND")
+             dialog.exec()
     def lb_archivo5Event(self, event, MainWindow):
         for num in range(len(self.arrayWidgetButtons)):
             palette = self.arrayWidgetButtons[num].palette()
@@ -2488,25 +2656,45 @@ class Ui_MainWindow(object):
             else:
                 palette.setColor(self.arrayWidgetButtons[num].backgroundRole(), QtGui.QColor(113, 118, 126))
             self.arrayWidgetButtons[num].setPalette(palette)
-        quit()
+
+        #dialog cerrar archivo
+        dialog = QtWidgets.QMessageBox(MainWindow)
+        dialog.setText("¿Desea cerrar el programa?\n*El proceso no guardado se perdera*")
+        icono = QIcon(QPixmap("images/exclamationMark.png"))
+        bottonCerrar = QtWidgets.QPushButton("Cerrar Programa")
+        bottonCerrar.clicked.connect(quit)
+        dialog.addButton(bottonCerrar, QtWidgets.QMessageBox.ButtonRole.YesRole)
+        dialog.addButton(QtWidgets.QPushButton("Cancelar"), QtWidgets.QMessageBox.ButtonRole.NoRole)
+        dialog.setWindowIcon(icono)
+        dialog.setWindowTitle("Cerrar ventana")
+        dialog.exec()
+
     def bt_saveDefaultEvent(self):
         self.file.setPath("./registros/" + self.file.getName() + ".dja")
-        print(self.file.guardarArchivo())
+       
 
-    def btnAbrirEvent(self):
-        self.file = Archivo("temporalName")
-        self.file.setPath(self.lineEdit.text())
-        palabra = self.lineEdit.text()
-        filename = ""
-        for character in palabra[::-1]:
-            if(character != '\\'):
-                filename += character
-            else:
-                break
-        self.file.setName(filename[::-1])
-        self.file.abrirArchivo()
-        self.lb_currentFile.setText(self.file.getName())
-        self.enableButtons(True)
+    def btnAbrirEvent(self, MainWindow):
+        if(len(self.lineEdit.text()) != 0):
+            self.file = Archivo("temporalName")
+            self.file.setPath(self.lineEdit.text())
+            palabra = self.lineEdit.text()
+            filename = ""
+            for character in palabra[::-1]:
+                if(character != '\\'):
+                    filename += character
+                else:
+                    break
+            self.file.setName(filename[:3:-1])
+            self.file.abrirArchivo()
+            self.lb_currentFile.setText(self.file.getName())
+            self.enableButtons(True)
+        else:
+            dialog = QtWidgets.QMessageBox(MainWindow)
+            dialog.setText("No hay ningun directorio")
+            icono = QIcon(QPixmap("images/exclamationMark.png"))
+            dialog.setWindowIcon(icono)
+            dialog.setWindowTitle("Directorio no encontrado")
+            dialog.exec()
     def reloadFileChooser(self):
         list = listDirectories("./registros")
 
@@ -2515,7 +2703,8 @@ class Ui_MainWindow(object):
         if(len(list) != 0):
             changeTextFieldData(self.cB_fileOptions, self.lineEdit)
 
-    def lb_archivo4Event(self, event):
+    def lb_archivo4Event(self, event, MainWindow):
+
         for num in range(len(self.arrayWidgetButtons)):
             palette = self.arrayWidgetButtons[num].palette()
             if (num == 4):
@@ -2523,11 +2712,24 @@ class Ui_MainWindow(object):
             else:
                 palette.setColor(self.arrayWidgetButtons[num].backgroundRole(), QtGui.QColor(113, 118, 126))
             self.arrayWidgetButtons[num].setPalette(palette)
-        self.lb_currentFile.setText("Ningun Archivo Abierto")
+        self.stackedPanels.setCurrentIndex(self.stackedPanels.indexOf(self.defaultWidget))
+        #dialog de confirmacion
+        dialog = QtWidgets.QMessageBox(MainWindow)
+        dialog.setText("¿Desea cerrar el archivo?")
+        icono = QIcon(QPixmap("images/exclamationMark.png"))
+        dialog.setWindowIcon(icono)
+        dialog.setWindowTitle("Cerrar ventana")
+        cancelButton = QtWidgets.QPushButton("Cancelar")
+        acceptButton = QtWidgets.QPushButton("Cerrar")
+        acceptButton.clicked.connect(self.cerrarFile)
+        dialog.addButton(acceptButton, QtWidgets.QMessageBox.ButtonRole.YesRole)
+        dialog.addButton(cancelButton, QtWidgets.QMessageBox.ButtonRole.NoRole)
+        dialog.exec()
 
+    def cerrarFile(self):
+        self.lb_currentFile.setText("Ningun Archivo Abierto")
         self.file = None
         self.enableButtons(False)
-
     def enableButtons(self, bool):
         if(bool == False):
             self.lb_archivo3.setEnabled(False)
@@ -2535,7 +2737,6 @@ class Ui_MainWindow(object):
         else:
             self.lb_archivo3.setEnabled(True)
             self.lb_archivo4.setEnabled(True)
-
 
 if __name__ == "__main__":
     import sys
