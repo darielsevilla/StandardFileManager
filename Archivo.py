@@ -34,10 +34,16 @@ class Archivo:
             except Exception as e: 
                 return f"Error al abrir el archivo: {str(e)}"
         
-        def guardarArchivo(self, contenido):
+        def guardarArchivo(self, contenido = None):
             try:
+                print(self.Path)
+                if(contenido == None):
+                    open(self.Path, 'x')
                 with open(self.Path, 'w') as archivo:
-                    archivo.write(contenido)
+                    if(contenido != None):
+                        archivo.write(contenido)
                 return "Archivo guardado exitosamente."
             except Exception as e: 
-                return f"Error al guardar el archivo: {str(e)}"    
+                return f"Error al guardar el archivo: {str(e)}"
+
+
