@@ -3834,6 +3834,7 @@ class Ui_MainWindow(object):
         defaultImage = QPixmap("images/pythonLogoIcon.png")
         self.lb_defaultImage.setPixmap(defaultImage.scaled(self.lb_defaultImage.width(), self.lb_defaultImage.height()))
         MainWindow.setWindowIcon(QIcon(QPixmap("images/mainWindowIcon.png")))
+        self.lb_modifyFieldSize.setInputMask("00000")
         # correccion de errores de submenu
         self.arraySubmenu = []
 
@@ -4120,6 +4121,7 @@ class Ui_MainWindow(object):
 
     def btn_SaveFieldsEvent(self, MainWindow):
         self.file.writeFields()
+
         dialog = QtWidgets.QMessageBox(MainWindow)
         dialog.setText("Fields guardados exitosamente!")
         icono = QIcon(QPixmap("images/exclamationMark.png"))
@@ -4132,13 +4134,13 @@ class Ui_MainWindow(object):
 
     def btn_ResaveFieldEvent(self):
         field = Campo("une", "deux", 3)
-        for i in range(self.file.getCampos().getSize()):
-            if(self.file.getCampo(i).getFieldName() == self.cb_chooseFieldModify.currentText()):
-                field = self.file.getCampo(i)
-                field.setFieldName(self.ln_modifyFieldName.text())
-                field.setFieldSize(int(self.lb_modifyFieldSize.text()))
-                field.setDataType(self.cb_modifyDataType.currentText())
-                self.file.writeFields()
+        if(self.cb_chooseFieldModify.currentIndex() != -1):
+            field = self.file.getCampo(self.cb_chooseFieldModify.currentIndex())
+            field.setFieldName(self.ln_modifyFieldName.text())
+            field.setFieldSize(int(self.lb_modifyFieldSize.text()))
+            field.setDataType(self.cb_modifyDataType.currentText())
+            self.file.writeFields()
+
 
         self.ln_modifyFieldName.setText("")
         self.lb_modifyFieldSize.setText("")
@@ -4149,13 +4151,14 @@ class Ui_MainWindow(object):
         fillComboBoxField(self.cb_deleteField, self.file)
 
     def btn_DeleteFieldEvent(self):
-        self.file.deleteCampo(self.cb_deleteField.currentIndex())
-        fillTable(self.tbl_CrearCampos, self.file)
-        fillTable(self.tbl_listFields, self.file)
-        fillTable(self.tb_deleteField, self.file)
-        fillComboBoxField(self.cb_chooseFieldModify, self.file)
-        fillComboBoxField(self.cb_deleteField, self.file)
-        self.file.writeFields()
+        if(self.cb_deleteField.currentIndex() != -1):
+            self.file.deleteCampo(self.cb_deleteField.currentIndex())
+            fillTable(self.tbl_CrearCampos, self.file)
+            fillTable(self.tbl_listFields, self.file)
+            fillTable(self.tb_deleteField, self.file)
+            fillComboBoxField(self.cb_chooseFieldModify, self.file)
+            fillComboBoxField(self.cb_deleteField, self.file)
+            self.file.writeFields()
 
 
     def reloadFileChooser(self):
