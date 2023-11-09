@@ -1,3 +1,4 @@
+from Campo import *
 class Node:
     def __init__(self, data):
         self.previous = None
@@ -14,9 +15,19 @@ class LinkedList:
 
     def print(self):
         currentNode = self.first
+
         while(currentNode):
             print(currentNode.data)
             currentNode = currentNode.next
+
+    def get(self, index):
+        currentNode = self.first
+        if (index > 0 and index <= self.size):
+            for x in range(1, index):
+                currentNode = currentNode.next
+        else:
+            return None
+        return currentNode
 
     def insertAtEnd(self,node):
         currentNode = self.last
@@ -61,7 +72,7 @@ class LinkedList:
         
     def deleteLast(self):
         if self.last is None:
-            return
+            return None
         else:
             currentNode = self.last
             self.last = currentNode.previous
@@ -70,14 +81,24 @@ class LinkedList:
             self.size -= 1
 
     def deleteFirst(self):
-        if self.first is None:
-            return
+
+        if self.first == None:
+            return None
         else:
             currentNode = self.first
-            self.first = currentNode.next
-            self.first.previous = None
+
+            if currentNode.next != None:
+
+                self.first = currentNode.next
+                self.first.previous = None
+            else:
+                self.first = None
+                self.last = None
+
             currentNode = None
             self.size -= 1
+
+
     
     def deleteAtIndex(self,index):
         if(index > 0 and index <= self.size):
@@ -93,6 +114,7 @@ class LinkedList:
                 currentNode.next.previous = currentNode.previous
                 currentNode = None
                 self.size -= 1
+
         else:
             raise IndexError("Index out of bounds")
     

@@ -1,11 +1,19 @@
-from LinkedList import LinkedList
+from LinkedList import LinkedList, Node
+from Campo import *
 
 class Archivo: 
         def __init__(self, nombre):
             self.Name = nombre
             self.Path = None
             self.Campos = LinkedList()
+            self.registerEmpty = False
+            self.availableSpaces = LinkedList()
 
+        def isRegisterEmpty(self):
+            return self.registerEmpty
+
+        def setRegisterEmpty(self, boolean):
+            self.registerEmpty = boolean
         def getName(self):
            return self.Name
         
@@ -36,9 +44,9 @@ class Archivo:
         
         def guardarArchivo(self, contenido = None):
             try:
-                print(self.Path)
                 if(contenido == None):
-                    open(self.Path, 'a')
+                    file = open(self.Path, 'w')
+                    file.close()
                 with open(self.Path, 'a') as archivo:
                     if(contenido != None):
                         archivo.write(contenido)
@@ -46,5 +54,23 @@ class Archivo:
             except Exception as e: 
                 return f"Error al guardar el archivo: {str(e)}"
 
+        def insertCampo(self, campo):
+            self.Campos.insertAtEnd(Node(campo))
 
+        def getCampo(self, index):
+
+            index = index+1
+            node = self.Campos.get(index)
+
+            if node != None:
+                return node.data
+            else:
+                return None
+
+        def deleteCampo(self, index):
+            index = index + 1
+            self.Campos.deleteAtIndex(index)
+
+        def writeFields(self):
+            print("insert code here")
 
