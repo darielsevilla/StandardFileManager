@@ -3893,19 +3893,19 @@ class Ui_MainWindow(object):
 
         #tablas
         self.tbl_listFields.setColumnCount(3)
-        self.tbl_listFields.setColumnWidth(0, self.tbl_listFields.width() / 3)
-        self.tbl_listFields.setColumnWidth(1, self.tbl_listFields.width() / 3)
-        self.tbl_listFields.setColumnWidth(2, self.tbl_listFields.width() / 3)
+        self.tbl_listFields.setColumnWidth(0, int(self.tbl_listFields.width() / 3))
+        self.tbl_listFields.setColumnWidth(1, int(self.tbl_listFields.width() / 3))
+        self.tbl_listFields.setColumnWidth(2, int(self.tbl_listFields.width() / 3))
         self.tbl_listFields.setHorizontalHeaderLabels(["Nombre de campo", "Tipo de dato", "Cantidad de unidades"])
         self.tbl_CrearCampos.setColumnCount(3)
-        self.tbl_CrearCampos.setColumnWidth(0, self.tbl_CrearCampos.width() / 3)
-        self.tbl_CrearCampos.setColumnWidth(1, self.tbl_CrearCampos.width() / 3)
-        self.tbl_CrearCampos.setColumnWidth(2, self.tbl_CrearCampos.width() / 3)
+        self.tbl_CrearCampos.setColumnWidth(0, int(self.tbl_CrearCampos.width() / 3))
+        self.tbl_CrearCampos.setColumnWidth(1, int(self.tbl_CrearCampos.width() / 3))
+        self.tbl_CrearCampos.setColumnWidth(2, int(self.tbl_CrearCampos.width() / 3))
         self.tbl_CrearCampos.setHorizontalHeaderLabels(["Nombre de campo", "Tipo de dato", "Cantidad de unidades"])
         self.tb_deleteField.setColumnCount(3)
-        self.tb_deleteField.setColumnWidth(0, self.tb_deleteField.width() / 3)
-        self.tb_deleteField.setColumnWidth(1, self.tb_deleteField.width() / 3)
-        self.tb_deleteField.setColumnWidth(2, self.tb_deleteField.width() / 3)
+        self.tb_deleteField.setColumnWidth(0, int(self.tb_deleteField.width() / 3))
+        self.tb_deleteField.setColumnWidth(1, int(self.tb_deleteField.width() / 3))
+        self.tb_deleteField.setColumnWidth(2, int(self.tb_deleteField.width() / 3))
         self.tb_deleteField.setHorizontalHeaderLabels(["Nombre de campo", "Tipo de dato", "Cantidad de unidades"])
 
 
@@ -4199,6 +4199,7 @@ class Ui_MainWindow(object):
         self.enableButtons(False)
         self.enableFieldButtons()
         self.lb_archivo3.setEnabled(False)
+
     def modifyFieldIndexChangeEvent(self):
         campo = Campo("1", "2", 3)
 

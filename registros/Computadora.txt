@@ -1,0 +1,1 @@
+False|0|char$Modelo$10!int$Año de lanzamiento$4|-1

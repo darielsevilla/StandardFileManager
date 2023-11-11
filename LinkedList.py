@@ -6,6 +6,8 @@ class Node:
         self.next = None
     def __str__(self):
         return self.data
+    def getData(self):
+        return self.data
 
 class LinkedList:
     def __init__(self):
