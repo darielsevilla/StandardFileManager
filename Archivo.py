@@ -50,6 +50,7 @@ class Archivo:
                 with open(self.Path, 'a') as archivo:
                     if(contenido != None):
                         archivo.write(contenido)
+                        file.close()
                 return "Archivo guardado exitosamente."
             except Exception as e: 
                 return f"Error al guardar el archivo: {str(e)}"
@@ -71,6 +72,28 @@ class Archivo:
             index = index + 1
             self.Campos.deleteAtIndex(index)
 
-        def writeFields(self):
-            print("insert code here")
+        def writeFields(self,campo):
+            try:
+                nuevoContenido = []
+                nuevoContenido.append(f"Registro Vacío: {str(self.registerEmpty)}")
+                nuevoContenido.append(f"Contador de Registros: {str(len(self.Campos))}")
 
+                camposEncabezado = "|".join(campo.getFieldName() for campo in self.Campos)
+                nuevoContenido.append(f"Campos: {camposEncabezado}")
+
+                for registro in self.Registros:
+                    dato = registro.getDataForCampo(campo)   
+                    nuevoContenido.append(str(dato))
+
+                primerEspacio = self.availableSpaces.get(1)
+                nuevoContenido.append(f"Primer Espacio Disponible: {str(primerEspacio)}")
+
+                self.guardarArchivo('\n'.join(nuevoContenido))
+                
+                return "Información escrita en el archivo exitosamente."
+            except Exception as e:
+                return f"Error al escribir la información en el archivo: {str(e)}"
+            
+            def LoadFields(self):
+                print("F")
+                    
