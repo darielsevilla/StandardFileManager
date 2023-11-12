@@ -8,9 +8,9 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtGui import QPixmap, QIcon
-from UtilityFunctions import *
 from Archivo import Archivo
-from Campo import Campo
+from Campo import *
+from UtilityFunctions import *
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -2890,6 +2890,17 @@ class Ui_MainWindow(object):
         self.btn_saveFields = QtWidgets.QPushButton(parent=self.frameCrearCampos)
         self.btn_saveFields.setGeometry(QtCore.QRect(450, 380, 231, 24))
         self.btn_saveFields.setObjectName("btn_saveFields")
+        self.radio_isKey = QtWidgets.QRadioButton(parent=self.frameCrearCampos)
+        self.radio_isKey.setGeometry(QtCore.QRect(80, 380, 91, 22))
+        palette = QtGui.QPalette()
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.WindowText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.WindowText, brush)
+        self.radio_isKey.setPalette(palette)
+        self.radio_isKey.setObjectName("radio_isKey")
         self.stackedPanels.addWidget(self.page4)
         self.page5 = QtWidgets.QWidget()
         self.page5.setObjectName("page5")
@@ -3766,9 +3777,10 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
+        #self.stackedMenus.setCurrentIndex(3)
+        #self.stackedPanels.setCurrentIndex(3)
 
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        self.stackedPanels.setCurrentIndex(self.stackedPanels.indexOf(self.widgetDefault))
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -3814,6 +3826,7 @@ class Ui_MainWindow(object):
         self.lb_fieldSize.setText(_translate("MainWindow", "Cant. de unidades:"))
         self.lb_fieldDataType.setText(_translate("MainWindow", "Tipo de dato:"))
         self.btn_saveFields.setText(_translate("MainWindow", "Guardar"))
+        self.radio_isKey.setText(_translate("MainWindow", "Es una llave"))
         self.lb_listFields.setText(_translate("MainWindow", "Lista de campos en el archivo:"))
         self.lb_modifyField1.setText(_translate("MainWindow", "Elija campo a modificar:"))
         self.lb_modifyField2.setText(_translate("MainWindow", "Elija nuevo nombre de campo:"))
@@ -4091,6 +4104,9 @@ class Ui_MainWindow(object):
             fillTable(self.tbl_CrearCampos, self.file)
             fillTable(self.tbl_listFields, self.file)
             fillTable(self.tb_deleteField, self.file)
+            fillComboBoxField(self.cb_chooseFieldModify, self.file)
+            fillComboBoxField(self.cb_deleteField, self.file)
+
         else:
             dialog = QtWidgets.QMessageBox(MainWindow)
             dialog.setText("No hay ningun directorio")
@@ -4109,7 +4125,9 @@ class Ui_MainWindow(object):
             dialog.exec()
         else:
             field = Campo(self.cb_dataType.currentText(), self.tf_fieldName.text(), int(self.tf_cantidad.text()))
-
+            if(self.radio_isKey.isChecked()):
+                field.setKey(True)
+                self.radio_isKey.setChecked(False)
             self.file.insertCampo(field)
             fillTable(self.tbl_CrearCampos, self.file)
             fillTable(self.tbl_listFields, self.file)

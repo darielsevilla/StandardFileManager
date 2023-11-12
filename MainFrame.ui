@@ -2447,7 +2447,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="page">
       <property name="autoFillBackground">
@@ -4288,7 +4288,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="page1">
       <property name="autoFillBackground">
@@ -8930,6 +8930,46 @@
          </property>
          <property name="text">
           <string>Guardar</string>
+         </property>
+        </widget>
+        <widget class="QRadioButton" name="radio_isKey">
+         <property name="geometry">
+          <rect>
+           <x>80</x>
+           <y>380</y>
+           <width>91</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="palette">
+          <palette>
+           <active>
+            <colorrole role="WindowText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>255</red>
+               <green>255</green>
+               <blue>255</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </active>
+           <inactive>
+            <colorrole role="WindowText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>255</red>
+               <green>255</green>
+               <blue>255</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </inactive>
+           <disabled/>
+          </palette>
+         </property>
+         <property name="text">
+          <string>Es una llave</string>
          </property>
         </widget>
        </widget>

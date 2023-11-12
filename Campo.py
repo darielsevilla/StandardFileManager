@@ -3,7 +3,13 @@ class Campo:
         self.dataType = dataType
         self.fieldName = fieldName
         self.fieldSize = fieldSize
+        self.isRadio = False
 
+    def setKey(self, radio):
+        self.isRadio = radio
+
+    def isKey(self):
+        return self.isRadio
     def setDataType(self, dataType):
         self.dataType = dataType
 

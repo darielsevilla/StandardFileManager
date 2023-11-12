@@ -10,7 +10,9 @@ def listDirectories(path):
     return directoryArray
 
 def changeTextFieldData(comboBox, textfield):
-    textfield.setText(abspath(comboBox.currentText()))
+    string = abspath(comboBox.currentText())
+    string = string.replace(comboBox.currentText(), "registros\\"+ comboBox.currentText())
+    textfield.setText(string)
 
 #metodos para llenar campos
 def setUpDataTypes(comboBox):

@@ -92,10 +92,14 @@ class Archivo:
                 metadata += str(self.registerEmpty) + '|'+str(self.numeroDeRegistros)+'|'
                 for x in range(self.Campos.getSize()):
                    currentNode = self.Campos.get(x+1)
+                   palabraTrueFalse = 'False'
+          
+                   if(currentNode.getData().isKey()):
+                       palabraTrueFalse = 'True'
                    if(x+1 == self.Campos.getSize()):
-                       metadata += str(currentNode.getData().getDataType()) + '$' + str(currentNode.getData().getFieldName()) + '$' + str(currentNode.getData().getFieldSize())
+                       metadata += str(currentNode.getData().getDataType()) + '$' + str(currentNode.getData().getFieldName()) + '$' + str(currentNode.getData().getFieldSize()) + '$' + palabraTrueFalse
                    else:
-                       metadata += str(currentNode.getData().getDataType()) + '$' + str(currentNode.getData().getFieldName()) + '$' + str(currentNode.getData().getFieldSize()) + '!'
+                       metadata += str(currentNode.getData().getDataType()) + '$' + str(currentNode.getData().getFieldName()) + '$' + str(currentNode.getData().getFieldSize()) + '$' + palabraTrueFalse + '!'
                 metadata += '|'
                 if(self.availableSpaces.getSize() == 0):
                     metadata += "-1"
@@ -117,7 +121,13 @@ class Archivo:
                 campos = tokens[2].split('!')
                 for campo in campos:
                     atts = campo.split('$')
-                    self.Campos.insertAtEnd(Node(Campo(atts[0],atts[1],atts[2])))
+                    field = Campo(atts[0],atts[1],int(atts[2]))
+                    if (atts[3] == 'False'):
+                        field.setKey(False)
+                    else:
+                        field.setKey(True)
+                    self.Campos.insertAtEnd(Node(field))
+
                 
                 self.availableSpaces.insertAtFront(tokens[3])
                 #hace falta implementar el llenado del arraylist
