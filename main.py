@@ -3,7 +3,7 @@ from PyQt6.QtCore import *
 import types
 from MainFrame import Ui_MainWindow
 from VentanaPrincipal import VentanaPrincipal
-
+from PyQt6.QtGui import QPixmap, QIcon
 
 
 
