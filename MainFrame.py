@@ -11,6 +11,7 @@ from PyQt6.QtGui import QPixmap, QIcon
 from Archivo import Archivo
 from Campo import *
 from UtilityFunctions import *
+from Registro import *
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -3774,15 +3775,12 @@ class Ui_MainWindow(object):
         self.tf_createRegisterAtributos.setFrameShape(QtWidgets.QFrame.Shape.Box)
         self.tf_createRegisterAtributos.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.tf_createRegisterAtributos.setObjectName("tf_createRegisterAtributos")
-        self.lst_RegisterAtributes = QtWidgets.QListView(parent=self.tf_createRegisterAtributos)
-        self.lst_RegisterAtributes.setGeometry(QtCore.QRect(500, 90, 256, 301))
-        self.lst_RegisterAtributes.setObjectName("lst_RegisterAtributes")
         self.btn_addAtribute = QtWidgets.QToolButton(parent=self.tf_createRegisterAtributos)
-        self.btn_addAtribute.setGeometry(QtCore.QRect(170, 230, 151, 41))
+        self.btn_addAtribute.setGeometry(QtCore.QRect(100, 330, 151, 41))
         self.btn_addAtribute.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.btn_addAtribute.setObjectName("btn_addAtribute")
         self.label_2 = QtWidgets.QLabel(parent=self.tf_createRegisterAtributos)
-        self.label_2.setGeometry(QtCore.QRect(500, 70, 151, 16))
+        self.label_2.setGeometry(QtCore.QRect(40, 20, 151, 16))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
@@ -3793,23 +3791,14 @@ class Ui_MainWindow(object):
         self.label_2.setPalette(palette)
         self.label_2.setObjectName("label_2")
         self.btn_addRegister = QtWidgets.QToolButton(parent=self.tf_createRegisterAtributos)
-        self.btn_addRegister.setGeometry(QtCore.QRect(170, 290, 151, 41))
+        self.btn_addRegister.setGeometry(QtCore.QRect(560, 330, 151, 41))
         self.btn_addRegister.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.btn_addRegister.setObjectName("btn_addRegister")
-        self.tf_insertFieldValue = QtWidgets.QLineEdit(parent=self.tf_createRegisterAtributos)
-        self.tf_insertFieldValue.setGeometry(QtCore.QRect(130, 190, 221, 24))
-        self.tf_insertFieldValue.setObjectName("tf_insertFieldValue")
-        self.lb_insert = QtWidgets.QLabel(parent=self.tf_createRegisterAtributos)
-        self.lb_insert.setGeometry(QtCore.QRect(130, 160, 221, 16))
-        palette = QtGui.QPalette()
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
-        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
-        palette.setBrush(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.WindowText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
-        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
-        palette.setBrush(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.WindowText, brush)
-        self.lb_insert.setPalette(palette)
-        self.lb_insert.setObjectName("lb_insert")
+        self.tb_registerAttributes = QtWidgets.QTableWidget(parent=self.tf_createRegisterAtributos)
+        self.tb_registerAttributes.setGeometry(QtCore.QRect(90, 70, 641, 181))
+        self.tb_registerAttributes.setObjectName("tb_registerAttributes")
+        self.tb_registerAttributes.setColumnCount(0)
+        self.tb_registerAttributes.setRowCount(0)
         self.stackedPanels.addWidget(self.page8)
         self.page9 = QtWidgets.QWidget()
         self.page9.setObjectName("page9")
@@ -5139,8 +5128,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        #self.stackedMenus.setCurrentIndex(1)
-        #self.stackedPanels.setCurrentIndex(5)
+
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -5199,7 +5187,6 @@ class Ui_MainWindow(object):
         self.btn_addAtribute.setText(_translate("MainWindow", "Ingresar Atributo"))
         self.label_2.setText(_translate("MainWindow", "Atributos de nuevo registro:"))
         self.btn_addRegister.setText(_translate("MainWindow", "Ingresar Atributo"))
-        self.lb_insert.setText(_translate("MainWindow", "Ingrese valor de <field>:"))
         self.lb_chooseKeyType.setText(_translate("MainWindow", "Escoja una llave:"))
         self.lb_chooseKey_2.setText(_translate("MainWindow", "Ingrese llave:"))
         self.btn_searchModify.setText(_translate("MainWindow", "Buscar"))
@@ -5372,6 +5359,13 @@ class Ui_MainWindow(object):
         self.btn_deleteRegister.setIcon(icono)
         self.btn_deleteRegister.setIconSize(QtCore.QSize(50, 50))
 
+    def setupAddRegisterTable(self):
+        self.tb_registerAttributes.setRowCount(2)
+        self.tb_registerAttributes.setVerticalHeaderLabels(["Campo", "Valor"])
+        self.tb_registerAttributes.setRowHeight(0, int(self.tb_registerAttributes.height() / 2))
+        self.tb_registerAttributes.setRowHeight(1, int(self.tb_registerAttributes.height() / 2))
+        for i in range(self.file.getCampos().getSize()):
+            self.tb_registerAttributes.insertColumn(2)
 
     def buttonAction(self, event, i):
         for num in range(len(self.arrayWidgetButtons)):
@@ -5383,6 +5377,9 @@ class Ui_MainWindow(object):
             self.arrayWidgetButtons[num].setPalette(palette)
             self.stackedPanels.setCurrentIndex(i)
 
+        if(i == 7):
+            self.setupAddRegisterTable()
+
     def topBtnAction(self, i):
         self.stackedMenus.removeWidget(self.widgetUsed)
         self.stackedMenus.hide()
@@ -5390,6 +5387,7 @@ class Ui_MainWindow(object):
         self.stackedMenus.show()
         self.widgetUsed = self.arraySubmenu[i]
         self.stackedPanels.setCurrentIndex(self.stackedPanels.indexOf(self.defaultWidget))
+        self.enableFieldButtons()
 
     def btnFunctionality(self, MainWindow):
         self.btn_crearArchivo.clicked.connect(lambda: self.btn_crearArchivoEvent(MainWindow))
@@ -5647,12 +5645,6 @@ class Ui_MainWindow(object):
 
     def modifyFieldIndexChangeEvent(self):
         campo = Campo("1", "2", 3)
-
-        #for i in range(self.file.getCampos().getSize()):
-        #    field = self.file.getCampo(i)
-        #    if(field.getFieldName() == self.cb_chooseFieldModify.currentText()):
-        #        campo = field
-        #        break
         indice = self.cb_chooseFieldModify.currentIndex()
         if(indice != -1):
             campo = self.file.getCampo(indice)
@@ -5682,6 +5674,16 @@ class Ui_MainWindow(object):
             self.btCampo.setEnabled(False)
             self.btRegistro.setEnabled(False)
         else:
+            hasPrimaryKey = False
+            for i in range(self.file.getCampos().getSize()):
+                if(self.file.getCampo(i).isRadio == True):
+                    hasPrimaryKey = True
+
+            if(hasPrimaryKey == True):
+                self.radio_modifyIsKey.setEnabled(False)
+            else:
+                self.radio_modifyIsKey.setEnabled(True)
+
             self.btCampo.setEnabled(True)
             self.btRegistro.setEnabled(True)
             if self.file.getCampos().getSize() == 0:

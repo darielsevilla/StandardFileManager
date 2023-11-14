@@ -38,8 +38,6 @@ class Archivo:
             print(self.Path)
             file = open(self.Path, 'r')
             try:
-                    
-                #content = file.read()
                 metadata = file.readLine()
                 print(metadata)
             except Exception as e:
@@ -87,7 +85,6 @@ class Archivo:
             
         def writeFields(self):
             try:
-                #registerEmpty|numeroDeRegistros|dataType$fieldName$fieldSize!dataType2$fieldName2$fieldSize2!|primerElementoArrayList
                 metadata = ""
                 metadata += str(self.registerEmpty) + '|'+str(self.numeroDeRegistros)+'|'
                 for x in range(self.Campos.getSize()):
@@ -105,6 +102,7 @@ class Archivo:
                     metadata += "-1"
                 else:
                     metadata += str(self.availableSpaces.get(1))
+                metadata += "\n"
                 self.guardarArchivo(metadata)
                 return "Información escrita en el archivo exitosamente."
             except Exception as e:

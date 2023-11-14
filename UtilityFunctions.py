@@ -49,3 +49,5 @@ def fillComboBoxField(comboBox, file):
     comboBox.setCurrentIndex(-1)
     for i in range(file.getCampos().getSize()):
         comboBox.addItem(str(file.getCampo(i)))
+
+

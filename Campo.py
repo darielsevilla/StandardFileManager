@@ -4,7 +4,13 @@ class Campo:
         self.fieldName = fieldName
         self.fieldSize = fieldSize
         self.isRadio = False
+        self.isSecondaryKey = False
 
+    def setSecondaryKey(self, key):
+        self.isSecondaryKey = key
+
+    def getSecondaryKey(self, key):
+        return self.isSecondaryKey
     def setKey(self, radio):
         self.isRadio = radio
 
