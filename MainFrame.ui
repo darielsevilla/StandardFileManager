@@ -2447,7 +2447,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="page">
       <property name="autoFillBackground">
@@ -11627,27 +11627,11 @@
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <widget class="QToolButton" name="btn_addAtribute">
-         <property name="geometry">
-          <rect>
-           <x>100</x>
-           <y>330</y>
-           <width>151</width>
-           <height>41</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Ingresar Atributo</string>
-         </property>
-         <property name="toolButtonStyle">
-          <enum>Qt::ToolButtonTextBesideIcon</enum>
-         </property>
-        </widget>
         <widget class="QLabel" name="label_2">
          <property name="geometry">
           <rect>
-           <x>40</x>
-           <y>20</y>
+           <x>90</x>
+           <y>110</y>
            <width>151</width>
            <height>16</height>
           </rect>
@@ -11686,14 +11670,14 @@
         <widget class="QToolButton" name="btn_addRegister">
          <property name="geometry">
           <rect>
-           <x>560</x>
-           <y>330</y>
+           <x>340</x>
+           <y>300</y>
            <width>151</width>
            <height>41</height>
           </rect>
          </property>
          <property name="text">
-          <string>Ingresar Atributo</string>
+          <string>Agregar Registro</string>
          </property>
          <property name="toolButtonStyle">
           <enum>Qt::ToolButtonTextBesideIcon</enum>
@@ -11703,9 +11687,9 @@
          <property name="geometry">
           <rect>
            <x>90</x>
-           <y>70</y>
+           <y>140</y>
            <width>641</width>
-           <height>181</height>
+           <height>111</height>
           </rect>
          </property>
         </widget>

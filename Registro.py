@@ -5,7 +5,7 @@ class Registro():
         self.primaryKey = None
 
     def addAttribute(self, attribute):
-        self.atributos.insertAtEnd(attribute)
+        self.atributos.insertAtEnd(Node(attribute))
 
     def getAttribute(self, index):
         return self.atributos.get(index+1)

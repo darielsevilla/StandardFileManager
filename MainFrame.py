@@ -13,6 +13,7 @@ from Campo import *
 from UtilityFunctions import *
 from Registro import *
 
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -3775,12 +3776,8 @@ class Ui_MainWindow(object):
         self.tf_createRegisterAtributos.setFrameShape(QtWidgets.QFrame.Shape.Box)
         self.tf_createRegisterAtributos.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.tf_createRegisterAtributos.setObjectName("tf_createRegisterAtributos")
-        self.btn_addAtribute = QtWidgets.QToolButton(parent=self.tf_createRegisterAtributos)
-        self.btn_addAtribute.setGeometry(QtCore.QRect(100, 330, 151, 41))
-        self.btn_addAtribute.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
-        self.btn_addAtribute.setObjectName("btn_addAtribute")
         self.label_2 = QtWidgets.QLabel(parent=self.tf_createRegisterAtributos)
-        self.label_2.setGeometry(QtCore.QRect(40, 20, 151, 16))
+        self.label_2.setGeometry(QtCore.QRect(90, 110, 151, 16))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
@@ -3791,11 +3788,11 @@ class Ui_MainWindow(object):
         self.label_2.setPalette(palette)
         self.label_2.setObjectName("label_2")
         self.btn_addRegister = QtWidgets.QToolButton(parent=self.tf_createRegisterAtributos)
-        self.btn_addRegister.setGeometry(QtCore.QRect(560, 330, 151, 41))
+        self.btn_addRegister.setGeometry(QtCore.QRect(340, 300, 151, 41))
         self.btn_addRegister.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.btn_addRegister.setObjectName("btn_addRegister")
         self.tb_registerAttributes = QtWidgets.QTableWidget(parent=self.tf_createRegisterAtributos)
-        self.tb_registerAttributes.setGeometry(QtCore.QRect(90, 70, 641, 181))
+        self.tb_registerAttributes.setGeometry(QtCore.QRect(90, 140, 641, 111))
         self.tb_registerAttributes.setObjectName("tb_registerAttributes")
         self.tb_registerAttributes.setColumnCount(0)
         self.tb_registerAttributes.setRowCount(0)
@@ -5184,9 +5181,8 @@ class Ui_MainWindow(object):
         self.btn_resaveField.setText(_translate("MainWindow", "Guardar Nuevo Campo"))
         self.radio_modifyIsKey.setText(_translate("MainWindow", "Llave"))
         self.btn_deleteField.setText(_translate("MainWindow", "Borrar Campo"))
-        self.btn_addAtribute.setText(_translate("MainWindow", "Ingresar Atributo"))
         self.label_2.setText(_translate("MainWindow", "Atributos de nuevo registro:"))
-        self.btn_addRegister.setText(_translate("MainWindow", "Ingresar Atributo"))
+        self.btn_addRegister.setText(_translate("MainWindow", "Agregar Registro"))
         self.lb_chooseKeyType.setText(_translate("MainWindow", "Escoja una llave:"))
         self.lb_chooseKey_2.setText(_translate("MainWindow", "Ingrese llave:"))
         self.btn_searchModify.setText(_translate("MainWindow", "Buscar"))
@@ -5214,7 +5210,6 @@ class Ui_MainWindow(object):
         self.lb_modifyFieldSize.setInputMask("00000")
         # correccion de errores de submenu
         self.arraySubmenu = []
-
 
         self.stackedMenus.setCurrentIndex(0)
 
@@ -5268,7 +5263,7 @@ class Ui_MainWindow(object):
         self.cB_fileOptions.currentIndexChanged.connect(lambda: changeTextFieldData(self.cB_fileOptions, self.lineEdit))
         self.cb_chooseFieldModify.currentIndexChanged.connect(self.modifyFieldIndexChangeEvent)
 
-        #tablas
+        # tablas
         self.tbl_listFields.setColumnCount(3)
         self.tbl_listFields.setColumnWidth(0, int(self.tbl_listFields.width() / 3))
         self.tbl_listFields.setColumnWidth(1, int(self.tbl_listFields.width() / 3))
@@ -5284,8 +5279,6 @@ class Ui_MainWindow(object):
         self.tb_deleteField.setColumnWidth(1, int(self.tb_deleteField.width() / 3))
         self.tb_deleteField.setColumnWidth(2, int(self.tb_deleteField.width() / 3))
         self.tb_deleteField.setHorizontalHeaderLabels(["Nombre de campo", "Tipo de dato", "Cantidad de unidades"])
-
-
 
         # añadir los events
         # top button events
@@ -5360,12 +5353,34 @@ class Ui_MainWindow(object):
         self.btn_deleteRegister.setIconSize(QtCore.QSize(50, 50))
 
     def setupAddRegisterTable(self):
+
+        self.tb_registerAttributes.clear()
         self.tb_registerAttributes.setRowCount(2)
+        self.tb_registerAttributes.setColumnCount(self.file.getCampos().getSize())
         self.tb_registerAttributes.setVerticalHeaderLabels(["Campo", "Valor"])
-        self.tb_registerAttributes.setRowHeight(0, int(self.tb_registerAttributes.height() / 2))
-        self.tb_registerAttributes.setRowHeight(1, int(self.tb_registerAttributes.height() / 2))
+        self.tb_registerAttributes.horizontalHeader().setVisible(False)
+
+        self.tb_registerAttributes.setRowHeight(0, int(self.tb_registerAttributes.height() / 3))
+        self.tb_registerAttributes.setRowHeight(1, int(self.tb_registerAttributes.height() * (2 / 3)))
+
+        size = self.tb_registerAttributes.width() / self.file.getCampos().getSize()
+
         for i in range(self.file.getCampos().getSize()):
-            self.tb_registerAttributes.insertColumn(2)
+            field = self.file.getCampo(i)
+            item = QtWidgets.QTableWidgetItem(field.getFieldName())
+            item.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEditable)
+            item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter | QtCore.Qt.AlignmentFlag.AlignVCenter)
+            item.setBackground(QtGui.QColor(178, 178, 178))
+            
+            if field.isKey() == True:
+                item.setIcon(QIcon(QPixmap("images/keyIcon.png")))
+
+            self.tb_registerAttributes.setItem(0, i, item)
+
+            if (size >= 100):
+                self.tb_registerAttributes.setColumnWidth(i, size)
+            else:
+                self.tb_registerAttributes.setColumnWidth(i, 100)
 
     def buttonAction(self, event, i):
         for num in range(len(self.arrayWidgetButtons)):
@@ -5377,7 +5392,7 @@ class Ui_MainWindow(object):
             self.arrayWidgetButtons[num].setPalette(palette)
             self.stackedPanels.setCurrentIndex(i)
 
-        if(i == 7):
+        if (i == 7):
             self.setupAddRegisterTable()
 
     def topBtnAction(self, i):
@@ -5401,6 +5416,8 @@ class Ui_MainWindow(object):
         self.btn_deleteField.clicked.connect(self.btn_DeleteFieldEvent)
         self.btn_createToFields.clicked.connect(lambda: self.btn_CreateToFieldsEvent(MainWindow))
         self.btn_saveFields.clicked.connect(lambda: self.btn_SaveFieldsEvent(MainWindow))
+        self.btn_addRegister.clicked.connect(lambda: self.btn_addRegisterEvent(MainWindow))
+
     def btn_crearArchivoEvent(self, MainWindow):
         if self.txrEdit_fileName.text() != "":
             self.cerrarFile()
@@ -5448,7 +5465,7 @@ class Ui_MainWindow(object):
             dialog.exec()
 
     def btn_CreateToFieldsEvent(self, MainWindow):
-        if(self.txrEdit_fileName.text() != ""):
+        if (self.txrEdit_fileName.text() != ""):
             self.cerrarFile()
             self.file = Archivo(self.txrEdit_fileName.text())
             self.lb_currentFile.setText(self.file.getName())
@@ -5536,14 +5553,14 @@ class Ui_MainWindow(object):
     def btn_AddEvent(self, MainWindow):
         if self.tf_fieldName.text() == "" or self.tf_cantidad.text() == "":
             dialog = QtWidgets.QMessageBox(MainWindow)
-            dialog.setText("No hay una direccion en la que guardar el archivo!!")
+            dialog.setText("Llene todos los campos!!")
             icono = QIcon(QPixmap("images/exclamationMark.png"))
             dialog.setWindowIcon(icono)
             dialog.setWindowTitle("Debe llenar todas las cajas de texto")
             dialog.exec()
         else:
             field = Campo(self.cb_dataType.currentText(), self.tf_fieldName.text(), int(self.tf_cantidad.text()))
-            if(self.radio_isKey.isChecked()):
+            if (self.radio_isKey.isChecked()):
                 field.setKey(True)
                 self.radio_isKey.setChecked(False)
             self.file.insertCampo(field)
@@ -5554,6 +5571,7 @@ class Ui_MainWindow(object):
             fillComboBoxField(self.cb_deleteField, self.file)
             self.lb_campos3.setEnabled(True)
             self.lb_campos4.setEnabled(True)
+            self.btRegistro.setEnabled(False)
 
     def btn_SaveFieldsEvent(self, MainWindow):
         self.file.writeFields()
@@ -5567,10 +5585,11 @@ class Ui_MainWindow(object):
         dialog.setWindowIcon(icono)
         dialog.setWindowTitle("Campos Guardados")
         dialog.exec()
+        self.btRegistro.setEnabled(True)
 
     def btn_ResaveFieldEvent(self):
         field = Campo("une", "deux", 3)
-        if(self.cb_chooseFieldModify.currentIndex() != -1):
+        if (self.cb_chooseFieldModify.currentIndex() != -1):
             field = self.file.getCampo(self.cb_chooseFieldModify.currentIndex())
             field.setFieldName(self.ln_modifyFieldName.text())
             field.setFieldSize(int(self.lb_modifyFieldSize.text()))
@@ -5582,7 +5601,6 @@ class Ui_MainWindow(object):
                 field.setKey(False)
             self.file.writeFields()
 
-
         self.ln_modifyFieldName.setText("")
         self.lb_modifyFieldSize.setText("")
         fillTable(self.tbl_CrearCampos, self.file)
@@ -5591,9 +5609,10 @@ class Ui_MainWindow(object):
         fillComboBoxField(self.cb_chooseFieldModify, self.file)
         fillComboBoxField(self.cb_deleteField, self.file)
         self.enableFieldButtons()
+        self.btRegistro.setEnabled(True)
 
     def btn_DeleteFieldEvent(self):
-        if(self.cb_deleteField.currentIndex() != -1):
+        if (self.cb_deleteField.currentIndex() != -1):
             self.file.deleteCampo(self.cb_deleteField.currentIndex())
             fillTable(self.tbl_CrearCampos, self.file)
             fillTable(self.tbl_listFields, self.file)
@@ -5602,7 +5621,7 @@ class Ui_MainWindow(object):
             fillComboBoxField(self.cb_deleteField, self.file)
             self.file.writeFields()
             self.enableFieldButtons()
-
+            self.btRegistro.setEnabled(True)
 
     def reloadFileChooser(self):
         list = listDirectories("./registros")
@@ -5635,7 +5654,6 @@ class Ui_MainWindow(object):
         dialog.addButton(cancelButton, QtWidgets.QMessageBox.ButtonRole.NoRole)
         dialog.exec()
 
-
     def cerrarFile(self):
         self.lb_currentFile.setText("Ningun Archivo Abierto")
         self.file = None
@@ -5646,20 +5664,84 @@ class Ui_MainWindow(object):
     def modifyFieldIndexChangeEvent(self):
         campo = Campo("1", "2", 3)
         indice = self.cb_chooseFieldModify.currentIndex()
-        if(indice != -1):
+        if (indice != -1):
             campo = self.file.getCampo(indice)
             self.ln_modifyFieldName.setText(campo.getFieldName())
             self.lb_modifyFieldSize.setText(str(campo.getFieldSize()))
-            if(campo.isKey()):
+            if (campo.isKey()):
                 self.radio_modifyIsKey.setChecked(True)
             else:
                 self.radio_isKey.setChecked(False)
 
             for i in range(3):
                 self.cb_modifyDataType.setCurrentIndex(i)
-                if(self.cb_modifyDataType.currentText() == campo.getDataType()):
+                if (self.cb_modifyDataType.currentText() == campo.getDataType()):
                     break
 
+    def btn_addRegisterEvent(self, MainWindow):
+        fieldValues = []
+        #validacion de diferentes tipos de errores
+        errorSize = 0
+        errorType = 0
+        errorNoItem = 0
+        longitud = self.file.getCampos().getSize()
+        for i in range(longitud):
+            item = self.tb_registerAttributes.item(1, i)
+            valor = None
+            if(item != None):
+                valor = item.text()
+
+            dataType = self.file.getCampo(i).getDataType()
+            maxSize = self.file.getCampo(i).getFieldSize()
+            if(valor == None):
+                errorNoItem += 1
+            else:
+                if (dataType == "float"):
+                    tempoValor = valor.replace(".", "")
+                    if len(tempoValor) == len(valor) or len(tempoValor) == (len(valor) - 1):
+                        if (tempoValor.isumeric() == False):
+                            errorType += 1
+                        else:
+                            fieldValues.append(float(valor))
+                    else:
+                        errorType += 1
+                elif (dataType == "int"):
+                    if valor.isnumeric() is False:
+                        errorType += 1
+                    else:
+                        fieldValues.append(int(valor))
+                elif (dataType == "char"):
+
+                    fieldValues.append(valor)
+                if(len(valor) > maxSize):
+                    errorSize += 1
+
+
+        #creacion de mensaje de dialog
+
+        widgetText = ""
+        if(errorNoItem > 0):
+            widgetText += "-Existen casillas vacias\n"
+        if(errorSize > 0):
+            widgetText += "-Existen valores que se exceden al maximo del campo\n"
+        if(errorType > 0):
+            widgetText += "-Existen valores cuyo tipo de dato es incorrecto\n"
+
+        if(len(widgetText) == 0):
+            registro = Registro()
+
+            for i in range(len(fieldValues)):
+                registro.addAttribute(fieldValues[i])
+                if(self.file.getCampo(i).isKey() == True):
+                    registro.setKey(fieldValues[i])
+            widgetText = "Registro creado Exitosamente!!"
+
+        #fin de codigo
+        dialog = QtWidgets.QMessageBox(MainWindow)
+        dialog.setText(widgetText)
+        dialog.setWindowTitle("Status de Registro")
+        dialog.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
+        dialog.exec()
 
     def enableButtons(self, bool):
         if (bool == False):
@@ -5676,13 +5758,15 @@ class Ui_MainWindow(object):
         else:
             hasPrimaryKey = False
             for i in range(self.file.getCampos().getSize()):
-                if(self.file.getCampo(i).isRadio == True):
+                if (self.file.getCampo(i).isRadio == True):
                     hasPrimaryKey = True
 
-            if(hasPrimaryKey == True):
+            if (hasPrimaryKey == True):
                 self.radio_modifyIsKey.setEnabled(False)
+                self.radio_isKey.setEnabled(False)
             else:
                 self.radio_modifyIsKey.setEnabled(True)
+                self.radio_isKey.setEnabled(True)
 
             self.btCampo.setEnabled(True)
             self.btRegistro.setEnabled(True)
@@ -5695,7 +5779,7 @@ class Ui_MainWindow(object):
 
             hasKey = False
             for i in range(self.file.getCampos().getSize()):
-                if(self.file.getCampo(i).isKey() == True):
+                if (self.file.getCampo(i).isKey() == True):
                     hasKey = True
                     break
             if hasKey is True:
