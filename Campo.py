@@ -6,11 +6,12 @@ class Campo:
         self.isRadio = False
         self.isSecondaryKey = False
 
-    def setSecondaryKey(self, key):
-        self.isSecondaryKey = key
+    #def setSecondaryKey(self, key):
+     #   self.isSecondaryKey = key
 
-    def getSecondaryKey(self, key):
+    def getSecondaryKey(self):
         return self.isSecondaryKey
+    
     def setKey(self, radio):
         self.isRadio = radio
 

@@ -4,7 +4,7 @@ import types
 from MainFrame import Ui_MainWindow
 from VentanaPrincipal import VentanaPrincipal
 from PyQt6.QtGui import QPixmap, QIcon
-
+from Campo import *
 
 
 def main():
@@ -26,5 +26,3 @@ def main2():
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
    main()
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/

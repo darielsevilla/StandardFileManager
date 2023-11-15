@@ -10,6 +10,7 @@ class Archivo:
             self.registerEmpty = False
             self.availableSpaces = LinkedList()
             self.numeroDeRegistros = 0
+            self.charsMetadata = 0
 
         def isRegisterEmpty(self):
             return self.registerEmpty
@@ -84,26 +85,35 @@ class Archivo:
             self.Campos.deleteAtIndex(index)
             
         def writeFields(self):
+        #registerEmpty|numeroDeRegistros|dataType$fieldName$fieldSize$isPKey$isSKey!dataType2$fieldName2$fieldSize2$isPKey$isSKey!|primerElementoArrayList|\n
             try:
                 metadata = ""
-                metadata += str(self.registerEmpty) + '|'+str(self.numeroDeRegistros)+'|'
+                metadata += str(int(self.registerEmpty)) + '|'
+                #+str(self.numeroDeRegistros)+'|'
+                if(self.numeroDeRegistros == 0):
+                    metadata += "#####"
+                else:
+                    reg = str(self.numeroDeRegistros)
+                    metadata += str.rjust(reg,5,'#')
+                metadata += "|"
+
                 for x in range(self.Campos.getSize()):
                    currentNode = self.Campos.get(x+1)
-                   palabraTrueFalse = 'False'
-          
-                   if(currentNode.getData().isKey()):
-                       palabraTrueFalse = 'True'
                    if(x+1 == self.Campos.getSize()):
-                       metadata += str(currentNode.getData().getDataType()) + '$' + str(currentNode.getData().getFieldName()) + '$' + str(currentNode.getData().getFieldSize()) + '$' + palabraTrueFalse
+                       metadata += str(currentNode.getData().getDataType()) + '$' + str(currentNode.getData().getFieldName()) + '$' + str(currentNode.getData().getFieldSize()) + '$' + str(int(currentNode.getData().isKey())) + '$' + str(int(currentNode.getData().getSecondaryKey()))
                    else:
-                       metadata += str(currentNode.getData().getDataType()) + '$' + str(currentNode.getData().getFieldName()) + '$' + str(currentNode.getData().getFieldSize()) + '$' + palabraTrueFalse + '!'
+                       metadata += str(currentNode.getData().getDataType()) + '$' + str(currentNode.getData().getFieldName()) + '$' + str(currentNode.getData().getFieldSize()) + '$' + str(int(currentNode.getData().isKey())) + '$' + str(int(currentNode.getData().getSecondaryKey())) + '!'
                 metadata += '|'
                 if(self.availableSpaces.getSize() == 0):
-                    metadata += "-1"
+                    metadata += "#####"
                 else:
-                    metadata += str(self.availableSpaces.get(1))
-                metadata += "\n"
+                    pos = str(self.availableSpaces.get(1))
+                    metadata += str.rjust(pos,5,'#')
+                metadata += "|" + "\n"
+                
                 self.guardarArchivo(metadata)
+                
+                self.charsMetadata = (len(metadata))
                 return "Información escrita en el archivo exitosamente."
             except Exception as e:
                 return f"Error al escribir la información en el archivo: {str(e)}"
@@ -112,22 +122,29 @@ class Archivo:
             try:
                 with open(self.Path, 'r') as file:
                     metadata = str(file.readline())
+                self.charsMetadata = (len(metadata))
                 tokens = metadata.split('|')
                 self.isRegisterEmpty = tokens[0]
-                self.numeroDeRegistros = int(tokens[1])
+
+                if(tokens[1] == "#####"):
+                    self.numeroDeRegistros = 0
+                else:
+                    regis = tokens[1].replace("#","")
+                    self.numeroDeRegistros = int(tokens[1])
 
                 campos = tokens[2].split('!')
                 for campo in campos:
                     atts = campo.split('$')
                     field = Campo(atts[0],atts[1],int(atts[2]))
-                    if (atts[3] == 'False'):
-                        field.setKey(False)
-                    else:
-                        field.setKey(True)
+                    field.setKey(atts[3])
                     self.Campos.insertAtEnd(Node(field))
 
-                
-                self.availableSpaces.insertAtFront(tokens[3])
+                if(tokens[3] == "#####"):
+                    self.availableSpaces.insertAtEnd(Node(-1))
+                else:
+                    spaces = tokens[3].replace("#","")
+                    self.availableSpaces.insertAtFront(Node(int(spaces)))
+                print(self.availableSpaces.get(1))
                 #hace falta implementar el llenado del arraylist
                 
             except FileNotFoundError:
