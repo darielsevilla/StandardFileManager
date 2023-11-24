@@ -12,7 +12,7 @@ from Archivo import Archivo
 from Campo import *
 from UtilityFunctions import *
 from Registro import *
-
+import xlsxwriter
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -5304,7 +5304,10 @@ class Ui_MainWindow(object):
         self.lb_registros3.mousePressEvent = lambda event: self.buttonAction(event, 9)
         self.lb_registros4.mousePressEvent = lambda event: self.buttonAction(event, 10)
         self.lb_registros5.mousePressEvent = lambda event: self.buttonAction(event, 11)
-
+        
+        self.lb_estandar1.mousePressEvent = lambda event: self.ExportarExcel(event, 0)
+        self.lb_estandar2.mousePressEvent = lambda event: self.ExportarXML(event, 1)
+        
         self.stackedMenus.setCurrentIndex(0)
 
         # events del resto de los botones
@@ -5742,7 +5745,39 @@ class Ui_MainWindow(object):
         dialog.setWindowTitle("Status de Registro")
         dialog.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
         dialog.exec()
-
+    def ExportarExcel(self, event, i):    
+        dialogo = QtWidgets.QMessageBox(MainWindow)
+        if (self.file != None):
+            excelFile = xlsxwriter.Workbook(self.file.getName() + ".xlsx")
+            hoja = excelFile.add_worksheet()
+            array = []
+            array = self.file.LoadFields()
+            hoja.write(0,0, "Nombre")
+            hoja.write(0,1, "Tipo")
+            hoja.write(0,2, "Size")
+            hoja.write(0,3, "Es llave")
+            cont_i = 1
+            cont_j = 1
+            for i in range(len(array)):
+                for j in range (len(array)):
+                    hoja.write(cont_i, cont_j, array[i])
+            excelFile.close()
+            dialogo.setWindowTitle("Status de Estandarizacion")
+            dialogo.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
+            dialogo.setText("Archivo exportado a Excel correctamente")
+            dialogo.exec()
+        else: 
+            dialogo.setWindowTitle("Status de Estandarizacion")
+            dialogo.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
+            dialogo.setText("Se necesita abrir un archivo primero")
+            dialogo.exec()
+            
+            
+    def ExportarXML(self, event, i):
+        if (self.file != None):
+            print("Pasó")
+            
+                
     def enableButtons(self, bool):
         if (bool == False):
             self.lb_archivo3.setEnabled(False)
