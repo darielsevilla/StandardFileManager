@@ -1,5 +1,6 @@
 from LinkedList import LinkedList, Node
 from Campo import *
+from BinarySearchTree import *
 import os
 
 class Archivo: 
@@ -11,6 +12,7 @@ class Archivo:
             self.availableSpaces = LinkedList()
             self.numeroDeRegistros = 0
             self.charsMetadata = 0
+            self.btree = BinarySearchTree(6)
 
         def isRegisterEmpty(self):
             return self.registerEmpty
@@ -136,7 +138,10 @@ class Archivo:
                 for campo in campos:
                     atts = campo.split('$')
                     field = Campo(atts[0],atts[1],int(atts[2]))
-                    field.setKey(atts[3])
+                    if(atts[3] == '0'):
+                        field.setKey(False)
+                    else:
+                        field.setKey(True)
                     self.Campos.insertAtEnd(Node(field))
 
                 if(tokens[3] == "#####"):
@@ -146,9 +151,16 @@ class Archivo:
                     self.availableSpaces.insertAtFront(Node(int(spaces)))
                 print(self.availableSpaces.get(1))
                 #hace falta implementar el llenado del arraylist
-                
+
             except FileNotFoundError:
                 return "El archivo no se encontró"
             except Exception as e:
-                return f"Error al cargar los campos del archivo: {str(e)}"  
+                return f"Error al cargar los campos del archivo: {str(e)}"
+
+        def writeRegister(self, register):
+
+
+            self.btree.insert(register.getKey())
+            self.btree.printBTree()
+
                     

@@ -2447,7 +2447,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="page">
       <property name="autoFillBackground">
@@ -4288,7 +4288,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>10</number>
+      <number>7</number>
      </property>
      <widget class="QWidget" name="page1">
       <property name="autoFillBackground">
@@ -11627,37 +11627,11 @@
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <widget class="QListView" name="lst_RegisterAtributes">
-         <property name="geometry">
-          <rect>
-           <x>500</x>
-           <y>90</y>
-           <width>256</width>
-           <height>301</height>
-          </rect>
-         </property>
-        </widget>
-        <widget class="QToolButton" name="btn_addAtribute">
-         <property name="geometry">
-          <rect>
-           <x>170</x>
-           <y>230</y>
-           <width>151</width>
-           <height>41</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Ingresar Atributo</string>
-         </property>
-         <property name="toolButtonStyle">
-          <enum>Qt::ToolButtonTextBesideIcon</enum>
-         </property>
-        </widget>
         <widget class="QLabel" name="label_2">
          <property name="geometry">
           <rect>
-           <x>500</x>
-           <y>70</y>
+           <x>90</x>
+           <y>110</y>
            <width>151</width>
            <height>16</height>
           </rect>
@@ -11696,67 +11670,27 @@
         <widget class="QToolButton" name="btn_addRegister">
          <property name="geometry">
           <rect>
-           <x>170</x>
-           <y>290</y>
+           <x>340</x>
+           <y>300</y>
            <width>151</width>
            <height>41</height>
           </rect>
          </property>
          <property name="text">
-          <string>Ingresar Atributo</string>
+          <string>Agregar Registro</string>
          </property>
          <property name="toolButtonStyle">
           <enum>Qt::ToolButtonTextBesideIcon</enum>
          </property>
         </widget>
-        <widget class="QLineEdit" name="tf_insertFieldValue">
+        <widget class="QTableWidget" name="tb_registerAttributes">
          <property name="geometry">
           <rect>
-           <x>130</x>
-           <y>190</y>
-           <width>221</width>
-           <height>24</height>
+           <x>90</x>
+           <y>140</y>
+           <width>641</width>
+           <height>111</height>
           </rect>
-         </property>
-        </widget>
-        <widget class="QLabel" name="lb_insert">
-         <property name="geometry">
-          <rect>
-           <x>130</x>
-           <y>160</y>
-           <width>221</width>
-           <height>16</height>
-          </rect>
-         </property>
-         <property name="palette">
-          <palette>
-           <active>
-            <colorrole role="WindowText">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>255</red>
-               <green>255</green>
-               <blue>255</blue>
-              </color>
-             </brush>
-            </colorrole>
-           </active>
-           <inactive>
-            <colorrole role="WindowText">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>255</red>
-               <green>255</green>
-               <blue>255</blue>
-              </color>
-             </brush>
-            </colorrole>
-           </inactive>
-           <disabled/>
-          </palette>
-         </property>
-         <property name="text">
-          <string>Ingrese valor de &lt;field&gt;:</string>
          </property>
         </widget>
        </widget>

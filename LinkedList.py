@@ -31,7 +31,29 @@ class LinkedList:
             return None
         return currentNode
 
+    def getData(self, index):
+        currentNode = self.first
+        if (index > 0 and index <= self.size):
+            for x in range(1, index):
+                currentNode = currentNode.next
+        else:
+            return None
+        return currentNode.data
+
     def insertAtEnd(self,node):
+        currentNode = self.last
+        if currentNode is None:
+            self.last = node
+            self.first = node
+            self.size += 1
+        else:
+            node.previous = self.last
+            self.last.next = node
+            self.last = node
+            self.size += 1
+
+    def insertItemAtEnd(self,item):
+        node = Node(item)
         currentNode = self.last
         if currentNode is None:
             self.last = node
@@ -51,9 +73,22 @@ class LinkedList:
             self.size += 1
         else:
             node.next = currentNode
+            currentNode.previous = node
             self.first = node
             self.size += 1
 
+    def insertItemAtFront(self,item):
+        node = Node(item)
+        currentNode = self.first
+        if currentNode is None:
+            self.last = node
+            self.first = node
+            self.size += 1
+        else:
+            node.next = currentNode
+            currentNode.previous = node
+            self.first = node
+            self.size += 1
     def insertAtIndex(self,node,index):
         if (index > 0 and index <= self.size):
             if(index == 1):
@@ -68,10 +103,34 @@ class LinkedList:
                 node.previous = currentNode.previous
                 currentNode.previous.next = node
                 currentNode.previous = node
-            self.size += 1
+                self.size += 1
         else:
             raise IndexError("Index out of bounds")
-        
+
+    def insertItemAtIndex(self,item,index):
+        node = Node(item)
+        if (index > 0 and index <= (self.size+1)):
+            if(index == 1):
+                self.insertAtFront(node)
+            elif(index == self.size+1):
+                self.insertItemAtEnd(item)
+            else:
+
+                currentNode = self.first
+                for x in range(1, index):
+                    currentNode = currentNode.next
+
+                node.next = currentNode
+
+                node.previous = currentNode.previous
+
+                currentNode.previous.next = node
+                currentNode.previous = node
+
+                self.size += 1
+
+        else:
+            raise IndexError("Index out of bounds")
     def deleteLast(self):
         if self.last is None:
             return None

@@ -13,5 +13,5 @@ class Registro():
     def setKey(self, key):
         self.primaryKey = key
 
-    def getKey(self, key):
+    def getKey(self):
         return self.primaryKey
