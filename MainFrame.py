@@ -5745,22 +5745,32 @@ class Ui_MainWindow(object):
         dialog.setWindowTitle("Status de Registro")
         dialog.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
         dialog.exec()
+        
     def ExportarExcel(self, event, i):    
         dialogo = QtWidgets.QMessageBox(MainWindow)
         if (self.file != None):
+            
             excelFile = xlsxwriter.Workbook(self.file.getName() + ".xlsx")
             hoja = excelFile.add_worksheet()
-            array = []
-            array = self.file.LoadFields()
             hoja.write(0,0, "Nombre")
             hoja.write(0,1, "Tipo")
             hoja.write(0,2, "Size")
             hoja.write(0,3, "Es llave")
-            cont_i = 1
-            cont_j = 1
-            for i in range(len(array)):
-                for j in range (len(array)):
-                    hoja.write(cont_i, cont_j, array[i])
+            
+            print(self.file.getCampos().getSize())
+            contFilas = 1
+            contColumnas = 0
+            for i in range(self.file.getCampos().getSize()):
+                    contColumnas = 0
+                    hoja.write(contFilas, contColumnas, self.file.getCampo(i).getFieldName())
+                    contColumnas = contColumnas + 1
+                    hoja.write(contFilas, contColumnas, self.file.getCampo(i).getDataType())
+                    contColumnas = contColumnas + 1
+                    hoja.write(contFilas, contColumnas, self.file.getCampo(i).getFieldSize())
+                    contColumnas = contColumnas + 1
+                    hoja.write(contFilas, contColumnas, self.file.getCampo(i).isKey()) 
+                    contColumnas = contColumnas + 1
+                    contFilas = contFilas + 1
             excelFile.close()
             dialogo.setWindowTitle("Status de Estandarizacion")
             dialogo.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
@@ -5774,9 +5784,18 @@ class Ui_MainWindow(object):
             
             
     def ExportarXML(self, event, i):
+        dialogo = QtWidgets.QMessageBox(MainWindow)
         if (self.file != None):
             print("Pasó")
-            
+            dialogo.setWindowTitle("Status de Estandarizacion")
+            dialogo.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
+            dialogo.setText("Archivo XML a Schema exportado correctamente")
+            dialogo.exec()
+        else: 
+            dialogo.setWindowTitle("Status de Estandarizacion")
+            dialogo.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
+            dialogo.setText("Se necesita abrir un archivo primero")
+            dialogo.exec()    
                 
     def enableButtons(self, bool):
         if (bool == False):
