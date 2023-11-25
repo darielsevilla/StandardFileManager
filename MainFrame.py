@@ -5381,9 +5381,9 @@ class Ui_MainWindow(object):
             self.tb_registerAttributes.setItem(0, i, item)
 
             if (size >= 100):
-                self.tb_registerAttributes.setColumnWidth(i, size)
+                self.tb_registerAttributes.setColumnWidth(int(i), int(size))
             else:
-                self.tb_registerAttributes.setColumnWidth(i, 100)
+                self.tb_registerAttributes.setColumnWidth(int(i), int(100))
 
     def buttonAction(self, event, i):
         for num in range(len(self.arrayWidgetButtons)):
@@ -5718,10 +5718,9 @@ class Ui_MainWindow(object):
                     fieldValues.append(valor)
                 if(len(valor) > maxSize):
                     errorSize += 1
-
+        
 
         #creacion de mensaje de dialog
-
         widgetText = ""
         if(errorNoItem > 0):
             widgetText += "-Existen casillas vacias\n"
@@ -5735,8 +5734,13 @@ class Ui_MainWindow(object):
 
             for i in range(len(fieldValues)):
                 registro.addAttribute(fieldValues[i])
+                registro.maxlengths.append(self.file.getCampo(i).getFieldSize())
                 if(self.file.getCampo(i).isKey() == True):
                     registro.setKey(fieldValues[i])
+                if(self.file.getCampo(i).getSecondaryKey() == True):
+                    registro.setSecKey(fieldValues[i])
+            self.file.writeRegister(registro)
+            self.file.updateMetaData()
             widgetText = "Registro creado Exitosamente!!"
 
         #fin de codigo
@@ -5841,7 +5845,7 @@ class Ui_MainWindow(object):
             else:
                 self.lb_registros1.setEnabled(False)
 
-            if self.file.registerEmpty == True:
+            if self.file.registerWritten == True:
                 self.lb_registros2.setEnabled(True)
                 self.lb_registros3.setEnabled(True)
                 self.lb_registros4.setEnabled(True)
