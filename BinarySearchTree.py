@@ -49,6 +49,7 @@ class BinarySearchTree():
                 node.keys.insertItemAtIndex(key, position)
                 node.rrnList.insertItemAtIndex(rrn, position)
                 self.reorderTree(node, index)
+                return True
             else:
                 return False
 
@@ -63,10 +64,10 @@ class BinarySearchTree():
                     break
             restartNode = self.nodes.getData(cont)
 
-            self.insert(key, rrn, restartNode, cont)
+            return self.insert(key, rrn, restartNode, cont)
 
 
-        return True
+
 
     def reorderTree(self, leafNode, cont):
         print("cont" + str(cont))
@@ -219,49 +220,63 @@ class BinarySearchTree():
                     return self.reorderTree(parentTreeNode, leafNode.parent)
 
     def rrnSearch(self, key, node = None):
-        #retorna -1 si no hay nodos en arbol
-        if(self.nodes.getSize() == 0):
-            return -1
-
-        if(node == None):
+        if (self.root != None and node == None):
             node = self.root
+            index = self.rootPos
+        if (self.nodes.getSize() == 0):
+            # raiz no existe
+            return -1
+        elif (node.sons.getSize() == 0):
+            # entra si el nodo actual no tiene hijos, saca ultima posicion
+            position = node.keys.getSize() + 1
+            for i in range(1, node.keys.getSize() + 1):
+                if(node.keys.getData(i) == key):
+                    return node.rrnList.getData(i)
+            return -1
+        else:
+            # saca ultimo nodo de los hijos
+            cont = node.sons.getData(node.sons.getSize())
 
-        #guardar llaves e hijos en cada variable
-        llaves = node.keys
-        hijos = node.sons
-        rrnList = node.rrnList
+            # recorre nodo buscando un valor mayor al de el, con un default del ultimo elemento
+            for i in range(1, node.keys.getSize() + 1):
+                if (node.keys.getData(i) > key):
+                    cont = node.sons.getData(i)
+                    break
+                elif(node.keys.getData(i) == key):
+                    return node.rrnList.getData(i)
+            restartNode = self.nodes.getData(cont)
 
-        for i in range(1,llaves.getSize()+1):
-            if(key == llaves.getData(i)):
-                return rrnList.getData(i)
-            elif(key < llaves.getData(i)):
-                if(hijos.getSize() == 0):
-                    return -1
-                else:
-                    return self.rrnSearch(key, self.nodes.getData(hijos.getData(i)))
+            return self.rrnSearch(key, restartNode)
+
 
     def nodeSearch(self, key, node = None, pos = None):
-        # retorna -1 si no hay nodos en arbol
-        if (self.nodes.getSize() == 0):
-            return -1
-
-        if (node == None):
+        if (self.root != None and node == None):
             node = self.root
-            pos = 1
+            index = self.rootPos
+        if (self.nodes.getSize() == 0):
+            # raiz no existe
+            return -1
+        elif (node.sons.getSize() == 0):
+            # entra si el nodo actual no tiene hijos, saca ultima posicion
+            position = node.keys.getSize() + 1
+            for i in range(1, node.keys.getSize() + 1):
+                if (node.keys.getData(i) == key):
+                    return node
+            return -1
+        else:
+            # saca ultimo nodo de los hijos
+            cont = node.sons.getData(node.sons.getSize())
 
-        # guardar llaves e hijos en cada variable
-        llaves = node.keys
-        hijos = node.sons
-        rrnList = node.rrnList
+            # recorre nodo buscando un valor mayor al de el, con un default del ultimo elemento
+            for i in range(1, node.keys.getSize() + 1):
+                if (node.keys.getData(i) > key):
+                    cont = node.sons.getData(i)
+                    break
+                elif(node.keys.getData(i) == key):
+                    return node
+            restartNode = self.nodes.getData(cont)
 
-        for i in range(1, llaves.getSize() + 1):
-            if (key == llaves.getData(i)):
-                return pos
-            elif (key < llaves.getData(i)):
-                if (hijos.getSize() == 0):
-                    return -1
-                else:
-                    return self.rrnSearch(key,self.nodes.getData(hijos.getData(i)), i)
+            return self.nodeSearch(key, restartNode, cont)
 
     def deleteKey(self, key, node = None, nodePos = None):
         minimum = int((self.grade-1)/2)

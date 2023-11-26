@@ -171,7 +171,7 @@ class LinkedList:
                 self.deleteLast()
             else:
                 currentNode = self.first
-                for x in range(1, index+1):
+                for x in range(1, index):
                     currentNode = currentNode.next
                 currentNode.previous.next = currentNode.next
                 currentNode.next.previous = currentNode.previous
