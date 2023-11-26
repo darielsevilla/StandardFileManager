@@ -1,5 +1,9 @@
+import pickle
+import traceback
+
 from LinkedList import LinkedList, Node
 from Campo import *
+from pickle import *
 from BinarySearchTree import *
 import os
 import sys
@@ -12,8 +16,32 @@ class Archivo:
             self.registerWritten = False
             self.availist = list()
             self.numeroDeRegistros = 0
-            self.btree = BinarySearchTree(6)
+            self.btree = None
 
+        def writeBTree(self):
+            treePath = self.Path[:len(self.Path) - 3] + "dja"
+            with open(treePath, 'wb') as file:
+                pickle.dump(self.btree, file)
+        def createBinarySearchTree(self):
+            self.btree = BinarySearchTree(4)
+
+            treePath = self.Path[:len(self.Path)-3] + "dja"
+            with open(treePath, 'wb') as file:
+                pickle.dump(self.btree, file)
+
+        def loadBtree(self):
+            isRead = False
+            try:
+
+                treePath = self.Path[:len(self.Path)-3] + "dja"
+
+                with open(treePath, 'rb') as file:
+                    self.btree = pickle.load(file)
+
+
+                    return True
+            except Exception as e:
+                return False
         def isRegisterWritten(self):
             return self.registerEmpty
 
@@ -114,6 +142,7 @@ class Archivo:
                 self.availist.append(int(-1))
                 return "Información escrita en el archivo exitosamente."
             except Exception as e:
+
                 return f"Error al escribir la información en el archivo: {str(e)}"
 
         def updateMetaData(self):
@@ -144,17 +173,18 @@ class Archivo:
 
         def LoadFields(self):
             try:
+
                 with open(self.Path, 'r') as file:
                     metadata = str(file.readline())
                 self.charsMetadata = (len(metadata))
                 tokens = metadata.split('|')
-                self.isRegisterWritten = tokens[0]
+                self.registerWritten = bool(tokens[0])
 
                 if(tokens[1] == "#####"):
                     self.numeroDeRegistros = 0
                 else:
                     regis = tokens[1].replace("#","")
-                    self.numeroDeRegistros = int(tokens[1])
+                    self.numeroDeRegistros = int(regis)
 
                 campos = tokens[3].split('!')
                 for campo in campos:
@@ -171,8 +201,12 @@ class Archivo:
                 else:
                     first = tokens[2].replace("#","")
                     self.availist.append(first)
+                self.registerSize = 0
+                for i in range(self.Campos.getSize()):
+                    self.registerSize += self.Campos.get(i + 1).getData().getFieldSize()
+
                 #hace falta implementar el llenado del arraylist
-                print(self.availist)
+                self.reloadAvailist()
             except FileNotFoundError:
                 return "El archivo no se encontró"
             except Exception as e:
@@ -180,15 +214,31 @@ class Archivo:
 
         def writeRegister(self, register):
             try:
+                if(self.registerWritten == False):
+                   self.availist.append(-1)
+
                 if(self.availist[-1] == -1):
+
                     with open(self.Path, 'a') as file:
                         data = ""
                         for i in range(register.atributos.getSize()):
                             data += str(register.atributos.get(i+1).getData()).ljust(self.Campos.get(i+1).getData().getFieldSize())
                         data +='\n'
-                        file.write(data)
-                        self.numeroDeRegistros += 1
-                        self.registerWritten = True
+
+                        key = register.getKey()
+                        if(isinstance(key,str)):
+                            key = self.btree.stringToInt(key)
+
+                        if(self.btree.insert(key, self.numeroDeRegistros) == True):
+                            self.writeBTree()
+                            file.write(data)
+                            self.numeroDeRegistros += 1
+                            self.registerWritten = True
+                            self.updateMetaData()
+                            self.btree.printBTree()
+                            return True
+                        else:
+                            return False
                 else:
                     with open(self.Path, 'r+') as file:
                         #calculating size of register
@@ -210,18 +260,65 @@ class Archivo:
                         data = ""
                         for i in range(register.atributos.getSize()):
                             data += str(register.atributos.get(i+1).getData()).ljust(self.Campos.get(i+1).getData().getFieldSize())
-                        file.write("\n")
-                        file.write(data)
-                        self.availist.pop()
-                        self.numeroDeRegistros += 1
-                        self.registerWritten = True
+                        data+="\n"
+
+
+                        key = register.getKey()
+                        if (isinstance(key, str)):
+                            key = self.btree.stringToInt(key)
+                        if (self.btree.insert(key, self.numeroDeRegistros) == True):
+                            file.write(data)
+                            self.availist.pop()
+                            self.numeroDeRegistros += 1
+                            self.registerWritten = True
+                            self.writeBTree()
+                            self.updateMetaData()
+                            return True
+                        else:
+                            return False
             #still have to make availist
             except FileNotFoundError:
                 return "El archivo no se encontró"
             except Exception as e:
+                traceback.print_exc()
                 return f"Error al cargar los campos del archivo: {str(e)}"
             
             #self.btree.insert(register.getKey())
             #self.btree.printBTree()
 
-                    
+        def deleteRegister(self, key):
+            rrn = self.btree.rrnSearch(key)
+            if rrn == -1:
+                return False
+            with open(self.Path, 'a') as file:
+                #register size
+                campos = self.Campos
+
+                file.seek(self.charsMetadata+(self.registerSize*rrn))
+                file.write("|")
+                nextPos = str(self.availist[-1])
+                if nextPos == "-1":
+                    nextPos = ""
+                for i in range(5-len(nextPos)):
+                    nextPos += "#"
+                file.write(nextPos)
+                self.numeroDeRegistros -= 1
+                self.availist.append(rrn)
+                self.updateMetaData()
+
+                #apartado de arbol
+                return self.btree.deleteKey(key)
+
+        def reloadAvailist(self):
+            with open(self.Path, 'r') as file:
+                while self.availist[-1] != -1:
+                    file.seek(self.charsMetadata + (self.registerSize*self.availist[-1]))
+                    file.read()
+                    strNum = file.read(5)
+                    strNum.replace("#", "")
+                    if len(strNum) == 0:
+                        self.availist.append(-1)
+                    else:
+                        self.availist.append(int(strNum))
+
+

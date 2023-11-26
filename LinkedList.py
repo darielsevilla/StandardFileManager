@@ -130,6 +130,8 @@ class LinkedList:
                 self.size += 1
 
         else:
+            print("index: " + str(index))
+            print("self.size: " + str(self.size))
             raise IndexError("Index out of bounds")
     def deleteLast(self):
         if self.last is None:
@@ -169,7 +171,7 @@ class LinkedList:
                 self.deleteLast()
             else:
                 currentNode = self.first
-                for x in range(1, index):
+                for x in range(1, index+1):
                     currentNode = currentNode.next
                 currentNode.previous.next = currentNode.next
                 currentNode.next.previous = currentNode.previous

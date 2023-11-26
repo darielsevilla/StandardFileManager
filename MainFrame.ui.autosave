@@ -2447,7 +2447,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="page">
       <property name="autoFillBackground">
@@ -4288,7 +4288,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>7</number>
+      <number>9</number>
      </property>
      <widget class="QWidget" name="page1">
       <property name="autoFillBackground">

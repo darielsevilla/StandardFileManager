@@ -6,7 +6,7 @@ from PyQt6.QtGui import QPixmap, QIcon
 def listDirectories(path):
     directoryArray = []
     for fpath in listdir(path):
-        directoryArray.append(fpath)
+            directoryArray.append(fpath)
     return directoryArray
 
 def changeTextFieldData(comboBox, textfield):

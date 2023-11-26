@@ -5356,13 +5356,11 @@ class Ui_MainWindow(object):
         self.btn_deleteRegister.setIconSize(QtCore.QSize(50, 50))
 
     def setupAddRegisterTable(self):
-
         self.tb_registerAttributes.clear()
         self.tb_registerAttributes.setRowCount(2)
         self.tb_registerAttributes.setColumnCount(self.file.getCampos().getSize())
         self.tb_registerAttributes.setVerticalHeaderLabels(["Campo", "Valor"])
         self.tb_registerAttributes.horizontalHeader().setVisible(False)
-
         self.tb_registerAttributes.setRowHeight(0, int(self.tb_registerAttributes.height() / 3))
         self.tb_registerAttributes.setRowHeight(1, int(self.tb_registerAttributes.height() * (2 / 3)))
 
@@ -5420,6 +5418,7 @@ class Ui_MainWindow(object):
         self.btn_createToFields.clicked.connect(lambda: self.btn_CreateToFieldsEvent(MainWindow))
         self.btn_saveFields.clicked.connect(lambda: self.btn_SaveFieldsEvent(MainWindow))
         self.btn_addRegister.clicked.connect(lambda: self.btn_addRegisterEvent(MainWindow))
+        self.btn_searchModify.clicked.connect(lambda: self.btn_searchModifyEvent(MainWindow))
 
     def btn_crearArchivoEvent(self, MainWindow):
         if self.txrEdit_fileName.text() != "":
@@ -5450,6 +5449,7 @@ class Ui_MainWindow(object):
 
         if (len(self.lineEdit_showSaveDirectory.text()) != 0):
             self.file.setPath(self.lineEdit_showSaveDirectory.text() + "/" + self.file.getName() + ".txt")
+            self.file.createBinarySearchTree()
             self.file.guardarArchivo()
             self.enableFieldButtons()
             self.stackedPanels.setCurrentIndex(self.stackedPanels.indexOf(self.defaultWidget))
@@ -5512,6 +5512,7 @@ class Ui_MainWindow(object):
     def bt_saveDefaultEvent(self):
 
         self.file.setPath("./registros/" + self.file.getName() + ".txt")
+        self.file.createBinarySearchTree()
         self.file.guardarArchivo()
         self.enableFieldButtons()
         self.stackedPanels.setCurrentIndex(self.stackedPanels.indexOf(self.defaultWidget))
@@ -5526,25 +5527,32 @@ class Ui_MainWindow(object):
         if (len(self.lineEdit.text()) != 0):
             self.file = Archivo("temporalName")
             self.file.setPath(self.lineEdit.text())
-            palabra = self.lineEdit.text()
-            filename = ""
-            for character in palabra[::-1]:
-                if (character != '\\'):
-                    filename += character
-                else:
-                    break
-            self.file.setName(filename[:3:-1])
-            self.file.abrirArchivo()
-            self.lb_currentFile.setText(self.file.getName())
-            self.enableButtons(True)
-            self.lb_archivo3.setEnabled(False)
-            self.enableFieldButtons()
-            fillTable(self.tbl_CrearCampos, self.file)
-            fillTable(self.tbl_listFields, self.file)
-            fillTable(self.tb_deleteField, self.file)
-            fillComboBoxField(self.cb_chooseFieldModify, self.file)
-            fillComboBoxField(self.cb_deleteField, self.file)
-
+            if(self.file.loadBtree() == True):
+                palabra = self.lineEdit.text()
+                filename = ""
+                for character in palabra[::-1]:
+                    if (character != '\\'):
+                        filename += character
+                    else:
+                        break
+                self.file.setName(filename[:3:-1])
+                self.file.abrirArchivo()
+                self.lb_currentFile.setText(self.file.getName())
+                self.enableButtons(True)
+                self.lb_archivo3.setEnabled(False)
+                self.enableFieldButtons()
+                fillTable(self.tbl_CrearCampos, self.file)
+                fillTable(self.tbl_listFields, self.file)
+                fillTable(self.tb_deleteField, self.file)
+                fillComboBoxField(self.cb_chooseFieldModify, self.file)
+                fillComboBoxField(self.cb_deleteField, self.file)
+            else:
+                dialog = QtWidgets.QMessageBox(MainWindow)
+                dialog.setText("archivo de busqueda no encontrado")
+                icono = QIcon(QPixmap("images/exclamationMark.png"))
+                dialog.setWindowIcon(icono)
+                dialog.setWindowTitle("btree ERROR")
+                dialog.exec()
         else:
             dialog = QtWidgets.QMessageBox(MainWindow)
             dialog.setText("No hay ningun directorio")
@@ -5566,6 +5574,7 @@ class Ui_MainWindow(object):
             if (self.radio_isKey.isChecked()):
                 field.setKey(True)
                 self.radio_isKey.setChecked(False)
+                self.radio_isKey.setEnabled(False)
             self.file.insertCampo(field)
             fillTable(self.tbl_CrearCampos, self.file)
             fillTable(self.tbl_listFields, self.file)
@@ -5630,12 +5639,13 @@ class Ui_MainWindow(object):
         list = listDirectories("./registros")
 
         for i in list:
-            self.cB_fileOptions.addItem(i)
+            if i[:-1*(4-len(i)):-1] != "ajd":
+                self.cB_fileOptions.addItem(i)
+
         if (len(list) != 0):
             changeTextFieldData(self.cB_fileOptions, self.lineEdit)
 
     def lb_archivo4Event(self, event, MainWindow):
-
         for num in range(len(self.arrayWidgetButtons)):
             palette = self.arrayWidgetButtons[num].palette()
             if (num == 4):
@@ -5701,12 +5711,15 @@ class Ui_MainWindow(object):
             else:
                 if (dataType == "float"):
                     tempoValor = valor.replace(".", "")
+
                     if len(tempoValor) == len(valor) or len(tempoValor) == (len(valor) - 1):
-                        if (tempoValor.isumeric() == False):
+                        if (tempoValor.isnumeric() == False):
                             errorType += 1
                         else:
+
                             fieldValues.append(float(valor))
                     else:
+
                         errorType += 1
                 elif (dataType == "int"):
                     if valor.isnumeric() is False:
@@ -5739,17 +5752,115 @@ class Ui_MainWindow(object):
                     registro.setKey(fieldValues[i])
                 if(self.file.getCampo(i).getSecondaryKey() == True):
                     registro.setSecKey(fieldValues[i])
-            self.file.writeRegister(registro)
-            self.file.updateMetaData()
-            widgetText = "Registro creado Exitosamente!!"
+            works = self.file.writeRegister(registro)
 
+            widgetText = "Registro ya existe"
+            if works == True:
+                self.file.updateMetaData()
+                widgetText = "Registro creado Exitosamente!!"
         #fin de codigo
         dialog = QtWidgets.QMessageBox(MainWindow)
         dialog.setText(widgetText)
         dialog.setWindowTitle("Status de Registro")
         dialog.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
         dialog.exec()
-        
+        self.enableFieldButtons()
+
+    def btn_searchModifyEvent(self, MainWindow):
+        keyToSearch = self.tf_valorDeLlave.text()
+        keyToSearch = self.validationForKeyInput(keyToSearch)
+        self.file.btree.printBTree()
+
+        if keyToSearch != False:
+            if (isinstance(keyToSearch, str)):
+                keyToSearch = self.file.btree.stringToInt(keyToSearch)
+            print(self.file.btree.rrnSearch(keyToSearch))
+        else:
+            dialog = QtWidgets.QDialog(MainWindow)
+            dialog.setText("Su input no es del tipo de dato de la llave")
+            dialog.setWindowTitle("Input invalido")
+            dialog.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
+            dialog.exec()
+
+    def validationForKeyInput(self, keyToSearch):
+        campoLLave = None
+        valid = True
+        if (len(keyToSearch) != 0):
+            for i in range(self.file.getCampos().getSize()):
+                if self.file.getCampo(i).isKey() == True:
+                    campoLLave = self.file.getCampo(i)
+
+            if (campoLLave.getDataType() == "char"):
+                return str(keyToSearch)
+            elif (campoLLave.getDataType() == "float"):
+                tempoValor = keyToSearch.replace(".", "")
+                if len(tempoValor) == len(keyToSearch) or len(tempoValor) == (len(keyToSearch) - 1):
+                    if (tempoValor.isnumeric() == False):
+                        valid = False
+                    else:
+                        return float(keyToSearch)
+                else:
+                    valid = False
+            elif (campoLLave.getDataType() == "int"):
+                if keyToSearch.isnumeric() == True:
+                    return int(keyToSearch)
+                else:
+                    valid = False
+        else:
+            valid = False
+        return valid
+    def validationForKeyInput(self, keyToSearch):
+        campoLLave = None
+        valid = True
+        if (len(keyToSearch) != 0):
+            for i in range(self.file.getCampos().getSize()):
+                if self.file.getCampo(i).isKey() == True:
+                    campoLLave = self.file.getCampo(i)
+
+            if (campoLLave.getDataType() == "char"):
+                return str(keyToSearch)
+            elif (campoLLave.getDataType() == "float"):
+                tempoValor = keyToSearch.replace(".", "")
+                if len(tempoValor) == len(keyToSearch) or len(tempoValor) == (len(keyToSearch) - 1):
+                    if (tempoValor.isnumeric() == False):
+                        valid = False
+                    else:
+                        return float(keyToSearch)
+                else:
+                    valid = False
+            elif (campoLLave.getDataType() == "int"):
+                if keyToSearch.isnumeric() == True:
+                    return int(keyToSearch)
+                else:
+                    valid = False
+        else:
+            valid = False
+        return valid
+    def btn_deleteRegisterEvent(self, MainWindow):
+        keyToSearch = self.tf_llaveBorrar.text()
+        keyToSearch = self.validationForKeyInput(keyToSearch)
+        if(isinstance(keyToSearch, str)):
+            keyToSearch = self.file.btree.stringToInt(keyToSearch)
+        if keyToSearch != False:
+            if self.file.deleteRegister(keyToSearch) == False:
+                dialog = QtWidgets.QDialog(MainWindow)
+                dialog.setText("Esa llave no existe en el archivo")
+                dialog.setWindowTitle("Input invalido")
+                dialog.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
+                dialog.exec()
+            else:
+                dialog = QtWidgets.QDialog(MainWindow)
+                dialog.setText("Registro borrado exitosamente")
+                dialog.setWindowTitle("Input invalido")
+                dialog.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
+                dialog.exec()
+        else:
+            dialog = QtWidgets.QDialog(MainWindow)
+            dialog.setText("Su input no es del tipo de dato de la llave")
+            dialog.setWindowTitle("Input invalido")
+            dialog.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
+            dialog.exec()
+
     def ExportarExcel(self, event, i):    
         dialogo = QtWidgets.QMessageBox(MainWindow)
         if (self.file != None):
