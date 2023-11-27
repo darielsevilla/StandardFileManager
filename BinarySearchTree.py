@@ -29,6 +29,7 @@ class BinarySearchTree():
             self.root = nodo
             self.rootPos = 1
             self.nodes.insertItemAtEnd(nodo)
+            return True
         elif(node.sons.getSize() == 0):
             #entra si el nodo actual no tiene hijos, saca ultima posicion
             position = node.keys.getSize()+1

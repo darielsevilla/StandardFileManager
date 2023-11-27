@@ -5419,6 +5419,7 @@ class Ui_MainWindow(object):
         self.btn_saveFields.clicked.connect(lambda: self.btn_SaveFieldsEvent(MainWindow))
         self.btn_addRegister.clicked.connect(lambda: self.btn_addRegisterEvent(MainWindow))
         self.btn_searchModify.clicked.connect(lambda: self.btn_searchModifyEvent(MainWindow))
+        self.btn_deleteRegister.clicked.connect(lambda: self.btn_deleteRegisterEvent(MainWindow))
 
     def btn_crearArchivoEvent(self, MainWindow):
         if self.txrEdit_fileName.text() != "":
@@ -5809,33 +5810,7 @@ class Ui_MainWindow(object):
         else:
             valid = False
         return valid
-    def validationForKeyInput(self, keyToSearch):
-        campoLLave = None
-        valid = True
-        if (len(keyToSearch) != 0):
-            for i in range(self.file.getCampos().getSize()):
-                if self.file.getCampo(i).isKey() == True:
-                    campoLLave = self.file.getCampo(i)
-
-            if (campoLLave.getDataType() == "char"):
-                return str(keyToSearch)
-            elif (campoLLave.getDataType() == "float"):
-                tempoValor = keyToSearch.replace(".", "")
-                if len(tempoValor) == len(keyToSearch) or len(tempoValor) == (len(keyToSearch) - 1):
-                    if (tempoValor.isnumeric() == False):
-                        valid = False
-                    else:
-                        return float(keyToSearch)
-                else:
-                    valid = False
-            elif (campoLLave.getDataType() == "int"):
-                if keyToSearch.isnumeric() == True:
-                    return int(keyToSearch)
-                else:
-                    valid = False
-        else:
-            valid = False
-        return valid
+    
     def btn_deleteRegisterEvent(self, MainWindow):
         keyToSearch = self.tf_llaveBorrar.text()
         keyToSearch = self.validationForKeyInput(keyToSearch)
@@ -5843,13 +5818,13 @@ class Ui_MainWindow(object):
             keyToSearch = self.file.btree.stringToInt(keyToSearch)
         if keyToSearch != False:
             if self.file.deleteRegister(keyToSearch) == False:
-                dialog = QtWidgets.QDialog(MainWindow)
-                dialog.setText("Esa llave no existe en el archivo")
+                dialog = QtWidgets.QMessageBox(MainWindow)
+                dialog.setText("Llave no existe en el archivo")
                 dialog.setWindowTitle("Input invalido")
                 dialog.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
                 dialog.exec()
             else:
-                dialog = QtWidgets.QDialog(MainWindow)
+                dialog = QtWidgets.QMessageBox(MainWindow)
                 dialog.setText("Registro borrado exitosamente")
                 dialog.setWindowTitle("Input invalido")
                 dialog.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))

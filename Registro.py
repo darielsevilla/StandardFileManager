@@ -1,12 +1,12 @@
 from LinkedList import *
-from Archivo import Archivo
-import os
+#from Archivo import Archivo
 
 class Registro():
     def __init__(self):
         self.atributos = LinkedList()
         self.primaryKey = None
-        self.maxlengths = []
+        self.secondaryKey = None
+        self.maxlengths = list()
 
     def addAttribute(self, attribute):
         self.atributos.insertAtEnd(Node(attribute))
@@ -20,15 +20,9 @@ class Registro():
     def getKey(self):
         return self.primaryKey
     
-    #5684
-    def insertRegistro(self, file):
-        try:
-            data = ""
-            for i in range(self.atributos.getSize()):
-                cont = str(self.atributos(i+1))
-                data += cont.ljust(self.maxlengths(1))
-            data +='\n'
-            file.appendInfo(data)
-            return "Información escrita en el archivo exitosamente."
-        except Exception as e:
-            return f"Error al escribir la información en el archivo: {str(e)}"
+    def setSecKey(self, key):
+        self.secondaryKey = key
+
+    def getSecKey(self):
+        return self.secondaryKey
+ 
