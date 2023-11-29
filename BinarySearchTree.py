@@ -1,3 +1,5 @@
+import traceback
+
 from LinkedList import *
 
 class TreeNode():
@@ -63,6 +65,8 @@ class BinarySearchTree():
                 if(node.keys.getData(i) > key):
                     cont = node.sons.getData(i)
                     break
+                if(node.keys.getData(i) == key):
+                    return False
             restartNode = self.nodes.getData(cont)
 
             return self.insert(key, rrn, restartNode, cont)
@@ -71,7 +75,7 @@ class BinarySearchTree():
 
 
     def reorderTree(self, leafNode, cont):
-        print("cont" + str(cont))
+        #print("cont" + str(cont))
         llaves = leafNode.keys
         nodePtrs = leafNode.sons
         rrns = leafNode.rrnList
@@ -152,7 +156,7 @@ class BinarySearchTree():
 
                 self.nodes.deleteAtIndex(cont)
                 if(leafNode.parent == None):
-                    print("entered option 1")
+                    #print("entered option 1")
                     izquierda.parent = cont
                     derecha.parent = cont
                     self.nodes.insertItemAtIndex(center, cont)
@@ -179,7 +183,7 @@ class BinarySearchTree():
                     self.root = center
                     return True
                 else:
-                    print("entered option 2")
+                    #print("entered option 2")
                     self.nodes.insertItemAtIndex(izquierda, cont)
                     for i in range(1,izquierda.sons.getSize()+1):
                         self.nodes.getData(izquierda.sons.getData(i)).parent = cont
@@ -223,7 +227,6 @@ class BinarySearchTree():
     def rrnSearch(self, key, node = None):
         if (self.root != None and node == None):
             node = self.root
-            index = self.rootPos
         if (self.nodes.getSize() == 0):
             # raiz no existe
             return -1
@@ -249,61 +252,66 @@ class BinarySearchTree():
 
             return self.rrnSearch(key, restartNode)
 
+    
+    def nodePosSearch(self, key, node = None, pos = None):
+        try:
+            if (self.root != None and node == None):
+                node = self.root
+                pos = 1
+            if (self.nodes.getSize() == 0):
+                # raiz no existe
+                return -1
+            elif (node.sons.getSize() == 0):
+                # entra si el nodo actual no tiene hijos, saca ultima posicion
+                position = node.keys.getSize() + 1
+                for i in range(1, node.keys.getSize() + 1):
+                    if (node.keys.getData(i) == key):
+                        return pos
+                return -1
+            else:
+                # saca ultimo nodo de los hijos
+                pos2 = node.sons.getData(node.sons.getSize())
 
-    def nodeSearch(self, key, node = None, pos = None):
-        if (self.root != None and node == None):
-            node = self.root
-            index = self.rootPos
-        if (self.nodes.getSize() == 0):
-            # raiz no existe
-            return -1
-        elif (node.sons.getSize() == 0):
-            # entra si el nodo actual no tiene hijos, saca ultima posicion
-            position = node.keys.getSize() + 1
-            for i in range(1, node.keys.getSize() + 1):
-                if (node.keys.getData(i) == key):
-                    return node
-            return -1
-        else:
-            # saca ultimo nodo de los hijos
-            cont = node.sons.getData(node.sons.getSize())
+                # recorre nodo buscando un valor mayor al de el, con un default del ultimo elemento
+                for i in range(1, node.keys.getSize() + 1):
+                    if (node.keys.getData(i) > key):
+                        pos2 = node.sons.getData(i)
+                        break
+                    elif(node.keys.getData(i) == key):
+                        return pos
+                restartNode = self.nodes.getData(pos2)
 
-            # recorre nodo buscando un valor mayor al de el, con un default del ultimo elemento
-            for i in range(1, node.keys.getSize() + 1):
-                if (node.keys.getData(i) > key):
-                    cont = node.sons.getData(i)
-                    break
-                elif(node.keys.getData(i) == key):
-                    return node
-            restartNode = self.nodes.getData(cont)
-
-            return self.nodeSearch(key, restartNode, cont)
+                return self.nodePosSearch(key, restartNode, pos2)
+        except Exception as e:
+            traceback.print_exc()
 
     def deleteKey(self, key, node = None, nodePos = None):
         minimum = int((self.grade-1)/2)
-        if(nodePos == None):
-            nodePos = self.nodeSearch(key)
 
+
+        if(nodePos == None):
+            nodePos = self.nodePosSearch(key)
         if(nodePos == -1):
             return False
-
+        print(nodePos)
         if(node == None):
             node = self.nodes.getData(nodePos)
-
         #listas redeclaradas para acortar sintaxis
         keys = node.keys
         sons = node.sons
         rrns = node.rrnList
 
-
+        #si nodo no tiene hijos
         if(node.sons.getSize() == 0):
+            #deletion
             for i in range(1, keys.getSize()+1):
                 if keys.getData(i) == key:
                     keys.deleteAtIndex(i)
-
+                    break
+            #print(node.keys.getSize())
+            #print(minimum)
             if node != self.root and node.keys.getSize() < minimum:
                 #saca el padre
-
                 parentNode = self.nodes.getData(node.parent)
                 posDeHijo = -1
                 keyToMoveIndex = -1
@@ -317,31 +325,38 @@ class BinarySearchTree():
 
                #seleccion de pos de nuevo nodo
                 if posDeHijo-1 > 0 and posDeHijo+1 <= parentNode.sons.getSize():
+                    #cantidad de keys de los nodos a la izquierda y derecha
                     keysLeft  = self.nodes.getData(parentNode.sons.getData(posDeHijo-1)).keys.getSize()
                     keysRight = self.nodes.getData(parentNode.sons.getData(posDeHijo+1)).keys.getSize()
                     if(keysRight > keysLeft):
+                        #saca el padre de la derecha, y lo mueve al vecino derecho
                         keyToMoveIndex = parentNode.sons.getData(posDeHijo+1)
                         node.keys.insertItemAtEnd(parentNode.keys.getData(posDeHijo))
                         rrns.insertItemAtEnd(parentNode.rrnList.getData(posDeHijo))
                         parentNode.keys.deleteAtIndex(posDeHijo)
+                        parentNode.rrnList.deleteAtIndex(posDeHijo)
                         parentNode.sons.deleteAtIndex(posDeHijo)
                     else:
+                        #saca el padre de la izquierda y lo mueve al vecino izquierdo
                         keyToMoveIndex = parentNode.sons.getData(posDeHijo-1)
                         node.keys.insertItemAtEnd(parentNode.keys.getData(posDeHijo-1))
                         rrns.insertItemAtEnd(parentNode.rrnList.getData(posDeHijo-1))
                         parentNode.keys.deleteAtIndex(posDeHijo-1)
+                        parentNode.rrnList.deleteAtIndex(posDeHijo-1)
                         parentNode.sons.deleteAtIndex(posDeHijo)
                 elif posDeHijo-1 > 0:
                     keyToMoveIndex = parentNode.sons.getData(posDeHijo - 1)
                     node.keys.insertItemAtEnd(parentNode.keys.getData(posDeHijo - 1))
                     rrns.insertItemAtEnd(parentNode.rrnList.getData(posDeHijo - 1))
                     parentNode.keys.deleteAtIndex(posDeHijo-1)
+                    parentNode.rrnList.deleteAtIndex(posDeHijo-1)
                     parentNode.sons.deleteAtIndex(posDeHijo)
                 elif posDeHijo+1 <= parentNode.sons.getSize():
                     keyToMoveIndex = parentNode.sons.getData(posDeHijo + 1)
                     node.keys.insertItemAtEnd(parentNode.keys.getData(posDeHijo))
                     rrns.insertItemAtEnd(parentNode.rrnList.getData(posDeHijo))
                     parentNode.keys.deleteAtIndex(posDeHijo)
+                    parentNode.rrnList.deleteAtIndex(posDeHijo)
                     parentNode.sons.deleteAtIndex(posDeHijo)
 
                 nuevoNodo = self.nodes.getData(keyToMoveIndex)
@@ -353,10 +368,20 @@ class BinarySearchTree():
                             pos = i
                             break
                     nuevoNodo.keys.insertItemAtIndex(node.keys.getData(i),pos)
+                    nuevoNodo.rrnList.insertItemAtIndex(node.rrnList.getData(i), pos)
                 self.treeAvailist.insertItemAtEnd(nodePos)
-                self.reorderTree(nuevoNodo)
-        else:
+                #en teoria, hasta aqui esta bien ^^
+                if(parentNode.keys.getSize()-1):
+                    newParent = parentNode.parent
+                    self.nodes.deleteAtIndex(nuevoNodo.parent)
+                    self.nodes.insertItemAtIndex(nuevoNodo.parent)
+                    if(nuevoNodo.parent == 1):
+                        self.root=nuevoNodo
+                    nuevoNodo.parent = newParent
 
+                #split node
+        else:
+            print("entered 2")
             posDeKey = -1
 
             for i in range(1, keys.getSize() + 1):
@@ -382,8 +407,6 @@ class BinarySearchTree():
 
         return True
 
-    def reorderPostDeletion(self, node):
-        print("THE WORLD")
     def stringToInt(self, string):
         uniqueKey = 0
         factor = 1
@@ -410,10 +433,12 @@ class BinarySearchTree():
                 print("keys----------------------------------------------")
                 treeNode = self.nodes.getData(i+1)
                 for j in range(treeNode.keys.getSize()):
-                    print(chr(treeNode.keys.getData(j+1)),end=" ")
+                    print(str(treeNode.keys.getData(j+1)),end=" ")
                 print("\nsons----------------------------------------------")
                 for k in range(treeNode.sons.getSize()):
-                    print(self.nodes.getData(i + 1).sons.getData(k + 1),end=" ")
+                    print(str(self.nodes.getData(i + 1).sons.getData(k + 1)),end=" ")
+                print("\nsons----------------------------------------------")
+
                 print(" ")
             else:
                 print("*casilla borrada*")

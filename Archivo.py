@@ -97,6 +97,7 @@ class Archivo:
         def guardarArchivo(self, contenido = None):
             try:
                 file = open(self.Path, 'w')
+
                 if(contenido is not None):
                     file.write(contenido)
                 file.close()
@@ -183,6 +184,7 @@ class Archivo:
                 file.write(isEmpty)
                 file.seek(2)
                 file.write(regis)
+                file.seek(0)
                 file.seek(8)
                 file.write(stringav)
             #updates numero de registros y primera posicion del availist
@@ -223,17 +225,20 @@ class Archivo:
                 size = 0
                 for i in range(self.Campos.getSize()):
                     size += self.Campos.get(i+1).getData().getFieldSize()
-                self.registerSize = size+1
-
+                #self.registerSize = size+1
+                self.registerSize = size
 
                 #calculating size of offset
-                self.metaSize = len(metadata) 
+                self.metaSize = len(metadata)+1
 
-                self.guardarArchivo(metadata)
-                self.availist.append(int(-1))
-                #self.reloadAvailist()
+                #self.guardarArchivo(metadata)
+                #self.availist.append(int(-1))
+                self.reloadAvailist()
                 #print("in load: ")
                 #print(self.availist)
+                for i in range(len(self.availist)):
+                    print(self.availist[i], end = " ")
+                print("")
             except FileNotFoundError:
                 return "El archivo no se encontró"
             except Exception as e:
@@ -248,11 +253,11 @@ class Archivo:
                         data = ""
                         for i in range(register.atributos.getSize()):
                             data += str(register.atributos.get(i+1).getData()).ljust(self.Campos.get(i+1).getData().getFieldSize())
-                        data +='\n'
+                        #data +='\n'
 
                         key = register.getKey()
-                        if(isinstance(key,str)):
-                            key = self.btree.stringToInt(key)
+                        #if(isinstance(key,str)):
+                        #    key = self.btree.stringToInt(key)
 
                         if(self.btree.insert(key, self.numeroDeRegistros) == True):
                             self.writeBTree()
@@ -260,7 +265,7 @@ class Archivo:
                             self.numeroDeRegistros += 1
                             self.registerWritten = True
                             self.updateMetaData()
-                            self.btree.printBTree()
+                            #self.btree.printBTree()
                             return True
                         else:
                             return False
@@ -271,7 +276,7 @@ class Archivo:
 
                         #writing data
                         file.seek(offset)
-                        print("data in this line: " ,repr(file.readline()))
+
                         data = ""
                         for i in range(register.atributos.getSize()):
                             data += str(register.atributos.get(i+1).getData()).ljust(self.Campos.get(i+1).getData().getFieldSize())
@@ -279,8 +284,8 @@ class Archivo:
 
 
                         key = register.getKey()
-                        if (isinstance(key, str)):
-                            key = self.btree.stringToInt(key)
+                        #if (isinstance(key, str)):
+                        #    key = self.btree.stringToInt(key)
                         if (self.btree.insert(key, rrn) == True):
                             file.write(data)
                             self.availist.pop(0)
@@ -301,6 +306,9 @@ class Archivo:
 
         def deleteRegister(self, key):
             rrn = self.btree.rrnSearch(key)
+            print("ANTES:")
+            self.btree.printBTree()
+            print("\n\n\n\n\nDespues:")
             if rrn == -1:
                 return False
             with open(self.Path, 'r+') as file:
@@ -310,14 +318,20 @@ class Archivo:
                 self.availist.insert(0,rrn)
                 #nextPos = "*"
                 nextPos = str(self.availist[1])
-                replacement = '\n' + nextPos.ljust(self.registerSize-1,'_')
-                print(replacement)
-                file.write(replacement)
-                self.numeroDeRegistros -= 1
-                print(self.availist)
-                self.updateMetaData()
+                if nextPos == "-1":
+                    nextPos = ""
+                replacement = "|" +str(nextPos)
 
-                #apartado de arbol
+                for i in range(5-len(nextPos)):
+                    replacement+="#"
+                file.write(replacement)
+
+                self.updateMetaData()
+                print("metadata updated")
+
+
+                self.btree.deleteKey(key)
+                self.btree.printBTree()
                 return True #self.btree.deleteKey(key)
 
         def reloadAvailist(self):
@@ -325,43 +339,69 @@ class Archivo:
                 print("loading availist")
                 rrn = self.availist[0]
                 print(rrn)
-                if(rnn != -1):
-                    print("rnn is not -1")
-                    while True: 
-                        offset = int(self.metaSize) + (int((self.registerSize)) * int(rrn))
-                        file.seek(offset)
-                        print("readline: " , file.readline())
-                        print("in offset")
-                        print("offset = ")
-                        print(self.metaSize)
-                        print(self.registerSize)
-                        print(offset)
-                        print("tell")
-                        print(file.tell())
-                        print("readline: " , file.read(self.registerSize))
-                        nextPos = file.readline();
-                        print("nextPos" , nextPos)
-                        nextNum = nextPos.replace('_','')
-                        print("replace")
-                        self.availist.append(nextNum)
-                        print("appending to availist")
-                        rnn = int(nextNum)
-                        print("updating rrn: ", rnn)
-                        if(rrn == -1):
-                            print("rnn is -1")
-                            break
-        
-        def loadRegistro(self, key):
-            rrn = self.btree.rrnSearch(key)
-            with open(self.Path, 'r') as file:
-                offset = int(self.metaSize) + (int(self.registerSize*rrn))
-                file.seek(offset)
-                registerStr = str(file.getline())
-                registro = Registro()
-                for x in range(self.Campos.getSize()):
-                    currentFieldSize = self.Campos.get(x+1).getData().getFieldSize()
-                    currentField = registerStr[:currentFieldSize]
-                    field = currentField.replace(' ','')
-                    registro.addAttribute(field)
-                    registerStr = currentField
+                while rrn != -1:
+                    file.seek(0)
+                    file.seek(self.metaSize + (rrn*self.registerSize))
+                    file.read(1)
+                    strNextPos = file.read(5)
+                    if strNextPos == "#####":
+                        self.availist.append(-1)
+                    else:
+                        strNextPos = strNextPos.replace("#","")
+                        self.availist.append(int(strNextPos))
 
+                    rrn = self.availist[len(self.availist)-1]
+
+        def loadRegistro(self, key):
+            try:
+                rrn = self.btree.rrnSearch(key)
+
+                if rrn == -1:
+                    return -1
+                with open(self.Path, 'r') as file:
+                    offset = int(self.metaSize) + (int(self.registerSize*rrn))
+
+                    file.seek(0)
+                    file.seek(offset)
+
+                    registerStr = str(file.read(self.registerSize))
+
+                    registro = Registro()
+                    prevSize = 0
+                    for x in range(self.Campos.getSize()):
+
+                        type = self.getCampo(x).getDataType()
+
+                        currentFieldSize = self.Campos.get(x+1).getData().getFieldSize()
+                        currentField = registerStr[prevSize:+prevSize+currentFieldSize]
+
+                        field = currentField.replace(' ','')
+
+                        if type == "int":
+                            field = int(field)
+                        elif type == "float":
+                            field = float(field)
+                        else:
+                            field = str(field)
+                        registro.addAttribute(field)
+
+                        if(self.getCampo(x).isKey()):
+                            registro.setKey(field)
+                        prevSize += currentFieldSize
+                    return registro
+            except Exception as e:
+                traceback.print_exc()
+
+        def modifyRegister(self, register):
+            key = register.getKey()
+            #if isinstance(key, str):
+            #    key = self.btree.stringToInt(key)
+            rrn = self.btree.rrnSearch(key)
+            with open(self.Path, 'r+') as file:
+                file.seek(self.metaSize + (self.registerSize*rrn))
+                data = ""
+                for i in range(register.atributos.getSize()):
+                    data += str(register.atributos.get(i + 1).getData()).ljust(self.Campos.get(i + 1).getData().getFieldSize())
+                file.write(data)
+                return True
+                # data +='\n'
