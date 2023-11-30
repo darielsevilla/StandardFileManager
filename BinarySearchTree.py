@@ -71,9 +71,6 @@ class BinarySearchTree():
 
             return self.insert(key, rrn, restartNode, cont)
 
-
-
-
     def reorderTree(self, leafNode, cont):
         #print("cont" + str(cont))
         llaves = leafNode.keys
@@ -252,7 +249,6 @@ class BinarySearchTree():
 
             return self.rrnSearch(key, restartNode)
 
-    
     def nodePosSearch(self, key, node = None, pos = None):
         try:
             if (self.root != None and node == None):
@@ -286,9 +282,8 @@ class BinarySearchTree():
             traceback.print_exc()
 
     def deleteKey(self, key, node = None, nodePos = None):
+
         minimum = int((self.grade-1)/2)
-
-
         if(nodePos == None):
             nodePos = self.nodePosSearch(key)
         if(nodePos == -1):
@@ -320,11 +315,10 @@ class BinarySearchTree():
                         posDeHijo = i
                         break
                 #compara los hijos
-                #consigue posicion de hijo en la lista de hijos, no en la lista de nodos
-
-
-               #seleccion de pos de nuevo nodo
+                #consigue posicion de hijo en la lista de hijos, no en la lista de nodo
+                #seleccion de pos de nuevo nodo
                 if posDeHijo-1 > 0 and posDeHijo+1 <= parentNode.sons.getSize():
+                    behind = False
                     #cantidad de keys de los nodos a la izquierda y derecha
                     keysLeft  = self.nodes.getData(parentNode.sons.getData(posDeHijo-1)).keys.getSize()
                     keysRight = self.nodes.getData(parentNode.sons.getData(posDeHijo+1)).keys.getSize()
@@ -336,21 +330,25 @@ class BinarySearchTree():
                         parentNode.keys.deleteAtIndex(posDeHijo)
                         parentNode.rrnList.deleteAtIndex(posDeHijo)
                         parentNode.sons.deleteAtIndex(posDeHijo)
+
+                        behind = False
                     else:
                         #saca el padre de la izquierda y lo mueve al vecino izquierdo
                         keyToMoveIndex = parentNode.sons.getData(posDeHijo-1)
-                        node.keys.insertItemAtEnd(parentNode.keys.getData(posDeHijo-1))
-                        rrns.insertItemAtEnd(parentNode.rrnList.getData(posDeHijo-1))
+                        node.keys.insertItemAtFront(parentNode.keys.getData(posDeHijo-1))
+                        rrns.insertItemAtFront(parentNode.rrnList.getData(posDeHijo-1))
                         parentNode.keys.deleteAtIndex(posDeHijo-1)
                         parentNode.rrnList.deleteAtIndex(posDeHijo-1)
                         parentNode.sons.deleteAtIndex(posDeHijo)
+                        behind = True
                 elif posDeHijo-1 > 0:
                     keyToMoveIndex = parentNode.sons.getData(posDeHijo - 1)
-                    node.keys.insertItemAtEnd(parentNode.keys.getData(posDeHijo - 1))
-                    rrns.insertItemAtEnd(parentNode.rrnList.getData(posDeHijo - 1))
+                    node.keys.insertItemAtFront(parentNode.keys.getData(posDeHijo - 1))
+                    rrns.insertItemAtFront(parentNode.rrnList.getData(posDeHijo - 1))
                     parentNode.keys.deleteAtIndex(posDeHijo-1)
                     parentNode.rrnList.deleteAtIndex(posDeHijo-1)
                     parentNode.sons.deleteAtIndex(posDeHijo)
+                    behind = True
                 elif posDeHijo+1 <= parentNode.sons.getSize():
                     keyToMoveIndex = parentNode.sons.getData(posDeHijo + 1)
                     node.keys.insertItemAtEnd(parentNode.keys.getData(posDeHijo))
@@ -358,27 +356,28 @@ class BinarySearchTree():
                     parentNode.keys.deleteAtIndex(posDeHijo)
                     parentNode.rrnList.deleteAtIndex(posDeHijo)
                     parentNode.sons.deleteAtIndex(posDeHijo)
-
+                    behind = False
                 nuevoNodo = self.nodes.getData(keyToMoveIndex)
 
-                for i in range(1, node.keys.getSize()+1):
-                    pos = nuevoNodo.keys.getSize()+1
-                    for j in range(1, nuevoNodo.keys.getSize()+1):
-                        if(nuevoNodo.keys.getData(j) > node.getData(i)):
-                            pos = i
-                            break
-                    nuevoNodo.keys.insertItemAtIndex(node.keys.getData(i),pos)
-                    nuevoNodo.rrnList.insertItemAtIndex(node.rrnList.getData(i), pos)
+                #merge nodes to the most populated cousin
+                for i in range(node.keys.getSize()):
+                    if behind == True:
+                        nuevoNodo.keys.insertItemAtEnd(node.keys.getData(node.keys.getSize()-i))
+                        nuevoNodo.rrnList.insertItemAtEnd(node.keys.getData(node.rrnList.getSize()-i))
+                    else:
+                        nuevoNodo.keys.insertItemAtFront(node.keys.getData(node.keys.getSize()-i))
+                        nuevoNodo.rrnList.insertItemAtFront(node.keys.getData(node.rrnList.getSize()-i))
+
                 self.treeAvailist.insertItemAtEnd(nodePos)
                 #en teoria, hasta aqui esta bien ^^
-                if(parentNode.keys.getSize()-1):
+                if(parentNode.keys.getSize() == 0 and nuevoNodo.keys.getSize() <= minimum):
                     newParent = parentNode.parent
-                    self.nodes.deleteAtIndex(nuevoNodo.parent)
-                    self.nodes.insertItemAtIndex(nuevoNodo.parent)
+                    self.nodes.get(nuevoNodo.parent).data = nuevoNodo
                     if(nuevoNodo.parent == 1):
                         self.root=nuevoNodo
                     nuevoNodo.parent = newParent
-
+                elif nuevoNodo.keys.getSize() > minimum:
+                    self.reorderTree(nuevoNodo, keyToMoveIndex)
                 #split node
         else:
             print("entered 2")
@@ -391,29 +390,17 @@ class BinarySearchTree():
             sonNode = self.nodes.getData(sons.getData(posDeKey))
             keysDeHijo = sonNode.keys
 
-            currentKey = key
+
             currentRRN = rrns.getData(posDeKey)
 
-            node.keys.deleteLast()
-            node.keys.insertItemAtEnd(sonNode.keys.getData(sonNode.keys.getSize()))
-            node.rrnList.deleteLast()
-            node.rrnList.insertItemAtEnd(sonNode.keys.getData(sonNode.rrnList.getSize()))
-
-            sonNode.keys.deleteLast()
-            sonNode.rrnList.deleteLast()
-            sonNode.keys.insertItemAtEnd(currentKey)
-            sonNode.rrnList.insertItemAtEnd(currentRRN)
+            node.keys.get(posDeKey).data = sonNode.keys.getData(sonNode.keys.getSize())
+            node.rrnList.get(posDeKey).data = sonNode.rrnList.getData(sonNode.rrnList.getSize())
+            sonNode.keys.get(sonNode.keys.getSize()).data = key
+            sonNode.rrnList.get(sonNode.keys.getSize()).data = currentRRN
             return self.deleteKey(key, sonNode, sons.getData(posDeKey))
 
-        return True
 
-    def stringToInt(self, string):
-        uniqueKey = 0
-        factor = 1
-        for i in string:
-            uniqueKey += factor*ord(i)
-            factor += 1
-        return uniqueKey
+            return True
 
 
     def printBTree(self):

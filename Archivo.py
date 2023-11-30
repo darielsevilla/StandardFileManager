@@ -329,9 +329,13 @@ class Archivo:
                 self.updateMetaData()
                 print("metadata updated")
 
-
-                self.btree.deleteKey(key)
-                self.btree.printBTree()
+                try:
+                    self.btree.deleteKey(key)
+                    self.writeBTree()
+                    self.btree.printBTree()
+                except Exception as e:
+                    traceback.print_exc()
+                    print("exceptionnnn")
                 return True #self.btree.deleteKey(key)
 
         def reloadAvailist(self):
