@@ -72,11 +72,11 @@ class Archivo:
             self.Campos = newList
 
         def abrirArchivo2(self):
-            print(self.Path)
+
             file = open(self.Path, 'r')
             try:
                 metadata = file.readLine()
-                print(metadata)
+
             except Exception as e:
                 return f"Error al abrir el archivo: {str(e)}"
             finally:
@@ -236,9 +236,8 @@ class Archivo:
                 self.reloadAvailist()
                 #print("in load: ")
                 #print(self.availist)
-                for i in range(len(self.availist)):
-                    print(self.availist[i], end = " ")
-                print("")
+
+
             except FileNotFoundError:
                 return "El archivo no se encontró"
             except Exception as e:
@@ -289,7 +288,7 @@ class Archivo:
                         if (self.btree.insert(key, rrn) == True):
                             file.write(data)
                             self.availist.pop(0)
-                            self.numeroDeRegistros += 1
+
                             self.registerWritten = True
                             self.writeBTree()
                             self.updateMetaData()
@@ -369,7 +368,7 @@ class Archivo:
                     file.seek(offset)
 
                     registerStr = str(file.read(self.registerSize))
-
+                    
                     registro = Registro()
                     prevSize = 0
                     for x in range(self.Campos.getSize()):
@@ -409,3 +408,41 @@ class Archivo:
                 file.write(data)
                 return True
                 # data +='\n'
+
+        def fileDirectRead(self, rrn):
+            try:
+                if rrn == -1:
+                    return -1
+                with open(self.Path, 'r') as file:
+                    offset = int(self.metaSize) + (int(self.registerSize * rrn))
+
+                    file.seek(0)
+                    file.seek(offset)
+
+                    registerStr = str(file.read(self.registerSize))
+
+                    registro = Registro()
+                    prevSize = 0
+                    for x in range(self.Campos.getSize()):
+
+                        type = self.getCampo(x).getDataType()
+
+                        currentFieldSize = self.Campos.get(x + 1).getData().getFieldSize()
+                        currentField = registerStr[prevSize:+prevSize + currentFieldSize]
+
+                        field = currentField.replace(' ', '')
+
+                        if type == "int":
+                            field = int(field)
+                        elif type == "float":
+                            field = float(field)
+                        else:
+                            field = str(field)
+                        registro.addAttribute(field)
+
+                        if (self.getCampo(x).isKey()):
+                            registro.setKey(field)
+                        prevSize += currentFieldSize
+                    return registro
+            except Exception as e:
+                traceback.print_exc()

@@ -4366,7 +4366,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>9</number>
+      <number>12</number>
      </property>
      <widget class="QWidget" name="page1">
       <property name="autoFillBackground">
@@ -16199,14 +16199,27 @@
           <string>Listar Registros:</string>
          </property>
         </widget>
-        <widget class="QTableView" name="tbl_registers">
+        <widget class="QTableWidget" name="tbl_registers">
          <property name="geometry">
           <rect>
            <x>50</x>
            <y>60</y>
            <width>741</width>
-           <height>361</height>
+           <height>271</height>
           </rect>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_listar">
+         <property name="geometry">
+          <rect>
+           <x>340</x>
+           <y>360</y>
+           <width>171</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Listar los primeros 10 en orden</string>
          </property>
         </widget>
        </widget>
@@ -18536,6 +18549,108 @@
          </property>
          <property name="autoFillBackground">
           <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QListWidget" name="ls_camposFile1">
+         <property name="geometry">
+          <rect>
+           <x>60</x>
+           <y>60</y>
+           <width>191</width>
+           <height>192</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QListWidget" name="ls_camposFile2">
+         <property name="geometry">
+          <rect>
+           <x>580</x>
+           <y>70</y>
+           <width>191</width>
+           <height>192</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="cb_camposFile1">
+         <property name="geometry">
+          <rect>
+           <x>60</x>
+           <y>270</y>
+           <width>191</width>
+           <height>24</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="cb_camposFile2">
+         <property name="geometry">
+          <rect>
+           <x>580</x>
+           <y>270</y>
+           <width>191</width>
+           <height>24</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="cb_camposCombinados">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>180</y>
+           <width>221</width>
+           <height>24</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_slctCross">
+         <property name="geometry">
+          <rect>
+           <x>370</x>
+           <y>240</y>
+           <width>80</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Elegir Campo</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_slctCross2">
+         <property name="geometry">
+          <rect>
+           <x>630</x>
+           <y>320</y>
+           <width>91</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Agregar Campo</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_fields1">
+         <property name="geometry">
+          <rect>
+           <x>110</x>
+           <y>320</y>
+           <width>91</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Agregar Campo</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_crossProduct">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>380</y>
+           <width>231</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>cruzar archivos</string>
          </property>
         </widget>
        </widget>
