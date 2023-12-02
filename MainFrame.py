@@ -13,7 +13,7 @@ from Campo import *
 from UtilityFunctions import *
 from Registro import *
 import traceback
-
+import xlsxwriter
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -7174,25 +7174,12 @@ class Ui_MainWindow(object):
 
             excelFile = xlsxwriter.Workbook(self.file.getName() + ".xlsx")
             hoja = excelFile.add_worksheet()
-            hoja.write(0, 0, "Nombre")
-            hoja.write(0, 1, "Tipo")
-            hoja.write(0, 2, "Size")
-            hoja.write(0, 3, "Es llave")
 
-            print(self.file.getCampos().getSize())
-            contFilas = 1
             contColumnas = 0
-            for i in range(self.file.getCampos().getSize()):
-                contColumnas = 0
-                hoja.write(contFilas, contColumnas, self.file.getCampo(i).getFieldName())
-                contColumnas = contColumnas + 1
-                hoja.write(contFilas, contColumnas, self.file.getCampo(i).getDataType())
-                contColumnas = contColumnas + 1
-                hoja.write(contFilas, contColumnas, self.file.getCampo(i).getFieldSize())
-                contColumnas = contColumnas + 1
-                hoja.write(contFilas, contColumnas, self.file.getCampo(i).isKey())
-                contColumnas = contColumnas + 1
-                contFilas = contFilas + 1
+            for j in range(self.file.getCampos().getSize()):
+                hoja.write(0, contColumnas, self.file.getCampo(j).getFieldName())
+                contColumnas+= 1
+                
             excelFile.close()
             dialogo.setWindowTitle("Status de Estandarizacion")
             dialogo.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
