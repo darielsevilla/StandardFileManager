@@ -7052,6 +7052,7 @@ class Ui_MainWindow(object):
             if works == True:
                 self.file.updateMetaData()
                 widgetText = "Registro creado Exitosamente!!"
+                self.file.getRegistros().insert(registro)
         # fin de codigo
         dialog = QtWidgets.QMessageBox(MainWindow)
         dialog.setText(widgetText)
@@ -7180,6 +7181,20 @@ class Ui_MainWindow(object):
                 hoja.write(0, contColumnas, self.file.getCampo(j).getFieldName())
                 contColumnas+= 1
                 
+            contFilas = 1
+            columnasRegistros = 0   
+            contenido = self.file.abrirArchivo()
+            datos = []
+            datos = contenido.split('|')
+            registros = []
+            
+            
+            for k in range(self.file.btree.nodes.getSize()):
+                registros = datos[k].split(' ')
+                hoja.write(contFilas, columnasRegistros, registros[k])
+                columnasRegistros+= 1
+                
+            contFilas+=1
             excelFile.close()
             dialogo.setWindowTitle("Status de Estandarizacion")
             dialogo.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
