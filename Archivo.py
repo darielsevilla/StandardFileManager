@@ -18,6 +18,8 @@ class Archivo:
             self.availist = list()
             self.numeroDeRegistros = 0
             self.btree = None
+            self.btree2 = None
+            self.btree3 = None
             self.metaSize = 0
             self.registerSize = 0
 
@@ -25,6 +27,8 @@ class Archivo:
             treePath = self.Path[:len(self.Path) - 3] + "dja"
             with open(treePath, 'wb') as file:
                 pickle.dump(self.btree, file)
+                pickle.dump(self.btree2, file)
+                pickle.dump(self.btree3, file)
 
         def createBinarySearchTree(self):
             self.btree = BinarySearchTree(6)
@@ -36,13 +40,12 @@ class Archivo:
         def loadBtree(self):
             isRead = False
             try:
-
                 treePath = self.Path[:len(self.Path)-3] + "dja"
 
                 with open(treePath, 'rb') as file:
                     self.btree = pickle.load(file)
-
-
+                    self.btree2 = pickle.load(file)
+                    self.btree3 = pickle.load(file)
                     return True
             except Exception as e:
                 return False
@@ -179,6 +182,7 @@ class Archivo:
 
             isEmpty = str(int(self.registerWritten))
 
+
             with open(self.Path, 'r+') as file:
                 file.seek(0)
                 file.write(isEmpty)
@@ -187,6 +191,20 @@ class Archivo:
                 file.seek(0)
                 file.seek(8)
                 file.write(stringav)
+                file.seek(0)
+                currentLen = 14
+                for i in range(self.Campos.getSize()):
+                    currentLen += len(self.getCampo(i).getDataType()) + 1
+                    currentLen += len(self.getCampo(i).getFieldName()) + 1
+                    currentLen += len(str(self.getCampo(i).getFieldSize())) + 3
+
+                    if self.getCampo(i).isSecondaryKey == True:
+                        file.seek(currentLen)
+                        file.write('1')
+                    else:
+                        currentLen += 1
+                    currentLen += 1
+
             #updates numero de registros y primera posicion del availist
 
         def LoadFields(self):
@@ -196,7 +214,7 @@ class Archivo:
                     metadata = str(file.readline())
                 self.charsMetadata = (len(metadata))
                 tokens = metadata.split('|')
-                self.registerWritten = bool(tokens[0])
+                self.registerWritten = bool(int(tokens[0]))
 
                 if(tokens[1] == "#####"):
                     self.numeroDeRegistros = 0
@@ -212,6 +230,11 @@ class Archivo:
                         field.setKey(False)
                     else:
                         field.setKey(True)
+
+                    if (atts[4] == '0'):
+                        field.isSecondaryKey = False
+                    else:
+                        field.isSecondaryKey = True
                     self.Campos.insertAtEnd(Node(field))
 
                 if(tokens[2] == "#####"):
@@ -331,7 +354,7 @@ class Archivo:
                 try:
                     self.btree.deleteKey(key)
                     self.writeBTree()
-                    self.btree.printBTree()
+
                 except Exception as e:
                     traceback.print_exc()
                     print("exceptionnnn")
@@ -355,9 +378,18 @@ class Archivo:
 
                     rrn = self.availist[len(self.availist)-1]
 
-        def loadRegistro(self, key):
+        def loadRegistro(self, key, tipo):
             try:
-                rrn = self.btree.rrnSearch(key)
+                tree = None
+                if tipo == self.btree.keyField:
+                    tree = self.btree
+                elif tipo == self.btree2.keyField:
+                    tree = self.btree2
+                elif tipo == self.btree3.keyField:
+                    tree = self.btree3
+                else:
+                    return 2
+                rrn = tree.rrnSearch(key)
 
                 if rrn == -1:
                     return -1
@@ -369,6 +401,8 @@ class Archivo:
 
                     registerStr = str(file.read(self.registerSize))
                     
+                    if registerStr[0] == '|':
+                        return 0
                     registro = Registro()
                     prevSize = 0
                     for x in range(self.Campos.getSize()):
@@ -446,3 +480,19 @@ class Archivo:
                     return registro
             except Exception as e:
                 traceback.print_exc()
+
+        def indexSecondaryTree(self, node, btree, btree2, index):
+            for i in range(1, node.keys.getSize()+1):
+                if node.sons.getSize() >= i:
+                    btree2 = self.indexSecondaryTree(btree.nodes.getData(node.sons.getData(i)), btree,btree2,index)
+
+                registro = self.loadRegistro(node.keys.getData(i), self.btree.keyField)
+
+                key = registro.getAttribute(index).data
+                if(btree2.rrnSearch(key) == -1 and btree != -1):
+                    btree2.insert(key, node.rrnList.getData(i))
+                else:
+                    return -1
+            if node.sons.getSize() != 0:
+                btree2 = self.indexSecondaryTree(btree.nodes.getData(node.sons.getData(node.sons.getSize())), btree, btree2, index)
+            return btree2

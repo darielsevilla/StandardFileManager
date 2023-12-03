@@ -12,13 +12,13 @@ class TreeNode():
 
 class BinarySearchTree():
     def __init__(self, grado):
+        self.keyField = None
         self.nodes = LinkedList()
         self.treeAvailist = LinkedList()
         self.rootPos = None
         self.root = None
         self.contador = 0
         self.grade = grado
-
 
     def insert(self, key, rrn, node=None, index=None):
 
@@ -309,6 +309,7 @@ class BinarySearchTree():
             for i in range(1, keys.getSize()+1):
                 if keys.getData(i) == key:
                     keys.deleteAtIndex(i)
+                    rrns.deleteAtIndex(i)
                     break
             try:
                 self.reorderPostDeletion(node, nodePos)
@@ -404,8 +405,7 @@ class BinarySearchTree():
             for i in range(1, node.sons.getSize() + 1):
                 self.nodes.getData(node.sons.getData(i)).parent = keyToMoveIndex
 
-            print("DURANTE:")
-            self.printBTree()
+
             # merge nodes to the most populated cousin
             for i in range(node.keys.getSize()):
                 if behind == True:
@@ -482,8 +482,9 @@ class BinarySearchTree():
                 print("\nsons----------------------------------------------")
                 for k in range(treeNode.sons.getSize()):
                     print(str(self.nodes.getData(i + 1).sons.getData(k + 1)),end=" ")
-                print("\nsons----------------------------------------------")
-
+                print("\nrrns----------------------------------------------")
+                for k in range(treeNode.rrnList.getSize()):
+                    print(self.nodes.getData(i + 1).rrnList.getData(k + 1),end=" ")
                 print(" ")
             else:
                 print("*casilla borrada*")
