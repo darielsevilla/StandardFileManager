@@ -7985,7 +7985,7 @@ class Ui_MainWindow(object):
                     if (len(valor) > maxSize):
                         errorSize += 1
 
-            # creacion de mensaje de dialog
+            #creacion de mensaje de dialog
             widgetText = ""
             if (errorNoItem > 0):
                 widgetText += "-Existen casillas vacias\n"
@@ -8013,7 +8013,7 @@ class Ui_MainWindow(object):
                     self.cb_chooseKeyType.setModel(self.cb_chooseKeySearch.model())
                     widgetText = "Registro creado Exitosamente!!"
 
-            # fin de codigo
+            #fin de codigo
             dialog = QtWidgets.QMessageBox(MainWindow)
             dialog.setText(widgetText)
             dialog.setWindowTitle("Status de Registro")
@@ -8021,18 +8021,19 @@ class Ui_MainWindow(object):
             dialog.exec()
             self.enableFieldButtons()
         except Exception as e:
-            traceback.print_exc()
+             traceback.print_exc()
+
     def btn_searchModifyEvent(self, MainWindow):
         keyToSearch = self.tf_valorDeLlave.text()
         keyToSearch.replace(" ", "")
         if keyToSearch != "" and self.cb_chooseKeyType.currentIndex() != -1:
 
             keyToSearch = self.validationForKeyInput(keyToSearch)
-            # self.file.btree.printBTree()
+            self.file.btree.printBTree()
 
             if keyToSearch != False:
-                # if (isinstance(keyToSearch, str)):
-                #    keyToSearch = self.file.btree.stringToInt(keyToSearch)
+                if (isinstance(keyToSearch, str)):
+                   keyToSearch = self.file.btree.stringToInt(keyToSearch)
 
                 register = self.file.loadRegistro(keyToSearch, self.cb_chooseKeyType.currentText())
 
@@ -8142,7 +8143,7 @@ class Ui_MainWindow(object):
         dialogo = QtWidgets.QMessageBox(MainWindow)
         if (self.file != None):
 
-            excelFile = xlsxwriter.Workbook(self.file.getName() + ".xlsx")
+            #excelFile = xlsxwriter.Workbook(self.file.getName() + ".xlsx")
             hoja = excelFile.add_worksheet()
 
             contColumnas = 0

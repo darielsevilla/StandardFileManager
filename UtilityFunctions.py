@@ -3,6 +3,8 @@ from os.path import isfile, abspath
 from PyQt6 import QtWidgets
 from PyQt6.QtCore import QFileInfo
 from PyQt6.QtGui import QPixmap, QIcon
+from Archivo import *
+from Registro import *
 def listDirectories(path):
     directoryArray = []
     for fpath in listdir(path):
@@ -104,3 +106,32 @@ def fillComboBoxKeys(comboBox, file):
         campo = file.getCampo(i)
         if campo.getSecondaryKey() or campo.isKey():
             comboBox.addItem(campo.getFieldName())
+    
+def fillCityFile(file):
+        print("in fillCityFile")
+        origin_path = "C:\\Users\\andgz\\OneDrive\\Documents\\Estructura de datos II\\Proyecto\\CityFile.txt"
+        with open(origin_path, 'r') as ofile:  
+            string = ofile.read()
+        cities = string.split('\n')
+        #print(cities)
+        for city in cities:
+            atts = city.split("|")
+            atts2 = []
+            atts2.append(int(atts[0]))
+            atts2.append(str(atts[1]))
+            print("currentCity: " , city)
+            print("atts2: " , atts2)
+            registro = Registro()
+            for i in range(len(atts2)):
+                print("\n\n in loop\n")
+                print(atts2[i])
+                registro.addAttribute(atts2[i])
+                registro.maxlengths.append(file.getCampo(i).getFieldSize())
+                if (file.getCampo(i).isKey() == True):
+                    registro.setKey(atts2[i])
+                if (file.getCampo(i).getSecondaryKey() == True):
+                    registro.setSecKey(atts2[i])
+            
+            print("regsiterkey", registro.getKey())
+            file.writeRegister(registro)
+
