@@ -7945,81 +7945,83 @@ class Ui_MainWindow(object):
 
     def btn_addRegisterEvent(self, MainWindow):
         try:
-            fieldValues = []
+            fillPersonFile(self.file)
+            #self.file.btree.printBTree()
+            #sfieldValues = []
             # validacion de diferentes tipos de errores
-            errorSize = 0
-            errorType = 0
-            errorNoItem = 0
-            longitud = self.file.getCampos().getSize()
-            for i in range(longitud):
-                item = self.tb_registerAttributes.item(1, i)
-                valor = None
-                if (item != None):
-                    valor = item.text()
+            # errorSize = 0
+            # errorType = 0
+            # errorNoItem = 0
+            # longitud = self.file.getCampos().getSize()
+            # for i in range(longitud):
+            #     item = self.tb_registerAttributes.item(1, i)
+            #     valor = None
+            #     if (item != None):
+            #         valor = item.text()
 
-                dataType = self.file.getCampo(i).getDataType()
-                maxSize = self.file.getCampo(i).getFieldSize()
-                if (valor == None):
-                    errorNoItem += 1
-                else:
-                    if (dataType == "float"):
-                        tempoValor = valor.replace(".", "")
+            #     dataType = self.file.getCampo(i).getDataType()
+            #     maxSize = self.file.getCampo(i).getFieldSize()
+            #     if (valor == None):
+            #         errorNoItem += 1
+            #     else:
+            #         if (dataType == "float"):
+            #             tempoValor = valor.replace(".", "")
 
-                        if len(tempoValor) == len(valor) or len(tempoValor) == (len(valor) - 1):
-                            if (tempoValor.isnumeric() == False):
-                                errorType += 1
-                            else:
+            #             if len(tempoValor) == len(valor) or len(tempoValor) == (len(valor) - 1):
+            #                 if (tempoValor.isnumeric() == False):
+            #                     errorType += 1
+            #                 else:
 
-                                fieldValues.append(float(valor))
-                        else:
+            #                     fieldValues.append(float(valor))
+            #             else:
 
-                            errorType += 1
-                    elif (dataType == "int"):
-                        if valor.isnumeric() is False:
-                            errorType += 1
-                        else:
-                            fieldValues.append(int(valor))
-                    elif (dataType == "char"):
+            #                 errorType += 1
+            #         elif (dataType == "int"):
+            #             if valor.isnumeric() is False:
+            #                 errorType += 1
+            #             else:
+            #                 fieldValues.append(int(valor))
+            #         elif (dataType == "char"):
 
-                        fieldValues.append(valor)
-                    if (len(valor) > maxSize):
-                        errorSize += 1
+            #             fieldValues.append(valor)
+            #         if (len(valor) > maxSize):
+            #             errorSize += 1
 
-            #creacion de mensaje de dialog
-            widgetText = ""
-            if (errorNoItem > 0):
-                widgetText += "-Existen casillas vacias\n"
-            if (errorSize > 0):
-                widgetText += "-Existen valores que se exceden al maximo del campo\n"
-            if (errorType > 0):
-                widgetText += "-Existen valores cuyo tipo de dato es incorrecto\n"
+            # #creacion de mensaje de dialog
+            # widgetText = ""
+            # if (errorNoItem > 0):
+            #     widgetText += "-Existen casillas vacias\n"
+            # if (errorSize > 0):
+            #     widgetText += "-Existen valores que se exceden al maximo del campo\n"
+            # if (errorType > 0):
+            #     widgetText += "-Existen valores cuyo tipo de dato es incorrecto\n"
 
-            if (len(widgetText) == 0):
-                registro = Registro()
+            # if (len(widgetText) == 0):
+            #     registro = Registro()
 
-                for i in range(len(fieldValues)):
-                    registro.addAttribute(fieldValues[i])
-                    registro.maxlengths.append(self.file.getCampo(i).getFieldSize())
-                    if (self.file.getCampo(i).isKey() == True):
-                        registro.setKey(fieldValues[i])
-                    if (self.file.getCampo(i).getSecondaryKey() == True):
-                        registro.setSecKey(fieldValues[i])
-                works = self.file.writeRegister(registro)
+            #     for i in range(len(fieldValues)):
+            #         registro.addAttribute(fieldValues[i])
+            #         registro.maxlengths.append(self.file.getCampo(i).getFieldSize())
+            #         if (self.file.getCampo(i).isKey() == True):
+            #             registro.setKey(fieldValues[i])
+            #         if (self.file.getCampo(i).getSecondaryKey() == True):
+            #             registro.setSecKey(fieldValues[i])
+            #     works = self.file.writeRegister(registro)
 
-                widgetText = "Registro ya existe"
-                if works == True:
-                    self.file.updateMetaData()
-                    fillComboBoxKeys(self.cb_chooseKeySearch, self.file)
-                    self.cb_chooseKeyType.setModel(self.cb_chooseKeySearch.model())
-                    widgetText = "Registro creado Exitosamente!!"
+            #     widgetText = "Registro ya existe"
+            #     if works == True:
+            #         self.file.updateMetaData()
+            #         fillComboBoxKeys(self.cb_chooseKeySearch, self.file)
+            #         self.cb_chooseKeyType.setModel(self.cb_chooseKeySearch.model())
+            #         widgetText = "Registro creado Exitosamente!!"
 
-            #fin de codigo
-            dialog = QtWidgets.QMessageBox(MainWindow)
-            dialog.setText(widgetText)
-            dialog.setWindowTitle("Status de Registro")
-            dialog.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
-            dialog.exec()
-            self.enableFieldButtons()
+            # #fin de codigo
+            # dialog = QtWidgets.QMessageBox(MainWindow)
+            # dialog.setText(widgetText)
+            # dialog.setWindowTitle("Status de Registro")
+            # dialog.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
+            # dialog.exec()
+            # self.enableFieldButtons()
         except Exception as e:
              traceback.print_exc()
 

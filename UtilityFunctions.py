@@ -135,3 +135,37 @@ def fillCityFile(file):
             print("regsiterkey", registro.getKey())
             file.writeRegister(registro)
 
+def fillPersonFile(file):
+        print("in fillPeopleFile")
+        origin_path = "C:\\Users\\andgz\\OneDrive\\Documents\\Estructura de datos II\\Proyecto\\PersonFile.txt"
+        with open(origin_path, 'r') as ofile:  
+            string = ofile.read()
+        people = string.split('\n')
+        #print(cities)
+        #for person in people:
+        for x in range(100):
+            atts = people[x].split("|")
+            atts2 = []
+            atts2.append(int(atts[0]))
+            name = str(atts[1])
+            if(len(name) < 20):
+                atts2.append(name)
+            else:
+                atts2.append(name[:20])
+            atts2.append(int(atts[2]))
+            atts2.append(int(atts[3]))
+            print("currentPerson: " , people[x])
+            print("atts2: " , atts2)
+            registro = Registro()
+            for i in range(len(atts2)):
+                print("\n\n in loop\n")
+                print(atts2[i])
+                registro.addAttribute(atts2[i])
+                registro.maxlengths.append(file.getCampo(i).getFieldSize())
+                if (file.getCampo(i).isKey() == True):
+                    registro.setKey(atts2[i])
+                if (file.getCampo(i).getSecondaryKey() == True):
+                    registro.setSecKey(atts2[i])
+            
+            print("regsiterkey", registro.getKey())
+            file.writeRegister(registro)
