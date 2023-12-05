@@ -46,6 +46,7 @@ class Archivo:
                     self.btree = pickle.load(file)
                     self.btree2 = pickle.load(file)
                     self.btree3 = pickle.load(file)
+
                     return True
             except Exception as e:
                 return False
@@ -257,8 +258,7 @@ class Archivo:
                 #self.guardarArchivo(metadata)
                 #self.availist.append(int(-1))
                 self.reloadAvailist()
-                #print("in load: ")
-                #print(self.availist)
+
 
 
             except FileNotFoundError:
@@ -280,14 +280,20 @@ class Archivo:
                         key = register.getKey()
                         #if(isinstance(key,str)):
                         #    key = self.btree.stringToInt(key)
+                        array = self.btree.insert(key, self.numeroDeRegistros)
+                        if(array != False):
 
-                        if(self.btree.insert(key, self.numeroDeRegistros) == True):
+                            try:
+                                self.btree.reorderTree(array[0], array[1])
+                            except Exception as e:
+                                traceback.print_exc()
+                                sys.exit()
                             self.writeBTree()
                             file.write(data)
                             self.numeroDeRegistros += 1
                             self.registerWritten = True
                             self.updateMetaData()
-                            #self.btree.printBTree()
+
                             return True
                         else:
                             return False
@@ -308,7 +314,10 @@ class Archivo:
                         key = register.getKey()
                         #if (isinstance(key, str)):
                         #    key = self.btree.stringToInt(key)
-                        if (self.btree.insert(key, rrn) == True):
+                        array = self.btree.insert(key, rrn)
+                        if (array != False):
+
+                            self.btree.reorderTree(array[0],array[1])
                             file.write(data)
                             self.availist.pop(0)
 
@@ -328,9 +337,8 @@ class Archivo:
 
         def deleteRegister(self, key):
             rrn = self.btree.rrnSearch(key)
-            print("ANTES:")
-            self.btree.printBTree()
-            print("\n\n\n\n\nDespues:")
+
+
             if rrn == -1:
                 return False
             with open(self.Path, 'r+') as file:
@@ -349,7 +357,7 @@ class Archivo:
                 file.write(replacement)
 
                 self.updateMetaData()
-                print("metadata updated")
+
 
                 try:
                     self.btree.deleteKey(key)
@@ -362,9 +370,9 @@ class Archivo:
 
         def reloadAvailist(self):
             with open(self.Path, 'r') as file:
-                print("loading availist")
+
                 rrn = self.availist[0]
-                print(rrn)
+
                 while rrn != -1:
                     file.seek(0)
                     file.seek(self.metaSize + (rrn*self.registerSize))
@@ -380,6 +388,7 @@ class Archivo:
 
         def loadRegistro(self, key, tipo):
             try:
+
                 tree = None
                 if tipo == self.btree.keyField:
                     tree = self.btree
@@ -454,7 +463,8 @@ class Archivo:
                     file.seek(offset)
 
                     registerStr = str(file.read(self.registerSize))
-
+                    if(registerStr[0] == '|'):
+                        return -1
                     registro = Registro()
                     prevSize = 0
                     for x in range(self.Campos.getSize()):
@@ -489,8 +499,12 @@ class Archivo:
                 registro = self.loadRegistro(node.keys.getData(i), self.btree.keyField)
 
                 key = registro.getAttribute(index).data
-                if(btree2.rrnSearch(key) == -1 and btree != -1):
-                    btree2.insert(key, node.rrnList.getData(i))
+                if btree2 != -1:
+                    if(btree2.rrnSearch(key) == -1):
+                        array = btree2.insert(key, node.rrnList.getData(i))
+                        btree2.reorderTree(array[0], array[1])
+                    else:
+                        return -1
                 else:
                     return -1
             if node.sons.getSize() != 0:

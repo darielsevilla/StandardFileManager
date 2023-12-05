@@ -1,0 +1,99 @@
+1|New York
+2|Los Angeles
+3|Chicago
+4|Houston
+5|Phoenix
+6|Philadelphia
+7|San Antonio
+8|San Diego
+9|Dallas
+10|San Jose
+11|Austin
+12|Jacksonville
+13|San Francisco
+14|Indianapolis
+15|Columbus
+16|Fort Worth
+17|Charlotte
+18|Seattle
+19|Denver
+20|El Paso
+21|Detroit
+22|Washington
+23|Boston
+24|Memphis
+25|Nashville
+26|Portland
+27|Oklahoma City
+28|Las Vegas
+29|Louisville
+30|Baltimore
+31|Milwaukee
+32|Albuquerque
+33|Tucson
+34|Fresno
+35|Sacramento
+36|Kansas City
+37|Mesa
+38|Atlanta
+39|Miami
+40|Virginia Beach
+41|Omaha
+42|Minneapolis
+43|Honolulu
+44|Colorado Springs
+45|Arlington
+46|Wichita
+47|New Orleans
+48|Cleveland
+49|Tampa
+50|Bakersfield
+51|Aurora
+52|Anaheim
+53|Santa Ana
+54|St. Louis
+55|Riverside
+56|Corpus Christi
+57|Lexington
+58|Pittsburgh
+59|Anchorage
+60|Stockton
+61|Cincinnati
+62|Saint Paul
+63|Greensboro
+64|Toledo
+65|Newark
+66|Plano
+67|Henderson
+68|Lincoln
+69|Buffalo
+70|Jersey City
+71|Chula Vista
+72|Fort Wayne
+73|Orlando
+74|St. Petersburg
+75|Chandler
+76|Laredo
+77|Norfolk
+78|Durham
+79|Madison
+80|Lubbock
+81|Irvine
+82|Winston-Salem
+83|Glendale
+84|Hialeah
+85|Garland
+86|Scottsdale
+87|Irving
+88|Chesapeake
+89|North Las Vegas
+90|Fremont
+91|Baton Rouge
+92|Richmond
+93|Boise
+94|San Bernardino
+95|Spokane
+96|Birmingham
+97|Rochester
+98|Modesto
+99|Des Moines

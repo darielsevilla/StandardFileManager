@@ -7382,8 +7382,8 @@ class Ui_MainWindow(object):
         self.lb_indices1.mousePressEvent = lambda event: self.buttonAction(event, 13)
         self.lb_indices2.mousePressEvent = lambda event: self.buttonAction(event, 14)
 
-        self.lb_estandar1.mousePressEvent = lambda event: self.ExportarExcel(event, 0)
-        self.lb_estandar2.mousePressEvent = lambda event: self.ExportarXML(event, 1)
+        self.lb_estandar1.mousePressEvent = lambda event: self.ExportarExcel(event, MainWindow)
+        self.lb_estandar2.mousePressEvent = lambda event: self.ExportarXML(event, MainWindow)
 
 
         self.stackedMenus.setCurrentIndex(0)
@@ -7485,7 +7485,6 @@ class Ui_MainWindow(object):
 
             # insertar los registros
             rrns = self.file.btree.listRRN()
-            print(rrns)
 
             if rrns != -1:
 
@@ -7684,19 +7683,20 @@ class Ui_MainWindow(object):
         dialog.exec()
 
     def bt_saveDefaultEvent(self):
-
-        self.file.setPath("./registros/" + self.file.getName() + ".txt")
-        self.file.createBinarySearchTree()
-        self.file.guardarArchivo()
-        self.enableFieldButtons()
-        self.stackedPanels.setCurrentIndex(self.stackedPanels.indexOf(self.defaultWidget))
-        self.lb_archivo3.setEnabled(False)
-        fillTable(self.tbl_CrearCampos, self.file)
-        fillTable(self.tbl_listFields, self.file)
-        fillTable(self.tb_deleteField, self.file)
-        fillComboBoxField(self.cb_chooseFieldModify, self.file)
-        fillComboBoxField(self.cb_deleteField, self.file)
-
+        try:
+            self.file.setPath("./registros/" + self.file.getName() + ".txt")
+            self.file.createBinarySearchTree()
+            self.file.guardarArchivo()
+            self.enableFieldButtons()
+            self.stackedPanels.setCurrentIndex(self.stackedPanels.indexOf(self.defaultWidget))
+            self.lb_archivo3.setEnabled(False)
+            fillTable(self.tbl_CrearCampos, self.file)
+            fillTable(self.tbl_listFields, self.file)
+            fillTable(self.tb_deleteField, self.file)
+            fillComboBoxField(self.cb_chooseFieldModify, self.file)
+            fillComboBoxField(self.cb_deleteField, self.file)
+        except Exception as e:
+            traceback.print_exc()
     def btnAbrirEvent(self, MainWindow):
         if (len(self.lineEdit.text()) != 0):
             self.file = Archivo("temporalName")
@@ -7945,85 +7945,83 @@ class Ui_MainWindow(object):
 
     def btn_addRegisterEvent(self, MainWindow):
         try:
-            fillPersonFile(self.file)
-            #self.file.btree.printBTree()
-            #sfieldValues = []
-            # validacion de diferentes tipos de errores
-            # errorSize = 0
-            # errorType = 0
-            # errorNoItem = 0
-            # longitud = self.file.getCampos().getSize()
-            # for i in range(longitud):
-            #     item = self.tb_registerAttributes.item(1, i)
-            #     valor = None
-            #     if (item != None):
-            #         valor = item.text()
+            fieldValues = []
+            #validacion de diferentes tipos de errores
+            errorSize = 0
+            errorType = 0
+            errorNoItem = 0
+            longitud = self.file.getCampos().getSize()
+            for i in range(longitud):
+                item = self.tb_registerAttributes.item(1, i)
+                valor = None
+                if (item != None):
+                    valor = item.text()
 
-            #     dataType = self.file.getCampo(i).getDataType()
-            #     maxSize = self.file.getCampo(i).getFieldSize()
-            #     if (valor == None):
-            #         errorNoItem += 1
-            #     else:
-            #         if (dataType == "float"):
-            #             tempoValor = valor.replace(".", "")
+                dataType = self.file.getCampo(i).getDataType()
+                maxSize = self.file.getCampo(i).getFieldSize()
+                if (valor == None):
+                    errorNoItem += 1
+                else:
+                    if (dataType == "float"):
+                        tempoValor = valor.replace(".", "")
 
-            #             if len(tempoValor) == len(valor) or len(tempoValor) == (len(valor) - 1):
-            #                 if (tempoValor.isnumeric() == False):
-            #                     errorType += 1
-            #                 else:
+                        if len(tempoValor) == len(valor) or len(tempoValor) == (len(valor) - 1):
+                            if (tempoValor.isnumeric() == False):
+                                errorType += 1
+                            else:
 
-            #                     fieldValues.append(float(valor))
-            #             else:
+                                fieldValues.append(float(valor))
+                        else:
 
-            #                 errorType += 1
-            #         elif (dataType == "int"):
-            #             if valor.isnumeric() is False:
-            #                 errorType += 1
-            #             else:
-            #                 fieldValues.append(int(valor))
-            #         elif (dataType == "char"):
+                            errorType += 1
+                    elif (dataType == "int"):
+                        if valor.isnumeric() is False:
+                            errorType += 1
+                        else:
+                            fieldValues.append(int(valor))
+                    elif (dataType == "char"):
 
-            #             fieldValues.append(valor)
-            #         if (len(valor) > maxSize):
-            #             errorSize += 1
+                        fieldValues.append(valor)
+                    if (len(valor) > maxSize):
+                        errorSize += 1
 
-            # #creacion de mensaje de dialog
-            # widgetText = ""
-            # if (errorNoItem > 0):
-            #     widgetText += "-Existen casillas vacias\n"
-            # if (errorSize > 0):
-            #     widgetText += "-Existen valores que se exceden al maximo del campo\n"
-            # if (errorType > 0):
-            #     widgetText += "-Existen valores cuyo tipo de dato es incorrecto\n"
+            #creacion de mensaje de dialog
+            widgetText = ""
+            if (errorNoItem > 0):
+                widgetText += "-Existen casillas vacias\n"
+            if (errorSize > 0):
+                widgetText += "-Existen valores que se exceden al maximo del campo\n"
+            if (errorType > 0):
+                widgetText += "-Existen valores cuyo tipo de dato es incorrecto\n"
 
-            # if (len(widgetText) == 0):
-            #     registro = Registro()
+            if (len(widgetText) == 0):
+                registro = Registro()
 
-            #     for i in range(len(fieldValues)):
-            #         registro.addAttribute(fieldValues[i])
-            #         registro.maxlengths.append(self.file.getCampo(i).getFieldSize())
-            #         if (self.file.getCampo(i).isKey() == True):
-            #             registro.setKey(fieldValues[i])
-            #         if (self.file.getCampo(i).getSecondaryKey() == True):
-            #             registro.setSecKey(fieldValues[i])
-            #     works = self.file.writeRegister(registro)
+                for i in range(len(fieldValues)):
+                    registro.addAttribute(fieldValues[i])
+                    registro.maxlengths.append(self.file.getCampo(i).getFieldSize())
+                    if (self.file.getCampo(i).isKey() == True):
+                        registro.setKey(fieldValues[i])
+                    if (self.file.getCampo(i).getSecondaryKey() == True):
+                        registro.setSecKey(fieldValues[i])
+                works = self.file.writeRegister(registro)
 
-            #     widgetText = "Registro ya existe"
-            #     if works == True:
-            #         self.file.updateMetaData()
-            #         fillComboBoxKeys(self.cb_chooseKeySearch, self.file)
-            #         self.cb_chooseKeyType.setModel(self.cb_chooseKeySearch.model())
-            #         widgetText = "Registro creado Exitosamente!!"
+                widgetText = "Registro ya existe"
+                if works == True:
+                    self.file.updateMetaData()
+                    fillComboBoxKeys(self.cb_chooseKeySearch, self.file)
+                    self.cb_chooseKeyType.setModel(self.cb_chooseKeySearch.model())
+                    widgetText = "Registro creado Exitosamente!!"
 
-            # #fin de codigo
-            # dialog = QtWidgets.QMessageBox(MainWindow)
-            # dialog.setText(widgetText)
-            # dialog.setWindowTitle("Status de Registro")
-            # dialog.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
-            # dialog.exec()
-            # self.enableFieldButtons()
+            #fin de codigo
+            dialog = QtWidgets.QMessageBox(MainWindow)
+            dialog.setText(widgetText)
+            dialog.setWindowTitle("Status de Registro")
+            dialog.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
+            dialog.exec()
+            self.enableFieldButtons()
         except Exception as e:
-             traceback.print_exc()
+            traceback.print_exc()
 
     def btn_searchModifyEvent(self, MainWindow):
         keyToSearch = self.tf_valorDeLlave.text()
@@ -8031,7 +8029,7 @@ class Ui_MainWindow(object):
         if keyToSearch != "" and self.cb_chooseKeyType.currentIndex() != -1:
 
             keyToSearch = self.validationForKeyInput(keyToSearch)
-            self.file.btree.printBTree()
+
 
             if keyToSearch != False:
                 if (isinstance(keyToSearch, str)):
@@ -8049,12 +8047,12 @@ class Ui_MainWindow(object):
                 dialog.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
                 dialog.exec()
 
-    def validationForKeyInput(self, keyToSearch):
+    def validationForKeyInput(self, keyToSearch, type):
         campoLLave = None
         valid = True
         if (len(keyToSearch) != 0):
             for i in range(self.file.getCampos().getSize()):
-                if self.file.getCampo(i).isKey() == True:
+                if self.file.getCampo(i).getFieldName() == type:
                     campoLLave = self.file.getCampo(i)
 
             if (campoLLave.getDataType() == "char"):
@@ -8079,7 +8077,7 @@ class Ui_MainWindow(object):
 
     def btn_deleteRegisterEvent(self, MainWindow):
         keyToSearch = self.tf_llaveBorrar.text()
-        keyToSearch = self.validationForKeyInput(keyToSearch)
+        keyToSearch = self.validationForKeyInput(keyToSearch, self.file.btree.keyField)
         # if (isinstance(keyToSearch, str)):
         #    keyToSearch = self.file.btree.stringToInt(keyToSearch)
         if keyToSearch != False:
@@ -8105,11 +8103,14 @@ class Ui_MainWindow(object):
     def btn_searchEvent(self, MainWindow):
         llave = self.tf_valueKeySearch.text()
         tipo = self.cb_chooseKeySearch.currentText()
+        llave = self.validationForKeyInput(llave, tipo)
+
         try:
-            if llave != "" and self.cb_chooseKeySearch.currentIndex() != -1:
-                llave = self.validationForKeyInput(llave)
-                # if isinstance(llave, str) == True:
-                #    llave = self.file.btree.stringToInt(llave)
+            if llave != False and self.cb_chooseKeySearch.currentIndex() != -1:
+                #llave = self.validationForKeyInput(llave, tipo)
+                 #if isinstance(llave, str) == True:
+                 #   llave = self.file.btree.stringToInt(llave)
+                registro = None
 
                 registro = self.file.loadRegistro(llave, tipo)
 
@@ -8141,46 +8142,57 @@ class Ui_MainWindow(object):
         except Exception as e:
             traceback.print_exc()
 
-    def ExportarExcel(self, event, i):
+    def ExportarExcel(self, event, MainWindow):
         dialogo = QtWidgets.QMessageBox(MainWindow)
         if (self.file != None):
+            try:
+                #excelFile = xlsxwriter.Workbook(self.file.getName() + ".xlsx")
+                #hoja = excelFile.add_worksheet()
 
-            #excelFile = xlsxwriter.Workbook(self.file.getName() + ".xlsx")
-            hoja = excelFile.add_worksheet()
+                #contColumnas = 0
+                #for j in range(self.file.getCampos().getSize()):
+                    #hoja.write(0, contColumnas, self.file.getCampo(j).getFieldName())
+                    #contColumnas += 1
 
-            contColumnas = 0
-            for j in range(self.file.getCampos().getSize()):
-                hoja.write(0, contColumnas, self.file.getCampo(j).getFieldName())
-                contColumnas += 1
+                #contFilas = 1
+                #columnasRegistros = 0
+                #contenido = self.file.abrirArchivo()
+                #datos = []
+                #datos = contenido.split('|')
+                #registros = []
 
-            contFilas = 1
-            columnasRegistros = 0
-            contenido = self.file.abrirArchivo()
-            datos = []
-            datos = contenido.split('|')
-            registros = []
+                for i in range(self.file.numeroDeRegistros):
 
-            for k in range(self.file.btree.nodes.getSize()):
-                registros = datos[k].split(' ')
-                hoja.write(contFilas, columnasRegistros, registros[k])
-                columnasRegistros += 1
-
-            contFilas += 1
-            excelFile.close()
-            dialogo.setWindowTitle("Status de Estandarizacion")
-            dialogo.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
-            dialogo.setText("Archivo exportado a Excel correctamente")
-            dialogo.exec()
+                    registro = self.file.fileDirectRead(i)
+                    if(registro != -1):
+                        for i in range(self.file.getCampos().getSize()):
+                            #code goes here (delete the prints when done)
+                            print(registro.getAttribute(i).data, end=" ")
+                        print("")
+                #contFilas += 1
+                #excelFile.close()
+                dialogo.setWindowTitle("Status de Estandarizacion")
+                dialogo.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
+                dialogo.setText("Archivo exportado a Excel correctamente")
+                dialogo.exec()
+            except Exception as e:
+                traceback.print_exc()
         else:
             dialogo.setWindowTitle("Status de Estandarizacion")
             dialogo.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
             dialogo.setText("Se necesita abrir un archivo primero")
             dialogo.exec()
 
-    def ExportarXML(self, event, i):
+    def ExportarXML(self, event, MainWindow):
         dialogo = QtWidgets.QMessageBox(MainWindow)
         if (self.file != None):
-            print("Pasó")
+            for i in range(self.file.numeroDeRegistros):
+                registro = self.file.fileDirectRead(i)
+                if (registro != -1):
+                    for i in range(self.file.getCampos().getSize()):
+                        # code goes here (delete the prints when done)
+                        print(registro.getAttribute(i).data, end=" ")
+                    print("")
             dialogo.setWindowTitle("Status de Estandarizacion")
             dialogo.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
             dialogo.setText("Archivo XML a Schema exportado correctamente")

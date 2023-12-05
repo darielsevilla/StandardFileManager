@@ -1,0 +1,1 @@
+0|#####|#####|int$PersonId$6$1$0!char$PersonName$20$0$0!int$PersonAge$3$0$0!int$CityId$2$0$0|

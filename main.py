@@ -1,3 +1,5 @@
+import sys
+import threading
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import *
 import types
@@ -8,6 +10,7 @@ from PyQt6.QtGui import QPixmap, QIcon
 
 
 def main():
+
     app = QApplication([])
     window = Ui_MainWindow()
     window2 = QMainWindow()
@@ -18,13 +21,14 @@ def main():
 
     app.exec()
 
-def main2():
-    app = QApplication([])
-    window = VentanaPrincipal()
-    app.exec()
+
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-   main()
+    sys.setrecursionlimit(300000)
+    threading.stack_size(9999999)
+    mainThread = threading.Thread(target=main)
+    mainThread.run()
+    #main()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
