@@ -8185,7 +8185,6 @@ class Ui_MainWindow(object):
                     registro = self.file.fileDirectRead(i)
                     if(registro != -1):
                         for i in range(self.file.getCampos().getSize()):
-                            print(registro.getAttribute(i).data, end=" ")
                             hoja.write(contFilas,contColumnas, registro.getAttribute(i).data)
                             contColumnas+=1   
                         contFilas+=1  
@@ -8206,14 +8205,21 @@ class Ui_MainWindow(object):
 
     def ExportarXML(self, event, MainWindow):
         dialogo = QtWidgets.QMessageBox(MainWindow)
-        if (self.file != None):
-            for i in range(self.file.numeroDeRegistros):
-                registro = self.file.fileDirectRead(i)
-                if (registro != -1):
-                    for i in range(self.file.getCampos().getSize()):
-                        # code goes here (delete the prints when done)
-                        print(registro.getAttribute(i).data, end=" ")
-                    print("")
+        if (self.file != None):     
+            registros = ""    
+            with open(self.file.getName() + ".xml", 'w') as file:
+                registros += "<" + self.file.getName()  + ">\n"
+                for j in range(self.file.numeroDeRegistros):
+                    registro = self.file.fileDirectRead(j)
+                    registros+= "     <registro>\n"
+                    for k in range(self.file.getCampos().getSize()):
+                        strRegister = str(registro.getAttribute(k).data)
+                        registros+= "          <" + self.file.getCampo(k).getFieldName() + ">" + self.file.getCampo(k).getDataType() + "=" 
+                        registros+= strRegister + "</" + self.file.getCampo(k).getFieldName() + ">\n"
+                    registros+= "     <registro>\n"
+                registros+= "<" + self.file.getName()  + ">\n"
+                file.write(registros)
+            file.close()
             dialogo.setWindowTitle("Status de Estandarizacion")
             dialogo.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
             dialogo.setText("Archivo XML a Schema exportado correctamente")
