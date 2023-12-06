@@ -15,7 +15,7 @@ from Campo import *
 from UtilityFunctions import *
 from Registro import *
 from BinarySearchTree import *
-
+import xlsxwriter
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -8169,31 +8169,29 @@ class Ui_MainWindow(object):
         dialogo = QtWidgets.QMessageBox(MainWindow)
         if (self.file != None):
             try:
-                #excelFile = xlsxwriter.Workbook(self.file.getName() + ".xlsx")
-                #hoja = excelFile.add_worksheet()
+                excelFile = xlsxwriter.Workbook(self.file.getName() + ".xlsx")
+                hoja = excelFile.add_worksheet()
 
-                #contColumnas = 0
-                #for j in range(self.file.getCampos().getSize()):
-                    #hoja.write(0, contColumnas, self.file.getCampo(j).getFieldName())
-                    #contColumnas += 1
+                contColumnas = 0
+                for j in range(self.file.getCampos().getSize()):
+                    hoja.write(0, contColumnas, self.file.getCampo(j).getFieldName())
+                    contColumnas += 1
 
-                #contFilas = 1
-                #columnasRegistros = 0
-                #contenido = self.file.abrirArchivo()
-                #datos = []
-                #datos = contenido.split('|')
-                #registros = []
-
+               
+                contFilas = 1
+                contColumnas = 0
                 for i in range(self.file.numeroDeRegistros):
-
+                    
                     registro = self.file.fileDirectRead(i)
                     if(registro != -1):
                         for i in range(self.file.getCampos().getSize()):
-                            #code goes here (delete the prints when done)
                             print(registro.getAttribute(i).data, end=" ")
+                            hoja.write(contFilas,contColumnas, registro.getAttribute(i).data)
+                            contColumnas+=1   
+                        contFilas+=1  
+                        contColumnas = 0  
                         print("")
-                #contFilas += 1
-                #excelFile.close()
+                excelFile.close()
                 dialogo.setWindowTitle("Status de Estandarizacion")
                 dialogo.setWindowIcon(QIcon(QPixmap("images/exclamationMark.png")))
                 dialogo.setText("Archivo exportado a Excel correctamente")
