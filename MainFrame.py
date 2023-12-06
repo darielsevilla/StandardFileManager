@@ -7747,21 +7747,29 @@ class Ui_MainWindow(object):
             dialog.exec()
         else:
             field = Campo(self.cb_dataType.currentText(), self.tf_fieldName.text(), int(self.tf_cantidad.text()))
-            if (self.radio_isKey.isChecked()):
-                field.setKey(True)
-                self.file.btree.keyField = field.getFieldName()
-                self.file.writeBTree()
-                self.radio_isKey.setChecked(False)
-                self.radio_isKey.setEnabled(False)
-            self.file.insertCampo(field)
-            fillTable(self.tbl_CrearCampos, self.file)
-            fillTable(self.tbl_listFields, self.file)
-            fillTable(self.tb_deleteField, self.file)
-            fillComboBoxField(self.cb_chooseFieldModify, self.file)
-            fillComboBoxField(self.cb_deleteField, self.file)
-            self.lb_campos3.setEnabled(True)
-            self.lb_campos4.setEnabled(True)
-            self.btRegistro.setEnabled(False)
+
+            if field.getDataType() == "float" and field.getFieldSize() < 3:
+                dialog = QtWidgets.QMessageBox(MainWindow)
+                dialog.setText("Ingrese al menos 3 valores para un float")
+                icono = QIcon(QPixmap("images/exclamationMark.png"))
+                dialog.setWindowTitle("insufficient float size")
+                dialog.exec()
+            else:
+                if (self.radio_isKey.isChecked()):
+                    field.setKey(True)
+                    self.file.btree.keyField = field.getFieldName()
+                    self.file.writeBTree()
+                    self.radio_isKey.setChecked(False)
+                    self.radio_isKey.setEnabled(False)
+                self.file.insertCampo(field)
+                fillTable(self.tbl_CrearCampos, self.file)
+                fillTable(self.tbl_listFields, self.file)
+                fillTable(self.tb_deleteField, self.file)
+                fillComboBoxField(self.cb_chooseFieldModify, self.file)
+                fillComboBoxField(self.cb_deleteField, self.file)
+                self.lb_campos3.setEnabled(True)
+                self.lb_campos4.setEnabled(True)
+                self.btRegistro.setEnabled(False)
 
     def btn_SaveFieldsEvent(self, MainWindow):
         self.file.writeFields()
@@ -7950,6 +7958,7 @@ class Ui_MainWindow(object):
             errorSize = 0
             errorType = 0
             errorNoItem = 0
+            errorChars = 0
             longitud = self.file.getCampos().getSize()
             for i in range(longitud):
                 item = self.tb_registerAttributes.item(1, i)
@@ -7969,8 +7978,13 @@ class Ui_MainWindow(object):
                             if (tempoValor.isnumeric() == False):
                                 errorType += 1
                             else:
-
-                                fieldValues.append(float(valor))
+                                pointIndex = valor.find(".")
+                                if pointIndex == -1:
+                                    errorType += 1
+                                elif len(valor[pointIndex:]) > 1 and pointIndex != 0:
+                                    fieldValues.append(float(valor))
+                                else:
+                                    errorType += 1
                         else:
 
                             errorType += 1
@@ -7980,8 +7994,10 @@ class Ui_MainWindow(object):
                         else:
                             fieldValues.append(int(valor))
                     elif (dataType == "char"):
-
-                        fieldValues.append(valor)
+                        if valor.find("|") == -1 and valor.find(" ") == -1:
+                            fieldValues.append(valor)
+                        else:
+                            errorChars += 1
                     if (len(valor) > maxSize):
                         errorSize += 1
 
@@ -7993,7 +8009,8 @@ class Ui_MainWindow(object):
                 widgetText += "-Existen valores que se exceden al maximo del campo\n"
             if (errorType > 0):
                 widgetText += "-Existen valores cuyo tipo de dato es incorrecto\n"
-
+            if (errorChars > 0):
+                widgetText += "-Existen caracteres '|' y espacios en las cadenas\n"
             if (len(widgetText) == 0):
                 registro = Registro()
 
@@ -8063,7 +8080,13 @@ class Ui_MainWindow(object):
                     if (tempoValor.isnumeric() == False):
                         valid = False
                     else:
-                        return float(keyToSearch)
+                        pointIndex = keyToSearch.find(".")
+                        if pointIndex == -1:
+                            return float(keyToSearch)
+                        elif len(keyToSearch[pointIndex:]) > 1 and pointIndex != 0:
+                            return float(keyToSearch)
+                        else:
+                            valid = False
                 else:
                     valid = False
             elif (campoLLave.getDataType() == "int"):
@@ -8244,11 +8267,12 @@ class Ui_MainWindow(object):
                 self.lb_campos4.setEnabled(True)
 
             hasKey = False
+            count = 0
             for i in range(self.file.getCampos().getSize()):
                 if (self.file.getCampo(i).isKey() == True):
                     hasKey = True
-                    break
-            if hasKey is True:
+                count += self.file.getCampo(i).getFieldSize()
+            if hasKey is True and count >= 6:
                 self.lb_registros1.setEnabled(True)
             else:
                 self.lb_registros1.setEnabled(False)
