@@ -44,11 +44,14 @@ class Archivo:
 
                 with open(treePath, 'rb') as file:
                     self.btree = pickle.load(file)
+
                     self.btree2 = pickle.load(file)
                     self.btree3 = pickle.load(file)
 
                     return True
             except Exception as e:
+                if self.btree != None:
+                    return True
                 return False
             
         def isRegisterWritten(self):
@@ -461,8 +464,9 @@ class Archivo:
 
                     file.seek(0)
                     file.seek(offset)
-
+                    print(offset)
                     registerStr = str(file.read(self.registerSize))
+                    print(registerStr)
                     if(registerStr[0] == '|'):
                         return -1
                     registro = Registro()
@@ -492,6 +496,8 @@ class Archivo:
                 traceback.print_exc()
 
         def indexSecondaryTree(self, node, btree, btree2, index):
+            if node == None or node.keys.getSize() == 0:
+                return -2
             for i in range(1, node.keys.getSize()+1):
                 if node.sons.getSize() >= i:
                     btree2 = self.indexSecondaryTree(btree.nodes.getData(node.sons.getData(i)), btree,btree2,index)

@@ -309,6 +309,40 @@ class BinarySearchTree():
         except Exception as e:
             traceback.print_exc()
 
+    def delete(self, key, node = None):
+        minimum = (self.grade -1) /2
+        if self.root == None or self.nodes.getSize() == 0:
+            return False
+        if node == None:
+            node = self.root
+
+        if node.sons.getSize() == 0:
+            sonPos = -1
+            for i in range(1, node.keys.getSize()):
+                if key == node.keys.getData(i):
+                    node.keys.deleteAtIndex(i)
+                    node.rrnList.deleteAtIndex(i)
+                    sonPos = 0
+            if sonPos == -1:
+                return False
+            return True
+        else:
+            sonPos = -1
+            for i in range(1, node.keys.getSize()):
+                if key == node.keys.getData(i):
+                    priorChild = self.nodes.getData(node.sons.getData(i))
+                    nextChild = self.nodes.getData(node.sons.getData(i))
+                    if priorChild.keys.getSize() > minimum:
+
+                        rrnDeKey = node.rrnList.getData(i)
+                        node.rrnList.deleteAtIndex(i)
+                        node.rrnList.insertItemAtIndex(priorChild.rrnList.getData(priorChild.rrnList.getSize()), i)
+                        node.keys.deleteAtIndex(i)
+                        node.keys.insertItemAtIndex(priorChild.keys.getData(priorChild.keys.getSize()), i)
+
+
+
+
     def deleteKey(self, key, node = None, nodePos = None):
         try:
             copyNode = node
