@@ -2447,7 +2447,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="page">
       <property name="autoFillBackground">
@@ -2922,11 +2922,25 @@
          </property>
         </widget>
        </widget>
+       <widget class="QPushButton" name="btn_generarPrueba">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>420</y>
+          <width>181</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Generar registros de prueba</string>
+        </property>
+       </widget>
        <zorder>wdArchivo1</zorder>
        <zorder>wdArchivo2</zorder>
        <zorder>wdArchivo3</zorder>
        <zorder>wd_archivo4</zorder>
        <zorder>wd_archivo5</zorder>
+       <zorder>btn_generarPrueba</zorder>
       </widget>
      </widget>
      <widget class="QWidget" name="page_3">
@@ -4366,7 +4380,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>7</number>
      </property>
      <widget class="QWidget" name="page1">
       <property name="autoFillBackground">

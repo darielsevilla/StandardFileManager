@@ -81,7 +81,7 @@ class BinarySearchTree():
                 #return self.insert(key, rrn, restartNode, cont)
 
     def reorderTree(self, leafNode, cont):
-        #print("cont" + str(cont))
+
         llaves = leafNode.keys
         nodePtrs = leafNode.sons
         rrns = leafNode.rrnList
@@ -406,8 +406,7 @@ class BinarySearchTree():
             keys = node.keys
             sons = node.sons
             rrns = node.rrnList
-            #print("APENAS BORRADO:")
-            #self.printBTree()
+
 
             minimum = int((self.grade -1) / 2)
             if node != self.root and node.keys.getSize() < minimum:

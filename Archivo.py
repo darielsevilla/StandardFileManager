@@ -368,7 +368,7 @@ class Archivo:
 
                 except Exception as e:
                     traceback.print_exc()
-                    print("exceptionnnn")
+
                 return True #self.btree.deleteKey(key)
 
         def reloadAvailist(self):
@@ -464,9 +464,9 @@ class Archivo:
 
                     file.seek(0)
                     file.seek(offset)
-                    print(offset)
+
                     registerStr = str(file.read(self.registerSize))
-                    print(registerStr)
+
                     if(registerStr[0] == '|'):
                         return -1
                     registro = Registro()
